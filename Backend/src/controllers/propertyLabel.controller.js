@@ -1,48 +1,42 @@
-import Agent from "../models/agent.model.js";
+import propertyLabel from "../models/propertyLabel.js";
 
-// Get all agents
-export const getAgents = async (req, res) => {
+export const getPropertyLabels = async (req, res) => {
     try {
-        const agents = await Agent.find();
-        res.status(200).json({ success: true, data: agents });
+        const propertyLabels = await propertyLabel.find();
+        res.json(propertyLabels);
     } catch (error) {
-        res.status(500).json({ success: false, message: "Server Error" });
-    }
-};
+        res.status(500).json({ message: error.message });
+    }    
+}
 
-// Add a new agent
-export const addAgent = async (req, res) => {
+export const addPropertyLabel = async (req, res) => {
     try {
-        const agent = new Agent(req.body);
-        await agent.save();
-        res.status(201).json({ success: true, data: agent });
+        const { title, icon, description } = req.body;
+        const propertyLabel = new propertyLabel({ title, icon, description });
+        await propertyLabel.save();
+        res.status(201).json(propertyLabel);
     } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
-};
+}
 
-// Update an agent
-export const updateAgent = async (req, res) => {
+export const deletePropertyLabel = async (req, res) => {
     try {
-        const agent = await Agent.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-        if (!agent) {
-            return res.status(404).json({ success: false, message: "Agent not found" });
-        }
-        res.status(200).json({ success: true, data: agent });
+        const { id } = req.params;
+        await propertyLabel.findByIdAndDelete(id);
+        res.json({ message: "Property Label deleted successfully" });
     } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
     }
-};
+}
 
-// Delete an agent
-export const deleteAgent = async (req, res) => {
+export const updatePropertyLabel = async (req, res) => {
     try {
-        const agent = await Agent.findByIdAndDelete(req.params.id);
-        if (!agent) {
-            return res.status(404).json({ success: false, message: "Agent not found" });
-        }
-        res.status(200).json({ success: true, message: "Agent deleted successfully" });
+        const { id } = req.params;
+        const updatedData = req.body;
+        const updatedPropertyLabel = await propertyLabel.findByIdAndUpdate(id, updatedData, { new: true });
+        res.json(updatedPropertyLabel);
     } catch (error) {
-        res.status(500).json({ success: false, message: "Server Error" });
+        res.status(500).json({ message: error.message });
     }
-};
+}

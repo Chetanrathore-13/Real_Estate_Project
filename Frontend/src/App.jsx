@@ -7,6 +7,8 @@ import VendorDashboard from "./pages/VendorDashboard";
 import UserDashboard from "./pages/UserDashboard";
 import { useSelector } from "react-redux";
 import CountryManager from "./pages/LocationManager";
+import Animation from "./components/Animation";
+import './App.css';
 
 const PrivateRoute =  ({ children, allowedRoles }) => {
     const { token, role } =  useSelector((state) => state.auth);
@@ -25,6 +27,7 @@ const App = () => {
             <Routes>
                 <Route path="/login" element={<Signup />} />
                 <Route path="/signup" element={<Login />} />
+                <Route path="/animation" element={<Animation />} />
                 <Route path="/location" element={<CountryManager/>}/>
                 <Route path="/admin-dashboard" element={<PrivateRoute allowedRoles={["admin"]}><AdminDashboard /></PrivateRoute>} />
                 <Route path="/vendor-dashboard" element={<PrivateRoute allowedRoles={["vendor"]}><VendorDashboard /></PrivateRoute>} />
