@@ -1,4 +1,4 @@
-import propertyLabel from "../models/propertyLabel";
+import propertyLabel from "../models/propertyLabel.js";
 
 export const getPropertyLabels = async (req, res) => {
     try {

@@ -1,4 +1,4 @@
-import propertyStatus from "../models/propertyStatus";
+import propertyStatus from "../models/propertyStatus.js";
 
 export const getPropertyStatus = async (req, res) => {
     try {
