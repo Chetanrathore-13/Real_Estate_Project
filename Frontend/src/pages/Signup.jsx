@@ -3,6 +3,7 @@ import { FaGoogle, FaGithub, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser, loginUser } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
+import ImageCarousal from "../components/ImageCarousal";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,7 +19,7 @@ const AuthForm = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const error = useSelector((state) => state.auth.error); // Get error from Redux store
+  const error = useSelector((state) => state.auth.error);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +35,7 @@ const AuthForm = () => {
         }
         data = await dispatch(signupUser(formData)).unwrap();
       }
-      
+
       if (data?.role === "vendor") navigate("/vendor-dashboard");
       else if (data?.role === "user") navigate("/user-dashboard");
       else if (data?.role === "admin") navigate("/admin-dashboard");
@@ -50,67 +51,118 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="grid md:grid-cols-2">
-          <div className="hidden md:block bg-gradient-to-br from-blue-500 to-purple-600 p-8">
-            <h2 className="text-white text-3xl font-bold mb-4">Welcome Back!</h2>
-            <p className="text-white/90 mb-8">Join our community and discover amazing things.</p>
-            <div className="h-48 bg-white/10 rounded-xl backdrop-blur-sm" />
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="grid md:grid-cols-3">
+          <div className="hidden md:block col-span-2">
+            <div className="h-full w-full bg-white/10 rounded-xl backdrop-blur-sm">
+              <ImageCarousal />
+            </div>
           </div>
-
           <div className="p-8">
             <div className="flex gap-4 mb-8">
               <button
-                className={`flex-1 py-2 font-semibold rounded-lg transition-colors ${isLogin ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+                className={`flex-1 py-2 font-semibold rounded-lg transition-colors ${
+                  isLogin ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
                 onClick={() => setIsLogin(true)}
-              >Login</button>
+              >
+                Login
+              </button>
               <button
-                className={`flex-1 py-2 font-semibold rounded-lg transition-colors ${!isLogin ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+                className={`flex-1 py-2 font-semibold rounded-lg transition-colors ${
+                  !isLogin ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
                 onClick={() => setIsLogin(false)}
-              >Sign Up</button>
+              >
+                Sign Up
+              </button>
             </div>
-            
+
             {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {!isLogin && (
                 <div>
                   <label className="block text-gray-700 mb-2">Full Name</label>
-                  <input type="text" name="username" value={formData.username} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" required />
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded-lg"
+                    required
+                  />
                 </div>
               )}
-              
               <div>
                 <label className="block text-gray-700 mb-2">Email</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" required />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  required
+                />
               </div>
-              
               <div>
                 <label className="block text-gray-700 mb-2">Password</label>
                 <div className="relative">
-                  <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg pr-12" required />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded-lg pr-12"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                  >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
                 </div>
               </div>
-              
               {!isLogin && (
                 <div>
                   <label className="block text-gray-700 mb-2">Confirm Password</label>
-                  <input type="password" name="confirmpassword" value={formData.confirmpassword} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" required />
-                  <label htmlFor="role" className="block text-gray-700 font-medium mb-2">Select Role:</label>
-                  <select id="role" name="role" value={formData.role} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+                  <input
+                    type="password"
+                    name="confirmpassword"
+                    value={formData.confirmpassword}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border rounded-lg"
+                    required
+                  />
+                  <label className="block text-gray-700 font-medium mb-2">Select Role:</label>
+                  <select
+                    name="role"
+                    value={formData.role}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    required
+                  >
                     <option value="">-- Select Role --</option>
                     <option value="vendor">Vendor</option>
                     <option value="user">User</option>
                   </select>
                 </div>
               )}
-              
-              <button type="submit" disabled={isLoading} className="w-full bg-blue-500 text-white py-3 rounded-lg flex items-center justify-center">
-                {isLoading ? <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : isLogin ? "Login" : "Create Account"}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-blue-500 text-white py-3 rounded-lg flex items-center justify-center"
+              >
+                {isLoading ? (
+                  <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : isLogin ? (
+                  "Login"
+                ) : (
+                  "Create Account"
+                )}
               </button>
             </form>
           </div>

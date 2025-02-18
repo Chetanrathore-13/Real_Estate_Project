@@ -40,6 +40,9 @@ app.use("/api/v1/property", propertyStatusRoutes);
 import propertyLabelRoutes from "./routes/propertyLabelRoutes.js";
 app.use("/api/v1/property", propertyLabelRoutes);
 
+import agentRoutes from "./routes/agentRoutes.js";
+app.use("/api/v1/agent", agentRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
