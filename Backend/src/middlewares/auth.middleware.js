@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 const authMiddleware = (req, res, next) => {
     
     const authHeader = req.header("Authorization");
-    console.log(authHeader)
     // Check if the Authorization header is missing
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ message: "Access Denied. No token provided." });
@@ -11,7 +10,6 @@ const authMiddleware = (req, res, next) => {
 
     // Extract the token (remove "Bearer " prefix)
     const token = authHeader.split(" ")[1];
-    console.log(token)
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded; // Attach decoded user data to the request

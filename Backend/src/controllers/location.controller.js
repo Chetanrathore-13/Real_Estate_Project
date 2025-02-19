@@ -49,9 +49,9 @@ export const updateCountry = async (req, res) => {
 
 // Fetch all States
 export const getStates = async (req, res) => {
-    const id = req.body
+    const countryId = req.params.countryId
      try {
-    const states = await State.findById(id);
+    const states = await State.find({ countryId });
     res.json(states);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -88,15 +88,17 @@ export const updateState = async (req, res) => {  try {
 
   // Fetch all cities
 export const getCities = async (req, res) => {  
-    const {countryid,stateid} = req.body
+    const stateId = req.params.stateId
     try {
-    const Cities = await City.findById();
+    const Cities = await City.find({ stateId });
     res.json(Cities);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }};
  //Add a new city
-export const addCity = async (req, res) => { try {
+export const addCity = async (req, res) => {
+  console.log(req.body)
+   try {
     const { name, code, stateId, countryId } = req.body;
     const city = new City({ name, code, stateId, countryId });
     await city.save();

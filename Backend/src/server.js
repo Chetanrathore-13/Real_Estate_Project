@@ -23,7 +23,7 @@ const connectDb = async () => {
 connectDb();
 
 import locationRoutes from './routes/locationRoutes.js';
-app.use("/api/v1",locationRoutes)
+app.use("/api/v1/location",locationRoutes)
 
 import propertyFeature from "./routes/propertyFeatureRoutes.js"
 app.use("/api/v1",propertyFeature)

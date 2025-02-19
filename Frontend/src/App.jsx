@@ -8,6 +8,8 @@ import UserDashboard from "./pages/UserDashboard";
 import { useSelector } from "react-redux";
 import CountryManager from "./pages/LocationManager";
 import Animation from "./components/Animation";
+import StateManager from "./pages/StateManager";
+import CityManager from "./pages/CityManager";
 import './App.css';
 
 const PrivateRoute =  ({ children, allowedRoles }) => {
@@ -28,7 +30,7 @@ const App = () => {
                 <Route path="/login" element={<Signup />} />
                 <Route path="/signup" element={<Login />} />
                 <Route path="/animation" element={<Animation />} />
-                <Route path="/location" element={<CountryManager/>}/>
+                <Route path="/location" element={<CityManager/>}/>
                 <Route path="/admin-dashboard" element={<PrivateRoute allowedRoles={["admin"]}><AdminDashboard /></PrivateRoute>} />
                 <Route path="/vendor-dashboard" element={<PrivateRoute allowedRoles={["vendor"]}><VendorDashboard /></PrivateRoute>} />
                 <Route path="/user-dashboard" element={<PrivateRoute allowedRoles={["user"]}><UserDashboard /></PrivateRoute>} />
