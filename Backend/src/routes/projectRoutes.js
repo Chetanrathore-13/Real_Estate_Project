@@ -1,17 +1,17 @@
 import express from "express";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import {
-    getProjects,
-    addProject,
-    deleteProject,
-    updateProject
+    getprojects,
+    addproject,
+    deleteproject,
+    updateproject
 } from "../controllers/project.controller.js";
 
 const router = express.Router();    
 
-router.get("/projects", authMiddleware, getProjects);
-router.post("/add_project", authMiddleware, addProject);
-router.delete("/delete_project/:id", authMiddleware, deleteProject);
-router.patch("/update_project/:id", authMiddleware, updateProject);
+router.get("/projects", authMiddleware, getprojects);
+router.post("/add_project", authMiddleware, addproject);
+router.delete("/delete_project/:id", authMiddleware, deleteproject);
+router.patch("/update_project/:id", authMiddleware, updateproject);
 
 export default router;

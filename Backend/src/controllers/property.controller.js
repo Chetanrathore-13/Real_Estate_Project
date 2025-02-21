@@ -1,7 +1,7 @@
-import Property from "../models/property";
+import Property from "../models/property.js";
 
 
-export const getProperty = async(req,es) => {
+export const getProperties = async(req,es) => {
     try {
         const property = Property.find();
         res.status(200).json({property})

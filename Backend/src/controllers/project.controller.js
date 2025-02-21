@@ -1,7 +1,7 @@
-import Project from "../models/project";
+import Project from "../models/project.js";
 
 // Use all the CRUD operations
-const getProjects = async (req, res) => {
+const getprojects = async (req, res) => {
     try {
         const projects = await Project.find({});
         res.status(200).json({ projects });
@@ -43,4 +43,4 @@ const deleteproject = async (req, res) => {
     }
 };
 
-export { getProjects, addproject, updateproject, deleteproject };
+export { getprojects, addproject, updateproject, deleteproject };
