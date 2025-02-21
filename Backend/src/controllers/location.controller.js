@@ -15,8 +15,8 @@ export const getCountries = async (req, res) => {
 export const addCountry = async (req, res) => {
   console.log(req.body)
   try {
-    const { name, code } = req.body;
-    const country = new Country({ name, code });
+    const { name, code, icon, description } = req.body;
+    const country = new Country({ name, code, icon, description });
     await country.save();
     res.status(201).json({message:"Country has been added Succefully",country});
   } catch (error) {
@@ -59,8 +59,8 @@ export const getStates = async (req, res) => {
 
 //Add a new state
 export const addState = async (req, res) => { try {
-    const { name, code,countryId } = req.body;
-    const state = new State({ name, code, countryId });
+    const { name, code,countryId,icon,description } = req.body;
+    const state = new State({ name, code, countryId, icon, description });
     await state.save();
     res.status(201).json(state);
   } catch (error) {
@@ -99,8 +99,8 @@ export const getCities = async (req, res) => {
 export const addCity = async (req, res) => {
   console.log(req.body)
    try {
-    const { name, code, stateId, countryId } = req.body;
-    const city = new City({ name, code, stateId, countryId });
+    const { name, code, stateId, countryId, icon, description } = req.body;
+    const city = new City({ name, code, stateId, countryId, icon, description });
     await city.save();
     res.status(201).json(city);
   } catch (error) {
