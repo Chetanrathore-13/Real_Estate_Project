@@ -14,9 +14,10 @@ export const getCountries = async (req, res) => {
 // Add a new country
 export const addCountry = async (req, res) => {
   console.log(req.body)
+  console.log(req.file.filename)
   try {
-    const { name, code, icon, description } = req.body;
-    const country = new Country({ name, code, icon, description });
+    const { name, code, description } = req.body;
+    const country = new Country({ name, code, icon: req.file.filename, description });
     await country.save();
     res.status(201).json({message:"Country has been added Succefully",country});
   } catch (error) {

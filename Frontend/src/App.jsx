@@ -11,6 +11,7 @@ import Animation from "./components/Animation";
 import StateManager from "./pages/StateManager";
 import CityManager from "./pages/CityManager";
 import './App.css';
+import Locations from "./pages/Locations";
 
 const PrivateRoute =  ({ children, allowedRoles }) => {
     const { token, role } =  useSelector((state) => state.auth);
@@ -28,6 +29,7 @@ const App = () => {
         <Router>
             <Routes>
                 <Route path="/login" element={<Signup />} />
+                <Route path="/locationDesign" element={<Locations />} />
                 <Route path="/signup" element={<Login />} />
                 <Route path="/animation" element={<Animation />} />
                 <Route path="/location" element={<CityManager/>}/>

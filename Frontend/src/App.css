@@ -1,5 +1,3 @@
-
-
 .swiper-button-prev, .swiper-button-next {
     
     width: 40px;
@@ -17,5 +15,8 @@
     line-height: 1;
     color: #000;
     
+}
+body{
+    font-family: "Poppins", serif;
 }
 

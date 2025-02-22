@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/properties", authMiddleware, getProperties);
+router.get("/properties", getProperties);
 router.post("/add_property", authMiddleware, addProperty);
 router.delete("/delete_property/:id", authMiddleware, deleteProperty);
 router.patch("/update_property/:id", authMiddleware, updateProperty);
