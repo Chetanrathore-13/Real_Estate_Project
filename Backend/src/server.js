@@ -50,6 +50,18 @@ app.use("/api/v1/property", propertyRoutes);
 import projectRoutes from "./routes/projectRoutes.js";
 app.use("/api/v1/project", projectRoutes);
 
+import contactRoutes from "./routes/contactRoutes.js";
+app.use("/api/v1/contact", contactRoutes);
+
+import propertyEnquiryRoutes from "./routes/propertyEnquiryRoutes.js";
+app.use("/api/v1/enquiry", propertyEnquiryRoutes);
+
+import fandqRoutes from "./routes/fandqRoutes.js";
+app.use("/api/v1/fandq", fandqRoutes);
+
+import contactUsRoutes from "./routes/contactUsRoutes.js";
+app.use("/api/v1/contactus", contactUsRoutes); 
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
