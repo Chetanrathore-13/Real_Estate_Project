@@ -2,7 +2,7 @@ import express from "express";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import {
     getContacts,
-    addContact,
+    createContact,
     deleteContact,
     updateContact
 } from "../controllers/contact.controller.js";
@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.get("/contacts", authMiddleware, getContacts);
-router.post("/add_contact", authMiddleware, addContact);
+router.post("/add_contact", authMiddleware, createContact);
 router.delete("/delete_contact/:id", authMiddleware, deleteContact);
 router.patch("/update_contact/:id", authMiddleware, updateContact);
 
