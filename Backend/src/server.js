@@ -62,6 +62,14 @@ app.use("/api/v1/fandq", fandqRoutes);
 import contactUsRoutes from "./routes/contactUsRoutes.js";
 app.use("/api/v1/contactus", contactUsRoutes); 
 
+import blogCategoryRoutes from "./routes/blog-cateogryRoutes.js";
+app.use("/api/v1/blogcategory", blogCategoryRoutes);
+
+import blogtagRoutes from "./routes/blog-tagRoutes.js";
+app.use("/api.v1/blogtage",blogtagRoutes)
+
+import blogRoutes from "./routes/blogRoutes.js";
+app.use("/api/v1/blog",blogRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
