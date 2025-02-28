@@ -1,19 +1,13 @@
-import React from "react";
+import AdminDashboard from "./pages/admin/AdminDashboard"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import AdminDashboard from "./pages/AdminDashboard";
-import VendorDashboard from "./pages/VendorDashboard";
-import UserDashboard from "./pages/UserDashboard";
+import Vendordashbaord from "./pages/vendor/Vendor-dashbaord";
+import Userdashbaord from "./pages/user/User-dashbaord";
+import LoginPage from "./pages/public/LoginPage"
 import { useSelector } from "react-redux";
-import CountryManager from "./pages/LocationManager";
-import Animation from "./components/Animation";
-import StateManager from "./pages/StateManager";
-import CityManager from "./pages/CityManager";
-import './App.css';
-import Locations from "./pages/Locations";
 
-const PrivateRoute =  ({ children, allowedRoles }) => {
+
+function App() {
+  const PrivateRoute =  ({ children, allowedRoles }) => {
     const { token, role } =  useSelector((state) => state.auth);
     console.log(token,role)
     
@@ -23,23 +17,17 @@ const PrivateRoute =  ({ children, allowedRoles }) => {
     return children;
 };
 
+  return (
+    <Router>
+        <Routes>
+            <Route path="/auth" element={<LoginPage />} />
+            <Route path="/admin-dashboard" element={<PrivateRoute allowedRoles={["admin"]}><AdminDashboard /></PrivateRoute>} />
+            <Route path="/vendor-dashboard" element={<PrivateRoute allowedRoles={["vendor"]}><Vendordashbaord /></PrivateRoute>} />
+            <Route path="/user-dashboard" element={<PrivateRoute allowedRoles={["user"]}><Userdashbaord /></PrivateRoute>} />
+            <Route path="*" element={<Navigate to="/auth" />} />
+        </Routes>
+    </Router>
+);
+}
 
-const App = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/login" element={<Signup />} />
-                <Route path="/locationDesign" element={<Locations />} />
-                <Route path="/signup" element={<Login />} />
-                <Route path="/animation" element={<Animation />} />
-                <Route path="/location" element={<CityManager/>}/>
-                <Route path="/admin-dashboard" element={<PrivateRoute allowedRoles={["admin"]}><AdminDashboard /></PrivateRoute>} />
-                <Route path="/vendor-dashboard" element={<PrivateRoute allowedRoles={["vendor"]}><VendorDashboard /></PrivateRoute>} />
-                <Route path="/user-dashboard" element={<PrivateRoute allowedRoles={["user"]}><UserDashboard /></PrivateRoute>} />
-                <Route path="*" element={<Navigate to="/login" />} />
-            </Routes>
-        </Router>
-    );
-};
-
-export default App;
+export default App
