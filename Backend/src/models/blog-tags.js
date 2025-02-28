@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const blogTagSchema = new mongoose.Schema({
-    Name: { type: String, required: true, unique: true },
+    name: { type: String, required: [true, "Name is required"], unique: true, trim: true },
     slug: { type: String, unique: true }
 }, { timestamps: true });
 
-// Middleware to generate slug before saving
-blogTagSchema.pre("save", function (next) {
-    if (this.Name) {
-      this.slug = slugify(this.Name, { lower: true, strict: true });
-    }
-    next();
-  });
+// Middleware to generate slug before saving or updating
+blogTagSchema.pre("validate", function (next) {
+  if (this.name && !this.slug) {
+    this.slug = slugify(this.name, { lower: true, strict: true });
+  }
+  next();
+});
 
 export default mongoose.model("BlogTag", blogTagSchema);

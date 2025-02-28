@@ -66,7 +66,7 @@ import blogCategoryRoutes from "./routes/blog-cateogryRoutes.js";
 app.use("/api/v1/blogcategory", blogCategoryRoutes);
 
 import blogtagRoutes from "./routes/blog-tagRoutes.js";
-app.use("/api.v1/blogtage",blogtagRoutes)
+app.use("/api/v1/blogtag",blogtagRoutes)
 
 import blogRoutes from "./routes/blogRoutes.js";
 app.use("/api/v1/blog",blogRoutes)
