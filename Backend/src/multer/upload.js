@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
+    console.log("multer to chl rha hai")
     let fileExtension = "";
     if (file.originalname.includes(".")) {
       fileExtension = file.originalname.substring(file.originalname.lastIndexOf("."));

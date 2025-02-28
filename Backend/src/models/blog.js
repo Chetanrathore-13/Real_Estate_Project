@@ -11,7 +11,7 @@ import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String, unique: true },
     description: { type: String, required: true },
     categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "BlogCategory" },
     tagId: { type: mongoose.Schema.Types.ObjectId, ref: "BlogTag" },
@@ -19,4 +19,11 @@ const blogSchema = new mongoose.Schema({
     authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 }, { timestamps: true });
 
+
+// Middleware to generate slug before saving
+blogSchema.pre("save", function (next) {
+    if (this.title) {
+      this.slug = slugify(this.title, { lower: true, strict: true });
+    }
+})
 export  default mongoose.model("Blog",blogSchema)

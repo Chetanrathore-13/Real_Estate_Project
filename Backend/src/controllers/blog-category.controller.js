@@ -1,6 +1,7 @@
 import BlogCategory from "../models/blog-category.js";
 
 export const createBlogCategory = async (req, res) => {
+    console.log("yha tak agae")
         try {
             const blogCategory = await BlogCategory.create(req.body);
             return res.status(201).json(blogCategory);
@@ -10,6 +11,7 @@ export const createBlogCategory = async (req, res) => {
     };
 
 export const getBlogCategories = async (req, res) => {
+    console.log("Kuch to hua")
         try {
             const blogCategories = await BlogCategory.find();
             return res.status(200).json(blogCategories);
