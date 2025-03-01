@@ -35,6 +35,8 @@ export function StateItem({ State, onUpdate, onDelete }) {
           <div>
             <h3 className="font-semibold text-gray-800 dark:text-white">{State.name}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">{State.code}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{State.description}</p>
+            <div><img src={`data:image/jpeg;base64,${State.imageBase64}`} className="w-10 h-10 " alt="state Icon" /></div>
           </div>
         )}
       </div>

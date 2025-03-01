@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { AddCountryForm } from "../components/Add-Country-Form";
-import { CountryList } from "../components/Country-list";
+import { AddCountryForm } from "../../components/Add-Country-Form";
+import { CountryList } from "../../components/Country-list";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";

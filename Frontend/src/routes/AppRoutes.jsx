@@ -20,6 +20,10 @@ import BlogDetail from "../components/BlogDetail";
 import BlogForm from "../components/BlogForm";
 import BlogCategory from "../pages/admin/BlogCategory";
 import BlogTag from "../pages/admin/BlogTag";
+import Property from "../pages/admin/Property";
+import LocationManager from "../pages/admin/LocationManager";
+import CityManager from "../pages/admin/CityManager";
+import StateManager from "../pages/admin/StateManager";
 
 const getDashboardRoute = (role) => {
   switch (role) {
@@ -70,10 +74,20 @@ const router = createBrowserRouter([
           { path: ":id", element: <BlogDetail /> },
           { path: "new", element: <BlogForm /> },
           { path: "edit/:id", element: <BlogForm /> },
+          {path:"blog-Category", element:<BlogCategory/>},
+          {path:"blog-tag",element:<BlogTag/>}
         ],
       },
-      {path:"Blog-Category", element:<BlogCategory/>},
-      {path:"Blog-tag",element:<BlogTag/>}
+      {
+        path: "property",
+        element: <Property />,
+        children: [
+          { index: true, element: <LocationManager /> },
+          {path:"state",element:<StateManager/>},
+          {path:"city",element:<CityManager/>}, 
+        ],
+      },
+      
     ],
   },
 

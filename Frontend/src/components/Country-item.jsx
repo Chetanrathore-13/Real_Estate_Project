@@ -35,6 +35,7 @@ export function CountryItem({ country, onUpdate, onDelete }) {
           <div>
             <h3 className="font-semibold text-gray-800 dark:text-white">{country.name}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">{country.code}</p>
+            <div><img src={`data:image/jpeg;base64,${country.imageBase64}`} className="w-10 h-10 " alt="Country Icon" /></div>
           </div>
         )}
       </div>

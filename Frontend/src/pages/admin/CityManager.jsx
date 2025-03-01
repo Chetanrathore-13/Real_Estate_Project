@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { AddStateForm } from "../components/Add-State-Form";
-import { StateList } from "../components/State-list";
-import { CityList } from "../components/City-list";
-import { AddCityForm } from "../components/Add-City-Form";
+import { AddStateForm } from "../../components/Add-State-Form";
+import { StateList } from "../../components/State-list";
+import { CityList } from "../../components/City-list";
+import { AddCityForm } from "../../components/Add-City-Form";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
@@ -64,22 +64,34 @@ export default function StateManager() {
     }
   }, [stateId, token]);
 
-  const addCity = async (name, code) => {
+  const addCity = async (name, code,icon,description) => {
     console.log(name,code,stateId,countryId);
     try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("code", code);
+      formData.append("icon", icon); // Ensure this is a file object
+      formData.append("description", description);
+      formData.append("countryId", countryId);
+      formData.append("stateId", stateId);
+      
       const response = await axios.post(
         "http://localhost:8000/api/v1/location/add_city",
-        { name,
-           code,
-           stateId,
-           countryId },
-        { headers: { Authorization: token } }
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "multipart/form-data", // Important for file upload
+          },
+        }
       );
-      setCities([...cities, response.data]);
+  
+      console.log(response);
       toast.success("City has been added successfully!");
+      setCities([...cities, response.data.citywithicon]);
     } catch (error) {
-      console.error(error);
-      toast.error(error.response.data.message);
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 

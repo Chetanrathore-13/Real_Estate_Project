@@ -68,11 +68,11 @@ const data = {
         },
         {
           title: "Category",
-          url: "/admin/Blog-Category",
+          url: "/admin/blogs/blog-Category",
         },
         {
           title: "Tags",
-          url: "/admin/Blog-tag",
+          url: "/admin/blogs/blog-tag",
         }
       ],
     },
@@ -107,15 +107,15 @@ const data = {
         },
         {
           title: "Countries",
-          url: "#",
+          url: "/admin/property",
         },
         {
           title: "States",
-          url: "#",
+          url: "/admin/property/state",
         },
         {
           title: "Cities",
-          url: "#",
+          url: "/admin/property/city",
         },
       ],
     },

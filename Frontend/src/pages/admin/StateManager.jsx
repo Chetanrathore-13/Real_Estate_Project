@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { AddStateForm } from "../components/Add-State-Form";
-import { StateList } from "../components/State-list";
+import { AddStateForm } from "../../components/Add-State-Form";
+import { StateList } from "../../components/State-list";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
@@ -14,13 +14,14 @@ export default function StateManager() {
 
   useEffect(() => {
     const fetchCountries = async () => {
+      if (!token) return;
       try {
         const response = await axios.get("http://localhost:8000/api/v1/location/countries", {
           headers: {
             Authorization: token,
           },
         });
-        setCountries(response.data);
+        setCountries(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error(error);
       }
@@ -29,84 +30,94 @@ export default function StateManager() {
   }, [token]);
 
   useEffect(() => {
-    if (countryId) {
-        console.log(countryId)
-      const fetchStates = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:8000/api/v1/location/states/${countryId}`,
-            {
-              headers: {
-                Authorization: token,
-              },
-            }
-          );
-          setStates(response.data);
-          console.log(response.data)
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchStates();
-    }
+    if (!countryId || !token) return;
+
+    const fetchStates = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/location/states/${countryId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        setStates(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchStates();
   }, [countryId, token]);
 
-  const addState = async (name, code) => {
+  const addState = async (name, code, icon, description) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/location/add_states', {
-        name,
-        code,
-        countryId
-      }, {
-        headers: {
-          Authorization: token
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("code", code);
+      formData.append("icon", icon); // Ensure this is a file object
+      formData.append("description", description);
+      formData.append("countryId", countryId);
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/location/add_states",
+        formData,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "multipart/form-data",
+          },
         }
-      })
-      console.log(response)
-      toast.success("State has been added successfully!")
-      setStates([...states, response.data])
+      );
+
+      toast.success("State has been added successfully!");
+      setStates([...states, response.data.state]);
     } catch (error) {
-      console.log(error)
-      toast.error(error.response.data.message)
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
-    
-  }
+  };
 
   const updateState = async (id, name, code) => {
-    // i have to send id in params and data in body
     try {
-      const respone = await axios.patch(`http://localhost:8000/api/v1/location/patch_states/${id}`, {
-        name,
-        code
-      }, {
-        headers: {
-          Authorization: token
+      const response = await axios.patch(
+        `http://localhost:8000/api/v1/location/patch_states/${id}`,
+        { name, code },
+        {
+          headers: {
+            Authorization: token,
+          },
         }
-      })
-      if(respone) setStates(states.map((state) => (state._id === id ? { ...states, name, code } : state)))
-      toast.success("State has been updated successfully!")
+      );
+
+      if (response) {
+        setStates(states.map((state) => 
+          state._id === id ? { ...state, name, code } : state
+        ));
+      }
+
+      toast.success("State has been updated successfully!");
     } catch (error) {
-      console.log(error)
-      toast.error(error.response.data.message)
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
-  }
+  };
 
-
-
-  const deleteState = (id) => {
+  const deleteState = async (id) => {
     try {
-      axios.delete(`http://localhost:8000/api/v1/location/delete_states/${id}`, {
+      await axios.delete(`http://localhost:8000/api/v1/location/delete_states/${id}`, {
         headers: {
-          Authorization: token
-        }
-      })
-      setStates(states.filter((state) => state._id !== id))
-      toast.success("State has been deleted successfully!")
+          Authorization: token,
+        },
+      });
+
+      setStates(states.filter((state) => state._id !== id));
+      toast.success("State has been deleted successfully!");
     } catch (error) {
-      console.log(error)
-      toast.error(error.response.data.message)
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
-  }
+  };
 
   return (
     <>

@@ -4,6 +4,8 @@ export function AddCityForm({ onAddCity }) {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const [icon, setIcon] = useState(null);
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,9 +16,14 @@ export function AddCityForm({ onAddCity }) {
       return;
     }
     setError("");
-    onAddCity(name, code);
+    onAddCity(name, code, icon, description);
     setName("");
     setCode("");
+    setIcon(null);
+    setDescription("");
+  };
+  const handleFileChange = (e) => {
+    setIcon(e.target.files[0]); // Store the selected file
   };
 
   return (
@@ -50,6 +57,32 @@ export function AddCityForm({ onAddCity }) {
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
           {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+        </div>
+        <div>
+          <label htmlFor="icon" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            City Icon
+          </label>
+          <input
+            key={icon ? icon.name : "icon-input"} // Force re-render on reset
+            id="icon"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            Description
+          </label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter country description"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
         </div>
         <button
           type="submit"
