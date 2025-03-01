@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import slugify from "slugify";
 
 const blogTagSchema = new mongoose.Schema({
-    name: { type: String, required: [true, "Name is required"], unique: true, trim: true },
+    name: { type: String, required: [true, "name is required"], unique: true, trim: true },
     slug: { type: String, unique: true }
 }, { timestamps: true });
 

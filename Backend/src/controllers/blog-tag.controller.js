@@ -10,10 +10,10 @@ export const getBlogTags = async (req, res) => {
 }
 
 export const createBlogTag = async (req, res) => {
-    const {name} = req.body;
+  
     console.log(req.body);
     try {
-        const blogTag = await BlogTag.create({name});
+        const blogTag = await BlogTag.create(req.body);
         return res.status(201).json(blogTag);
     } catch (error) {
         return res.status(400).json({ error: error.message });

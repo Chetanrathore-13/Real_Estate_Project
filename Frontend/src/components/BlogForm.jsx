@@ -17,18 +17,21 @@ function BlogForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
+  const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
-    author: "",
+    categoryId: "",
+    tagId: [],
+    authorId: "",
     featureImage: "",
   });
   const token = useSelector((state) => state.auth.token);
+  const userid = useSelector((state) => state.auth.id);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -40,7 +43,8 @@ function BlogForm() {
               title: blog.title,
               description: blog.description,
               category: blog.category,
-              author: blog.author,
+              categoryId: blog.categoryId,
+              authorId: userid,
               featureImage: blog.featureImage,
             });
             setTags(blog.tags || []);
@@ -55,7 +59,7 @@ function BlogForm() {
       }
     };
     fetchBlog();
-  }, [id, isEditMode, navigate]);
+  }, [id, isEditMode, navigate, userid]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -77,7 +81,6 @@ function BlogForm() {
         const response = await axios.get("http://localhost:8000/api/v1/blogtag/blog_tags", {
           headers: { Authorization: token },
         });
-        console.log(response)
         setAvailableTags(response.data);
       } catch (error) {
         console.error("Failed to fetch tags:", error);
@@ -92,21 +95,22 @@ function BlogForm() {
   };
 
   const handleCategoryChange = (value) => {
-    setFormData((prev) => ({ ...prev, category: value }));
+    const selectedCategory = categories.find((cat) => cat.name === value);
+    setFormData((prev) => ({
+      ...prev,
+      category: value,
+      categoryId: selectedCategory ? selectedCategory._id : "",
+    }));
   };
 
-  const handleTagKeyDown = (e) => {
-    if (e.key === "Enter" && currentTag.trim()) {
-      e.preventDefault();
-      if (!tags.includes(currentTag.trim())) {
-        setTags([...tags, currentTag.trim()]);
-      }
-      setCurrentTag("");
+  const handleTagChange = (value) => {
+    if (!tags.includes(value)) {
+      setTags((prevTags) => [...prevTags, value]);
     }
   };
 
   const removeTag = (tagToRemove) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
+    setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove));
   };
 
   const handleImageChange = (e) => {
@@ -123,13 +127,28 @@ function BlogForm() {
     setIsSubmitting(true);
 
     try {
-      const blogData = { ...formData, tags };
+      formData.authorId = userid;
+      formData.tagId = tags;
+
+      const blogData = new FormData();
+      Object.keys(formData).forEach((key) => {
+        if (key === "tagId") {
+          formData[key].forEach((tag) => blogData.append("tagId", tag));
+        } else {
+          blogData.append(key, formData[key]);
+        }
+      });
+
       if (isEditMode) {
         await blogService.updateBlog(id, blogData);
       } else {
-        await blogService.createBlog(blogData);
+        // print the form data
+        console.log("Form Data:", blogData);
+        const response = await axios.post("http://localhost:8000/api/v1/blog/add_blog", blogData, {
+          headers: { Authorization: token, "Content-Type": "multipart/form-data" },
+        });
+        navigate(`/admin/blog/${response.data._id}`);
       }
-      navigate("/");
     } catch (error) {
       console.error("Failed to save blog:", error);
     } finally {
@@ -142,7 +161,6 @@ function BlogForm() {
       <h1 className="text-3xl font-bold">{isEditMode ? "Edit Blog" : "Create New Blog"}</h1>
       <form onSubmit={handleSubmit} className="space-y-8">
         <Input name="title" value={formData.title} onChange={handleChange} placeholder="Title" required />
-        <Input name="author" value={formData.author} onChange={handleChange} placeholder="Author" required />
         <Textarea name="description" value={formData.description} onChange={handleChange} placeholder="Description" rows={5} required />
 
         <Select value={formData.category} onValueChange={handleCategoryChange}>
@@ -155,8 +173,8 @@ function BlogForm() {
         </Select>
 
         <div className="space-y-2">
-          <Label htmlFor="tags">Tags</Label>
-          <Select onValueChange={(value) => setTags([...tags, value])}>
+          <Label>Tags</Label>
+          <Select onValueChange={handleTagChange}>
             <SelectTrigger>
               <SelectValue placeholder="Select a tag" />
             </SelectTrigger>

@@ -72,7 +72,7 @@ const data = {
         },
         {
           title: "Tags",
-          url: "#",
+          url: "/admin/Blog-tag",
         }
       ],
     },

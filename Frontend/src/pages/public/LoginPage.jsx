@@ -29,6 +29,7 @@ const LoginPage = () => {
       let data; // Declare data properly
       if (Login) { // Assuming "isLogin" is a boolean state variable
         data = await dispatch(loginUser(formData)).unwrap();
+        console.log(data)
         if (data?.role === "vendor") navigate("/vendor");
         else if (data?.role === "user") navigate("/user");
         else if (data?.role === "admin") navigate("/admin");

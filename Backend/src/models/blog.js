@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import slugify from "slugify";
 // Input fields
 // Title
 // Slug
@@ -14,7 +14,7 @@ const blogSchema = new mongoose.Schema({
     slug: { type: String, unique: true },
     description: { type: String, required: true },
     categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "BlogCategory" },
-    tagId: { type: mongoose.Schema.Types.ObjectId, ref: "BlogTag" },
+    tagId: {type:Array},
     featureImage: { type: String, required: true },
     authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 }, { timestamps: true });

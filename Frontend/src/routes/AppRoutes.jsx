@@ -19,6 +19,7 @@ import BlogList from "../components/BlogList";
 import BlogDetail from "../components/BlogDetail";
 import BlogForm from "../components/BlogForm";
 import BlogCategory from "../pages/admin/BlogCategory";
+import BlogTag from "../pages/admin/BlogTag";
 
 const getDashboardRoute = (role) => {
   switch (role) {
@@ -71,7 +72,8 @@ const router = createBrowserRouter([
           { path: "edit/:id", element: <BlogForm /> },
         ],
       },
-      {path:"Blog-Category", element:<BlogCategory/>}
+      {path:"Blog-Category", element:<BlogCategory/>},
+      {path:"Blog-tag",element:<BlogTag/>}
     ],
   },
 

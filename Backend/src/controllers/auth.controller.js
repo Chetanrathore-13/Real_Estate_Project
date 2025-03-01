@@ -61,6 +61,7 @@ const login = async (req, res) => {
         res.status(200).json({
             message: "Login successful",
             token: `Bearer ${token}`,
+            id: user._id,
             role: user.role, // Send role to frontend
         });
 

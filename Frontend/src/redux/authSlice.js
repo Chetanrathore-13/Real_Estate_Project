@@ -3,7 +3,6 @@ import axios from "axios";
 
 // Signup user
 export const signupUser = createAsyncThunk("auth/signupUser", async (userData, { rejectWithValue }) => {
-    
     try {
         const response = await axios.post("http://localhost:8000/api/v1/auth/register", userData);
         console.log(response);
@@ -33,6 +32,7 @@ const authSlice = createSlice({
         token: localStorage.getItem("token") || null,
         loading: false,
         error: null,
+        id: null
     },
     reducers: {
         logout: (state) => {
@@ -54,6 +54,7 @@ const authSlice = createSlice({
                 state.user = action.payload;
                 state.role = action.payload.role;
                 state.token = action.payload.token;
+                state.id = action.payload.id;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;

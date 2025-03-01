@@ -18,13 +18,6 @@ export const createBlogCategory = async (req, res) => {
         .json({ error: "All fields are required, including an image" });
     }
     const imageUrl = `/public/images/${req.file.filename}`;
-    const slug = slugify(name, { lower: true, strict: true });
-    const existingCategory = await BlogCategory.findOne({ slug });
-    if (existingCategory) {
-      return res
-        .status(400)
-        .json({ error: "Category with this name already exists" });
-    }
 
     const blogCategory = await BlogCategory.create({
       name,
