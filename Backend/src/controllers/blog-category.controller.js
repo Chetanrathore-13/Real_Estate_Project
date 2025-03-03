@@ -50,7 +50,6 @@ export const getBlogCategories = async (req, res) => {
           console.error(`Error reading image file: ${err.message}`);
         }
       }
-
       return {
         ...category.toObject(),
         imageBase64: imageBase64,

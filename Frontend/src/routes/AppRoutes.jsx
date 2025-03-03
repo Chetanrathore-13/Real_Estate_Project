@@ -24,6 +24,13 @@ import Property from "../pages/admin/Property";
 import LocationManager from "../pages/admin/LocationManager";
 import CityManager from "../pages/admin/CityManager";
 import StateManager from "../pages/admin/StateManager";
+import PropertyStatus from "../../../Backend/src/models/propertyStatus";
+import PropertyLabel from "../../../Backend/src/models/propertyLabel";
+import PropertyFeatures from "../pages/admin/PropertyFeatures";
+import PropertyStatusManager from "../pages/admin/PropertyStatus";
+import PropertyLabelCRUD from "../pages/admin/PropertyLabel";
+import PropertyTypes from "../pages/admin/PropertyTypes";
+import AllProperty from "../pages/admin/AllProperty.";
 
 const getDashboardRoute = (role) => {
   switch (role) {
@@ -82,12 +89,16 @@ const router = createBrowserRouter([
         path: "property",
         element: <Property />,
         children: [
-          { index: true, element: <LocationManager /> },
+          { index: true, element: <AllProperty /> },
+          {path:"country", element: <LocationManager /> },
           {path:"state",element:<StateManager/>},
           {path:"city",element:<CityManager/>}, 
+          {path:"property-status",element:<PropertyStatusManager/>},
+          {path:"property-label",element:<PropertyLabelCRUD/>},
+          {path:"property-features",element:<PropertyFeatures/>},
+          {path:"property-types",element:<PropertyTypes/>}
         ],
-      },
-      
+      }
     ],
   },
 

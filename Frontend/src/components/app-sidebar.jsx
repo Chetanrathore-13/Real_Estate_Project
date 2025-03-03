@@ -22,6 +22,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import path from "path"
+import { title } from "process"
 
 // This is sample data.
 const data = {
@@ -83,27 +85,27 @@ const data = {
       items: [
         {
           title: "All Property",
-          url: "#",
+          url: "/",
         },
         {
           title: "Add Property",
-          url: "#",
+          url: "/admin/property/add-property",
         },
         {
           title: "Property Types",
-          url: "#",
+          url: "/admin/property/property-types",
         },
         {
           title: "Property labels",
-          url: "#",
+          url: "/admin/property/property-label",
         },
         {
           title: "Property Features",
-          url: "#",
+          url: "/admin/property/property-features",
         },
         {
           title: "Property status",
-          url: "#",
+          url: "/admin/property/property-status",
         },
         {
           title: "Countries",
@@ -121,8 +123,11 @@ const data = {
     },
     {
       title: "Projects",
-      url: "#",
-      icon: BookOpen
+      url: "/",
+      icon: BookOpen,
+      items:[
+        {title:true,url:"/admnin/projects"},
+      ]
     },
     {
       title: "Agents",

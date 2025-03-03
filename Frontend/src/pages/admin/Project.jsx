@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export default function ProjectCRUD() {
+export default function Project() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
