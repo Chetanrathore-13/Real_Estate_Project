@@ -85,7 +85,7 @@ const data = {
       items: [
         {
           title: "All Property",
-          url: "/",
+          url: "/admin/property",
         },
         {
           title: "Add Property",
@@ -123,11 +123,14 @@ const data = {
     },
     {
       title: "Projects",
-      url: "/",
+      url: "/admnin/projects",
       icon: BookOpen,
-      items:[
-        {title:true,url:"/admnin/projects"},
-      ]
+      items: [
+        {
+          title: "All Projects",
+          url: "/admin/projects",
+        },
+      ],
     },
     {
       title: "Agents",

@@ -19,11 +19,20 @@ export const createBlogCategory = async (req, res) => {
     }
     const imageUrl = `/public/images/${req.file.filename}`;
 
+    //checck if category already exists using slug
+    const existingCategory = await BlogCategory.findOne({
+      slug: slugify(name, { lower: true, strict: true }),
+    });
+    if (existingCategory) {
+      return res
+        .status(400)
+        .json({ error: "Category with this name already exists" });
+    }
+
     const blogCategory = await BlogCategory.create({
       name,
       Description: description,
       Image: imageUrl,
-      slug,
     });
     return res.status(201).json(blogCategory);
   } catch (error) {
@@ -63,8 +72,10 @@ export const getBlogCategories = async (req, res) => {
 };
 
 export const updateBlogCategory = async (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
   try {
-    const { name, Description } = req.body;
+    const { name, description } = req.body;
     const categoryId = req.params.id;
 
     let blogCategory = await BlogCategory.findById(categoryId);
@@ -85,7 +96,7 @@ export const updateBlogCategory = async (req, res) => {
     }
 
     // Prepare updated data
-    const updatedData = { name, Description };
+    const updatedData = { name, Description: description };
 
     if (name) {
       updatedData.slug = slugify(name, { lower: true, strict: true });

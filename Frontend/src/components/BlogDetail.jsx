@@ -1,22 +1,28 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { ArrowLeft, Edit } from "lucide-react"
 import { blogService } from "../services/blogService"
 import { Button } from "./ui/button"
 import { Badge } from "./ui/badge"
+import axios from "axios"
+import { useSelector } from "react-redux"
 
 function BlogDetail() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const navigate = useNavigate()
   const [blog, setBlog] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  const token = useSelector((state) => state.auth.token);
+
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const data = await blogService.getBlogById(id)
+        const data = await axios.get(`http://localhost:8000/api/v1/blog/get_blog/${slug}`, {
+          headers: {
+            Authorization:token,
+          },
+        })
         if (data) {
           setBlog(data)
         } else {
@@ -31,7 +37,7 @@ function BlogDetail() {
     }
 
     fetchBlog()
-  }, [id, navigate])
+  }, [slug, navigate])
 
   if (isLoading) {
     return (
@@ -54,7 +60,7 @@ function BlogDetail() {
             <span>Back to Blogs</span>
           </Button>
         </Link>
-        <Link to={`/blog/edit/${id}`}>
+        <Link to={`/blog/edit/${slug}`}>
           <Button variant="outline" className="flex items-center gap-2">
             <Edit className="h-4 w-4" />
             <span>Edit Blog</span>
@@ -73,7 +79,7 @@ function BlogDetail() {
 
         <div className="relative aspect-video overflow-hidden rounded-lg">
           <img
-            src={blog.featureImage || `https://via.placeholder.com/800x400?text=${encodeURIComponent(blog.title)}`}
+            src={`data:image/jpeg;base64,${blog.imageBase64}`}
             alt={blog.title}
             className="w-full h-full object-cover"
           />
@@ -83,13 +89,13 @@ function BlogDetail() {
           <p>{blog.description}</p>
         </div>
 
-        <div className="flex flex-wrap gap-2 pt-4">
-          {blog.tags.map((tag, index) => (
+        {/* <div className="flex flex-wrap gap-2 pt-4">
+          {blog?.tags.map((tag, index) => (
             <Badge key={index} variant="secondary">
               {tag}
             </Badge>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   )

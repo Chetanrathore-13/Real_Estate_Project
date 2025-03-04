@@ -104,8 +104,9 @@ function BlogForm() {
   };
 
   const handleTagChange = (value) => {
-    if (!tags.includes(value)) {
-      setTags((prevTags) => [...prevTags, value]);
+    const selectedTag = availableTags.find((tag) => tag.name === value);
+    if (selectedTag && !tags.includes(selectedTag._id)) {
+      setTags((prevTags) => [...prevTags, selectedTag._id]); // Store tag ID, not name
     }
   };
 
@@ -133,7 +134,7 @@ function BlogForm() {
       const blogData = new FormData();
       Object.keys(formData).forEach((key) => {
         if (key === "tagId") {
-          formData[key].forEach((tag) => blogData.append("tagId", tag));
+          formData[key].forEach((tag) => blogData.append("tagId[]", tag)); // Append each tag correctly
         } else {
           blogData.append(key, formData[key]);
         }
@@ -147,7 +148,7 @@ function BlogForm() {
         const response = await axios.post("http://localhost:8000/api/v1/blog/add_blog", blogData, {
           headers: { Authorization: token, "Content-Type": "multipart/form-data" },
         });
-        navigate(`/admin/blog/${response.data._id}`);
+        navigate(`/admin/blogs`);
       }
     } catch (error) {
       console.error("Failed to save blog:", error);

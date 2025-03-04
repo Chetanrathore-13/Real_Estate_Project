@@ -84,7 +84,7 @@ export default function PropertyTypes() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Manage Property Features</h1>
+      <h1 className="text-2xl font-bold mb-6">Manage Property Types</h1>
 
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

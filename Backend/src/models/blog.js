@@ -1,22 +1,14 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
-// Input fields
-// Title
-// Slug
-// Description
-// Category Id (obj id)
-// Tag id (obj id)
-// Feature Image
-// Author id (login user id)(obj id)
 
 const blogSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    slug: { type: String, unique: true },
     description: { type: String, required: true },
     categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "BlogCategory" },
-    tagId: {type:Array},
-    featureImage: { type: String, required: true },
-    authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    tagId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
+    featureImage: { type: String },
+    authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    slug: { type: String, unique: true },
 }, { timestamps: true });
 
 
@@ -25,5 +17,6 @@ blogSchema.pre("save", function (next) {
     if (this.title) {
       this.slug = slugify(this.title, { lower: true, strict: true });
     }
+    next();
 })
-export  default mongoose.model("Blog",blogSchema)
+export default mongoose.model("Blog",blogSchema)

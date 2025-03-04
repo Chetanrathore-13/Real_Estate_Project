@@ -63,7 +63,7 @@ function BlogList() {
       try {
         await axios.delete(`http://localhost:8000/api/v1/blog/delete_blog/${blogToDelete}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // ✅ Fixed Authorization Header
+            Authorization: token, // ✅ Fixed Authorization Header
           },
         });
 
@@ -131,7 +131,7 @@ function BlogList() {
             <Card key={blog._id} className="flex flex-col">
               <CardHeader className="relative">
                 <img
-                  src={blog.featureImage || `https://via.placeholder.com/400x200?text=${encodeURIComponent(blog.title)}`}
+                  src={`data:image/jpeg;base64,${blog.imageBase64}`}
                   alt={blog.title}
                   className="w-full h-48 object-cover rounded-t-lg"
                 />
@@ -159,10 +159,10 @@ function BlogList() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link to={`/admin/blogs/${blog._id}`}>View</Link>
+                        <Link to={`${blog.slug}`}>View</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link to={`/admin/blogs/edit/${blog._id}`}>Edit</Link>
+                        <Link to={`/edit:${blog._id}`}>Edit</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleDeleteClick(blog._id)} className="text-red-600">
                         Delete

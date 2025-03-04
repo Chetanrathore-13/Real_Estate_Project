@@ -24,13 +24,12 @@ import Property from "../pages/admin/Property";
 import LocationManager from "../pages/admin/LocationManager";
 import CityManager from "../pages/admin/CityManager";
 import StateManager from "../pages/admin/StateManager";
-import PropertyStatus from "../../../Backend/src/models/propertyStatus";
-import PropertyLabel from "../../../Backend/src/models/propertyLabel";
 import PropertyFeatures from "../pages/admin/PropertyFeatures";
 import PropertyStatusManager from "../pages/admin/PropertyStatus";
 import PropertyLabelCRUD from "../pages/admin/PropertyLabel";
 import PropertyTypes from "../pages/admin/PropertyTypes";
-import AllProperty from "../pages/admin/AllProperty.";
+import AllProperty from "../pages/admin/AllProperty";
+import ProjectCRUD from "../admin-auth/Test";
 
 const getDashboardRoute = (role) => {
   switch (role) {
@@ -78,7 +77,7 @@ const router = createBrowserRouter([
         element: <Blogs />,
         children: [
           { index: true, element: <BlogList /> },
-          { path: ":id", element: <BlogDetail /> },
+          { path: ":slug", element: <BlogDetail /> },
           { path: "new", element: <BlogForm /> },
           { path: "edit/:id", element: <BlogForm /> },
           {path:"blog-Category", element:<BlogCategory/>},
@@ -98,7 +97,11 @@ const router = createBrowserRouter([
           {path:"property-features",element:<PropertyFeatures/>},
           {path:"property-types",element:<PropertyTypes/>}
         ],
-      }
+      },
+      {
+        path: "projects",
+        element: <ProjectCRUD/>
+      },
     ],
   },
 
