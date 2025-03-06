@@ -1,6 +1,10 @@
 import Blog from "../models/blog.js";
 import slugify from "slugify";
 import fs from "fs";
+import User from "../models/user.js";
+import BlogTag from "../models/blog-tags.js";
+import BlogCategory from "../models/blog-category.js";
+
 // Create a new blog
 export const createBlog = async (req, res) => {
   try {
@@ -68,6 +72,15 @@ export const getBlogs = async (req, res) => {
             imageBase64: imageBase64,
           };
     })
+    // Find the Author name through authorId 
+    const authorName = await Promise.all(blogwithicon.map(async (blog) => {
+        const author = await User.findById(blog.authorId);
+       return author.username;
+    }))
+
+    blogwithicon.forEach((blog, index) => {
+        blog.authorName = authorName[index];
+    });
     return res.status(200).json(blogwithicon);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -86,6 +99,15 @@ export const getBlogById = async (req, res) => {
         ...blog.toObject(),
         imageBase64: fs.readFileSync(blog.featureImage, { encoding: "base64" }),
       };
+    const author = await User.findById(blog.authorId);
+    blogwithicon.authorName = author.username;
+
+    // Find tags associated with the blog, tag ids are stored in blog.tags in array
+    const tags = await BlogTag.find({ _id: { $in: blog.tagId } });
+    blogwithicon.tags = tags.map((tag) => tag.name);
+    
+    const category = await BlogCategory.findById(blog.categoryId);
+    blogwithicon.categoryName = category.name;
 
     return res.status(200).json(blogwithicon);
   } catch (error) {
@@ -95,14 +117,55 @@ export const getBlogById = async (req, res) => {
 
 // Update a blog by ID
 export const updateBlog = async (req, res) => {
+  
   try {
-    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const slug = req.params.slug;
+    const {title,description,categoryId,tagId,authorId} = req.body;
+    console.log(tagId)
+
+    const blog = await Blog.findOne({slug});
     if (!blog) {
       return res.status(404).json({ error: "Blog not found" });
     }
-    return res.status(200).json(blog);
+    // Check if name is changing and if it already exists
+    if (title && title !== blog.title) {
+      const existingCategory = await BlogCategory.findOne({
+        slug: slugify(title, { lower: true, strict: true }),
+      });
+      if (existingCategory) {
+        return res
+          .status(400)
+          .json({ error: "Category with this name already exists" });
+      }
+    }
+    // Prepare updated data
+    const updatedData = { title,description,categoryId,tagId,authorId };
+
+    if (title) {
+      updatedData.slug = slugify(title, { lower: true, strict: true });
+    }
+
+    if (req.file) {
+      updatedData.featureImage = req.file.path;
+    }
+     // Delete the old image if it exists
+    if (blog.featureImage) {
+      const imagePath = blog.featureImage;
+      if (fs.existsSync(imagePath)) {
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error("Error deleting image file:", err);
+          }
+        });
+      }
+    }
+    const blogs = await Blog.findOneAndUpdate({slug}, updatedData, {
+      new: true,
+    });
+    if (!blogs) {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+    return res.status(200).json(blogs);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

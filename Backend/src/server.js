@@ -27,7 +27,7 @@ import locationRoutes from './routes/locationRoutes.js';
 app.use("/api/v1/location",locationRoutes)
 
 import propertyFeature from "./routes/propertyFeatureRoutes.js"
-app.use("/api/v1",propertyFeature)
+app.use("/api/v1/property",propertyFeature)
 
 import properyTypeRoutes from "./routes/propertyTypeRoutes.js"
 app.use("/api/v1/property",properyTypeRoutes)

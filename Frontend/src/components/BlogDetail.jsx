@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { ArrowLeft, Edit } from "lucide-react"
-import { blogService } from "../services/blogService"
 import { Button } from "./ui/button"
 import { Badge } from "./ui/badge"
 import axios from "axios"
@@ -24,7 +23,8 @@ function BlogDetail() {
           },
         })
         if (data) {
-          setBlog(data)
+          console.log(data.data)
+          setBlog(data.data)
         } else {
           navigate("/not-found")
         }
@@ -72,7 +72,7 @@ function BlogDetail() {
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Badge variant="outline">{blog.category}</Badge>
-            <span className="text-sm text-muted-foreground">By {blog.author}</span>
+            <span className="text-sm text-muted-foreground">By {blog.authorName}</span>
           </div>
           <h1 className="text-4xl font-bold tracking-tight">{blog.title}</h1>
         </div>
@@ -89,13 +89,13 @@ function BlogDetail() {
           <p>{blog.description}</p>
         </div>
 
-        {/* <div className="flex flex-wrap gap-2 pt-4">
-          {blog?.tags.map((tag, index) => (
+        <div className="flex flex-wrap gap-2 pt-4">
+          {blog.tags.map((tag, index) => (
             <Badge key={index} variant="secondary">
               {tag}
             </Badge>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   )

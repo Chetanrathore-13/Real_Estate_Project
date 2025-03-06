@@ -18,8 +18,8 @@ export default function PropertyTypes() {
 
   const fetchPropertyFeatures = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/property/features", {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get("http://localhost:8000/api/v1/property/property_types", {
+        headers: { Authorization: token }
       });
       setFeatures(response.data);
     } catch (error) {
@@ -43,13 +43,13 @@ export default function PropertyTypes() {
 
       const headers = {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`
+        Authorization:token
       };
 
       if (editId) {
-        await axios.put(`http://localhost:8000/api/v1/property/features/${editId}`, formDataToSend, { headers });
+        await axios.put(`http://localhost:8000/api/v1/property/update_property_types/${editId}`, formDataToSend, { headers });
       } else {
-        await axios.post("http://localhost:8000/api/v1/property/features", formDataToSend, { headers });
+        await axios.post("http://localhost:8000/api/v1/property/add_property_types", formDataToSend, { headers });
       }
 
       fetchPropertyFeatures();
@@ -67,8 +67,8 @@ export default function PropertyTypes() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this feature?")) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/property/features/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
+        await axios.delete(`http://localhost:8000/api/v1/property/delete_property_types/${id}`, {
+          headers: { Authorization: token }
         });
         fetchPropertyFeatures();
       } catch (error) {
@@ -142,7 +142,7 @@ export default function PropertyTypes() {
                 <TableCell className="font-medium">{feature.title}</TableCell>
                 <TableCell>
                   {feature.icon && (
-                    <img src={`http://localhost:8000/uploads/${feature.icon}`} alt="Icon" className="h-8 w-8 object-contain" />
+                    <img src={`data:image/png;base64,${feature.imageBase64}`} alt="Icon" className="h-8 w-8 object-contain" />
                   )}
                 </TableCell>
                 <TableCell className="max-w-[300px] truncate">{feature.description}</TableCell>

@@ -5,7 +5,7 @@ const propertyFeatureSchema = new mongoose.Schema({
   title: { type: String, required: true, unique: true },
   icon: { type: String, required: true }, // URL of the icon/image
   description: { type: String, required: true },
-  slug: { type: String, required: true, unique: true }
+  slug: { type: String, unique: true }
 }, { timestamps: true });
 
 // Middleware to generate slug before saving

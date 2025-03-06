@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.post("/add_blog",authMiddleware,upload.single("featureImage"), createBlog);
 router.get("/get_blogs",authMiddleware, getBlogs);
-router.patch("/update_blog/:id", authMiddleware, updateBlog);
+router.patch("/update_blog/:slug",authMiddleware,upload.single("featureImage"), updateBlog);
 router.delete("/delete_blog/:id", authMiddleware, deleteBlog);
 router.get("/get_blog/:slug", authMiddleware, getBlogById);
 

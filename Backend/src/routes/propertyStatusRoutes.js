@@ -13,6 +13,6 @@ const router = express.Router();
 router.get("/property_status", authMiddleware, getPropertyStatus);
 router.post("/add_property_status", authMiddleware,upload.single("icon"), addPropertyStatus);
 router.delete("/delete_property_status/:id", authMiddleware, deletePropertyStatus);
-router.patch("/update_property_status/:id", authMiddleware, updatePropertyStatus);
+router.patch("/update_property_status/:id", authMiddleware,upload.single("icon"), updatePropertyStatus);
 
 export default router;

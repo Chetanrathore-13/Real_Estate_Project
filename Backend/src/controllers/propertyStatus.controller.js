@@ -1,6 +1,7 @@
 import PropertyStatus from "../models/propertyStatus.js";
 import fs from "fs";
 
+
 export const getPropertyStatus = async (req, res) => {
     console.log("main to chl rh hu")
     try {

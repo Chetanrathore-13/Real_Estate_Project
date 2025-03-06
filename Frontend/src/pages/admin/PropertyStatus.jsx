@@ -40,7 +40,7 @@ const PropertyStatusManager = () => {
     try {
       const formData = new FormData();
       formData.append("title", form.title);
-      formData.append("icon", form.imageBase64);
+      formData.append("icon", form.icon);
       formData.append("description", form.description);
 
       // Debugging: Check what is inside formData before sending

@@ -29,7 +29,7 @@ const propertySchema = new mongoose.Schema({
     type: { type: mongoose.Schema.Types.ObjectId, ref: "PropertyType" },
     showInFeature: { type: Boolean, default: false },
     showInProjectsOnly: { type: String, default: "No" },
-    slug: { type: String, required: true, unique: true }
+    slug: { type: String, unique: true }
 }, { timestamps: true });
 
 

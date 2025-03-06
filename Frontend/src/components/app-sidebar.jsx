@@ -109,7 +109,7 @@ const data = {
         },
         {
           title: "Countries",
-          url: "/admin/property",
+          url: "/admin/property/country",
         },
         {
           title: "States",

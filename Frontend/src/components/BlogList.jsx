@@ -162,7 +162,7 @@ function BlogList() {
                         <Link to={`${blog.slug}`}>View</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link to={`/edit:${blog._id}`}>Edit</Link>
+                        <Link to={`edit/${blog.slug}`}>Edit</Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleDeleteClick(blog._id)} className="text-red-600">
                         Delete
@@ -175,7 +175,7 @@ function BlogList() {
                     {blog.category}
                   </Badge>
                   <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
-                  <CardDescription className="flex items-center text-xs mt-1">By {blog.author}</CardDescription>
+                  <CardDescription className="flex items-center text-xs mt-1">By {blog.authorName}</CardDescription>
                 </div>
               </CardHeader>
               <CardContent className="flex-grow">

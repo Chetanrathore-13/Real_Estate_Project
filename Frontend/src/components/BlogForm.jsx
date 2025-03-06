@@ -11,15 +11,14 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 function BlogForm() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
-  const isEditMode = !!id;
+  const isEditMode = !!slug;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [categories, setCategories] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [tags, setTags] = useState([]);
-  const [currentTag, setCurrentTag] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -37,29 +36,34 @@ function BlogForm() {
     const fetchBlog = async () => {
       if (isEditMode) {
         try {
-          const blog = await blogService.getBlogById(id);
+          const blog = await axios.get(`http://localhost:8000/api/v1/blog/get_blog/${slug}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          console.log(blog.data)
           if (blog) {
             setFormData({
-              title: blog.title,
-              description: blog.description,
-              category: blog.category,
-              categoryId: blog.categoryId,
-              authorId: userid,
-              featureImage: blog.featureImage,
+              title: blog.data.title,
+              description: blog.data.description,
+              category: blog.data.category,
+              categoryId: blog.data.categoryId,
+              authorId: blog.data.authorId,
+              featureImage: blog.data.imageBase64,
             });
-            setTags(blog.tags || []);
-            setImagePreview(blog.featureImage);
+            setTags(blog.data.tags || []);
+            setImagePreview(blog.data.imageBase64);
           } else {
-            navigate("/not-found");
+            // navigate("/not-found");
           }
         } catch (error) {
           console.error("Failed to fetch blog:", error);
-          navigate("/not-found");
+          // navigate("/not-found");
         }
       }
     };
     fetchBlog();
-  }, [id, isEditMode, navigate, userid]);
+  }, [slug, isEditMode, navigate, userid]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -141,7 +145,12 @@ function BlogForm() {
       });
 
       if (isEditMode) {
-        await blogService.updateBlog(id, blogData);
+        const response = await axios.patch(`http://localhost:8000/api/v1/blog/update_blog/${slug}`, blogData, {
+          headers: { Authorization: token, "Content-Type": "multipart/form-data" },
+        });
+        if (response.status === 200) {
+          navigate(`/admin/blogs`);
+        }
       } else {
         // print the form data
         console.log("Form Data:", blogData);

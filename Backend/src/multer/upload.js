@@ -31,16 +31,16 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/png", "image/jpg", "image/jpeg"];
+  const allowedTypes = ["image/png", "image/jpg", "image/jpeg", "image/webp", "image/svg+xml" ]; 
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Only .png, .jpg, and .jpeg files are allowed"), false);
+    cb(new Error("Only .png, .jpg, .webp , .svg and .jpeg files are allowed"), false);
   }
 };
 
 export const upload = multer({
   storage,
-  limits: { fileSize: 1 * 1000 * 1000 }, // 1MB limit
+  limits: { fileSize: 10 * 1000 * 1000 }, // 1MB limit
   fileFilter,
 });

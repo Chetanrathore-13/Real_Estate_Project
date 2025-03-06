@@ -18,9 +18,10 @@ export default function PropertyFeatureCRUD() {
 
   const fetchPropertyFeatures = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/property/features", {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.get("http://localhost:8000/api/v1/property/property_features", {
+        headers: { Authorization: token }
       });
+      console.log("API Response:", response.data);
       setFeatures(response.data);
     } catch (error) {
       console.error('Error fetching features:', error);
@@ -43,13 +44,13 @@ export default function PropertyFeatureCRUD() {
 
       const headers = {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`
+        Authorization: token
       };
 
       if (editId) {
-        await axios.put(`http://localhost:8000/api/v1/property/features/${editId}`, formDataToSend, { headers });
+        await axios.patch(`http://localhost:8000/api/v1/property/update_property_features/${editId}`, formDataToSend, { headers });
       } else {
-        await axios.post("http://localhost:8000/api/v1/property/features", formDataToSend, { headers });
+        await axios.post("http://localhost:8000/api/v1/property/add_property_features", formDataToSend, { headers });
       }
 
       fetchPropertyFeatures();
@@ -67,7 +68,7 @@ export default function PropertyFeatureCRUD() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this feature?")) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/property/features/${id}`, {
+        await axios.delete(`http://localhost:8000/api/v1/property/delete_property_features/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchPropertyFeatures();
@@ -142,7 +143,8 @@ export default function PropertyFeatureCRUD() {
                 <TableCell className="font-medium">{feature.title}</TableCell>
                 <TableCell>
                   {feature.icon && (
-                    <img src={`http://localhost:8000/uploads/${feature.icon}`} alt="Icon" className="h-8 w-8 object-contain" />
+                    <img src={`data:image/png;base64,${feature.imageBase64
+                    }`} alt="Icon" className="h-8 w-8 object-contain" />
                   )}
                 </TableCell>
                 <TableCell className="max-w-[300px] truncate">{feature.description}</TableCell>
