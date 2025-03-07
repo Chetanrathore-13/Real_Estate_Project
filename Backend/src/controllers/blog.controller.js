@@ -129,21 +129,17 @@ export const updateBlog = async (req, res) => {
     }
     // Check if name is changing and if it already exists
     if (title && title !== blog.title) {
-      const existingCategory = await BlogCategory.findOne({
+      const existblogtitle = await Blog.findOne({
         slug: slugify(title, { lower: true, strict: true }),
       });
-      if (existingCategory) {
+      if (existblogtitle) {
         return res
           .status(400)
-          .json({ error: "Category with this name already exists" });
+          .json({ error: "Blog with title already exists" });
       }
     }
     // Prepare updated data
     const updatedData = { title,description,categoryId,tagId,authorId };
-
-    if (title) {
-      updatedData.slug = slugify(title, { lower: true, strict: true });
-    }
 
     if (req.file) {
       updatedData.featureImage = req.file.path;
