@@ -5,12 +5,13 @@ import {
   addProperty,
   deleteProperty,
   updateProperty,
+  getPropertyBySlug
 } from "../controllers/property.controller.js";
 import { upload } from "../multer/upload.js";
 
 const router = express.Router();
 
-router.get("/properties", getProperties);
+router.get("/properties",authMiddleware, getProperties);
 router.post(
   "/add_property",
   authMiddleware,
@@ -22,5 +23,6 @@ router.post(
 );
 router.delete("/delete_property/:id", authMiddleware, deleteProperty);
 router.patch("/update_property/:id", authMiddleware, updateProperty);
+router.get("/properties/:slug", authMiddleware, getPropertyBySlug);
 
 export default router;

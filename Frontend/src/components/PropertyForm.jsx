@@ -1,103 +1,73 @@
-import React from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { X, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../components/ui/popover";
-import { Badge } from "../components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select";
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const PropertyForm = () => {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-  const isEditMode = !!slug;
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [propertyFeatures, setPropertyFeatures] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const userId = useSelector((state) => state.auth.id);
+  const token = useSelector((state) => state.auth.token);
+  const {slug} = useParams() 
+  const [agents, setAgente] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedLabels, setSelectedLabels] = useState([]);
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [propertyLabels, setPropertyLabels] = useState([]);
+  const [propertyFeatures, setPropertyFeatures] = useState([]);
+  const[selectedFeatures,setSelectedFeatures] = useState([])
   const [propertyStatus, setPropertyStatus] = useState([]);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
+  const[countryId,setCountryId] = useState("")
+  const[stateId,setStateId] = useState("")
+  const[cityId,setCityId] = useState("")
+  const[countries,setCountries] = useState([])
+  const[states,setStates] = useState([])
+  const [cities,setCities] = useState([])
+  const [previewFeatureImage, setPreviewFeatureImage] = useState(null);
+  const [previewGallery, setPreviewGallery] = useState([]);
+  const [file,setFile] = useState(null)
+  const[imageGallery, setImageGallery]= useState([])
 
-  const [countryId, setCountryId] = useState("");
-  const [multipleImage, setMultipleImage] = useState([]);
-  const [stateId, setStateId] = useState("");
-  const [cityId, setCityId] = useState("");
-  const [types, setTypes] = useState([]);
-  const [labels, setLabels] = useState([]);
-  const[features, setFeatures] = useState([]);
-  const [agent, setAgent] = useState([]);
-  const [agentId, setAgentId] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    featureImage: null,
-    imageGallery: [],
-    videoLink: "",
-    reraNumber: "",
-    regularPrice: "",
-    sellingPrice: "",
-    pricePrefix: "",
-    pricePostfix: "",
-    areaSize: "",
-    areaSizePostfix: "",
-    totalRooms: "",
-    totalBedRooms: "",
-    garage_parking: "",
-    garage_parking_size: "",
-    user: "",
-    agent: "",
-    country: "",
-    state: "",
-    city: "",
-    address: "",
-    features: [],
-    label: [],
-    status: "",
-    type: [],
-  });
-  const token = useSelector((state) => state.auth.token);
-  const userId = useSelector((state) => state.auth.id);
+
+  const isEditMode = !!slug
+
+   // Watch file inputs
+   const featureImage = watch("featureImage");
+   const galleryImages = watch("imageGallery");
 
   useEffect(() => {
-    const fetchFeature = async () => {
+    const fetchAgent = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/property_features",
+          "http://localhost:8000/api/v1/agent/agents",
           {
             headers: { Authorization: token },
           }
         );
-        setPropertyFeatures(response.data);
+        setAgente(response.data.data);
       } catch (error) {
-        console.error("Failed to fetch categories", error);
+        console.error("Failed to fetch tags ", error);
       }
     };
-    fetchFeature();
+    fetchAgent();
   }, [token]);
 
   useEffect(() => {
@@ -135,24 +105,6 @@ const PropertyForm = () => {
   }, [token]);
 
   useEffect(() => {
-    const fetchAgent = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/agent/agents",
-          {
-            headers: { Authorization: token },
-          }
-        );
-        setAgent(response.data.data);
-
-      } catch (error) {
-        console.error("Failed to fetch tags ", error);
-      }
-    };
-    fetchAgent();
-  }, [token]);
-
-  useEffect(() => {
     const fetchPropertyLabels = async () => {
       try {
         const response = await axios.get(
@@ -167,6 +119,23 @@ const PropertyForm = () => {
       }
     };
     fetchPropertyLabels();
+  }, [token]);
+
+  useEffect(() => {
+    const fetchFeature = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/property/property_features",
+          {
+            headers: { Authorization: token },
+          }
+        );
+        setPropertyFeatures(response.data);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+      }
+    };
+    fetchFeature();
   }, [token]);
 
   useEffect(() => {
@@ -200,8 +169,6 @@ const PropertyForm = () => {
       };
       fetchStates();
     }
-    setStateId(""); // Reset selected state
-    setCities([]); // Reset cities
   }, [countryId, token]);
 
   useEffect(() => {
@@ -222,518 +189,450 @@ const PropertyForm = () => {
     }
   }, [stateId, token]);
 
-  const handlemultipleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setMultipleImage(files);
+  const handleSelectAgent = (value) => {
+    setValue("agentId", value);
   };
+  
+  const handleSelectStatus = (value)=>{
+    setValue("status",value)
+  }
 
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result);
-      reader.readAsDataURL(file);
-      setFormData((prev) => ({ ...prev, featureImage: file }));
+  const handleSelectType = (value) => {
+    const type = propertyTypes.find((t) => t._id === value);
+    if (type && !selectedTypes.some((t) => t._id === type._id)) {
+      const updatedTypes = [...selectedTypes, type];
+      setSelectedTypes(updatedTypes);
+      setValue("propertyTypes", updatedTypes.map((t) => t._id));
     }
   };
 
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      formData.user = userId;
-      formData.agent = agentId;
-      formData.country = countryId;
-      formData.state = stateId;
-      formData.city = cityId;
-      const blogData = new FormData();
-      Object.keys(formData).forEach((key) => {
-        if(key === 'features'){
-          formData[key].forEach((feature) => blogData.append('features[]', feature));
-        }else if(key === 'label'){
-          formData[key].forEach((label) => blogData.append('label[]', label));
-        }else if(key === 'type'){
-          formData[key].forEach((type) => blogData.append('type[]', type));
-        }else if(key === 'imageGallery'){
-          formData[key].forEach((image) => blogData.append('imageGallery[]', imageGallery));
-        }
-        else {
-          blogData.append(key, formData[key]);
-        }
-      });
-      // print the bloddata it is formdata
-      let i = 0;
-      for (const [key, value] of blogData.entries()) {
-        console.log(`${key}: ${value}`);
-        i++;
-      }
+  const handleRemoveType = (id) => {
+    const updatedTypes = selectedTypes.filter((item) => item._id !== id);
+    setSelectedTypes(updatedTypes);
+    setValue("propertyTypes", updatedTypes.map((t) => t.id));
+  };
 
-      const url = isEditMode
-        ? `http://localhost:8000/api/v1/property/update_property/${slug}`
-        : "http://localhost:8000/api/v1/property/add_property";
-      const method = isEditMode ? "patch" : "post";
-      await axios[method](url, blogData, {
+  const handleSelectLabel = (value) => {
+    const label = propertyLabels.find((l) => l._id === value);
+    if (label && !selectedLabels.some((l) => l._id === label._id)) {
+      const updatedLabels = [...selectedLabels, label];
+      setSelectedLabels(updatedLabels);
+      setValue("propertyLabels", updatedLabels.map((l) => l._id));
+    }
+  };
+
+  const handleRemoveLabel = (id) => {
+    const updatedLabels = selectedLabels.filter((item) => item._id !== id);
+    setSelectedLabels(updatedLabels);
+    setValue("propertyLabels", updatedLabels.map((l) => l._id));
+  };
+
+  const handleSelectFeature = (value) =>{
+    const feature = propertyFeatures.find((f) => f._id === value);
+    if(feature && !selectedFeatures.some((f)=> f._id === feature._id)){
+      const updatedFeature = [...selectedFeatures,feature];
+      setSelectedFeatures(updatedFeature);
+      setValue("propertyFeatures", updatedFeature.map((f)=> f._id))
+    }
+  }
+  const handleRemoveFeature = (id) =>{
+    const updatedFeatures = selectedFeatures.filter((item) => item._id !== id)
+    setSelectedFeatures(updatedFeatures);
+    setValue("propertyFeatures", updatedFeatures.map((f)=>f._id))
+  }
+
+  const handleSelectCountry = (id) => {
+      setCountryId(id)
+      setValue("country", id)
+  }
+  const handleSelectState = (id) => {
+    setStateId(id)
+    setValue("state",id)
+  }
+  const handleSelectCity = (id) => {
+    setCityId(id)
+    setValue("city", id)
+  }
+
+   // Handle feature image change
+   const handleFeatureImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    setFile(file)
+    setValue("featureImage", file,{ shouldValidate: true }); // Update form data
+    setPreviewFeatureImage(URL.createObjectURL(file)); // Generate preview URL
+};
+
+// Handle image gallery change
+const handleGalleryChange = async (e) => {
+    const files = Array.from(e.target.files);
+    console.log(files)
+   setImageGallery([...files])
+    setValue("imageGallery", files , { shouldValidate: true });
+    setPreviewGallery(files.map(file => URL.createObjectURL(file))); // Generate preview URLs
+};
+
+const onSubmit = async (data) => {
+  data.userId = userId;
+  const formData = new FormData();
+   console.log(data.featureImage)
+   console.log(data.featureImage instanceof File)
+  // Handle files
+  if (file instanceof File) {
+    console.log("ye sahi hai")
+    console.log(file)
+    formData.append("featureImage", file);
+  }
+
+  if (Array.isArray(imageGallery)) {
+    console.log("image gallery bhi chl rhi hai")
+    imageGallery.forEach((file) => {
+      formData.append("imageGallery", file);
+    });
+  }
+
+  // Fixed: Handle array fields correctly
+  const arrayFields = ['propertyTypes', 'propertyLabels', 'propertyFeatures'];
+  Object.keys(data).forEach((key) => {
+    if (key === "featureImage" || key === "imageGallery") return;
+    
+    if (arrayFields.includes(key) && Array.isArray(data[key])) {
+      data[key].forEach(value => formData.append(key, value));
+    } else {
+      formData.append(key, data[key]);
+    }
+  });
+
+  try {
+    const response = await axios.post(
+      "http://localhost:8000/api/v1/property/add_property",
+      formData,
+      {
         headers: {
           Authorization: token,
           "Content-Type": "multipart/form-data",
         },
-      });
-      // navigate(`/admin/blogs`);
-    } catch (error) {
-      console.error("Failed to save blog:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleTypeChange = (typeId) => {
-    setTypes((prev) => {
-      if (prev.includes(typeId)) {
-        return prev.filter((id) => id !== typeId);
       }
-      return [...prev, typeId];
-    });
-  };
-
-  const removeType = (typeIdToRemove) => {
-    setTypes((prev) => prev.filter((typeId) => typeId !== typeIdToRemove));
-  };
-
-  const handlefeatureChange = (typeId) => {
-    setFeatures((prev) => {
-      if (prev.includes(typeId)) {
-        return prev.filter((id) => id !== typeId);
-      }
-      return [...prev, typeId];
-    });
-  };
-
-  const removefeature = (typeIdToRemove) => {
-    setFeatures((prev) => prev.filter((typeId) => typeId !== typeIdToRemove));
-  };
-
-  const handleLabelChange = (typeId) => {
-    setLabels((prev) => {
-      if (prev.includes(typeId)) {
-        return prev.filter((id) => id !== typeId);
-      }
-      return [...prev, typeId];
-    });
-  };
-
-  const removeLabel = (typeIdToRemove) => {
-    setLabels((prev) => prev.filter((typeId) => typeId !== typeIdToRemove));
-  };
-  
+    );
+    console.log("✅ Response:", response.data);
+  } catch (error) {
+    console.error("❌ Error:", error.response?.data || error.message);
+  }
+};
 
   return (
-    <>
-      <div>Propety Form</div>
-      <form onSubmit={handleSubmit}>
-      <Label>Name</Label>
-      <Input
-        name="name"
-        type="text"
-        placeholder="Property Name"
-        value={formData.name}
-        onChange={(e) => {
-          setFormData({ ...formData, name: e.target.value });
-        }}
-      />
-      <Label>Description</Label>
-      <Input
-        name="description"
-        placeholder="Property Description"
-        value={formData.description}
-        onChange={(e) => {
-          setFormData({ ...formData, description: e.target.value });
-        }}
-      />
-
-      <Input
-       name="videoLink"
-       placeholder="Video Link comma separated"
-        value={formData.videoLink}
-        onChange={(e) => {
-          setFormData({ ...formData, videoLink: e.target.value });
-        }}
-      />
-      <Input
-      name="reraNumber"
-        value={formData.reraNumber}
-        placeholder="Rera Number"
-        onChange={(e) => {
-          setFormData({ ...formData, reraNumber: e.target.value });
-        }}
-      />
-
-      <Input
-        name="regularPrice"
-        value={formData.regularPrice}
-        placeholder="enter regular price"
-        type="number"
-        onChange={(e) => {
-          setFormData({ ...formData, regularPrice: e.target.value });
-        }}
-      />
-      <Input
-      name="sellingPrice"
-        value={formData.sellingPrice}
-        placeholder="enter selling price"
-        type="number"
-        onChange={(e) => {
-          setFormData({ ...formData, sellingPrice: e.target.value });
-        }}
-      />
-
-      <Input
-      name="pricePrefix"
-        value={formData.pricePrefix}
-        placeholder="enter price prefix"
-        onChange={(e) => {
-          setFormData({ ...formData, pricePrefix: e.target.value });
-        }}
-      />
-      <Input
-      name="pricePostfix"
-        value={formData.pricePostfix}
-        placeholder="enter price postfix"
-        onChange={(e) => {
-          setFormData({ ...formData, pricePostfix: e.target.value });
-        }}
-      />
-      <Input
-      name="areaSize"
-        value={formData.areaSize}
-        placeholder="enter area size"
-        type="number"
-        onChange={(e) => {
-          setFormData({ ...formData, areaSize: e.target.value });
-        }}
-      />
-      <Input
-      name="areaSizePostfix"
-        value={formData.areaSizePostfix}
-        placeholder="enter area size postfix"
-        onChange={(e) => {
-          setFormData({ ...formData, areaSizePostfix: e.target.value });
-        }}
-      />
-      <Input
-      name="totalRooms"
-        value={formData.totalRooms}
-        placeholder="enter total rooms"
-        type="number"
-        onChange={(e) => {
-          setFormData({ ...formData, totalRooms: e.target.value });
-        }}
-      />
-
-      <Input
-      name="totalBedRooms"
-        value={formData.totalBedRooms}
-        placeholder="enter total bed rooms"
-        type="number"
-        onChange={(e) => {
-          setFormData({ ...formData, totalBedRooms: e.target.value });
-        }}
-      />
-
-      <Input
-      name="garage_parking"
-        value={formData.garage_parking}
-        placeholder="Garage Parking"
-        onChange={(e) => {
-          setFormData({ ...formData, garage_parking: e.target.value });
-        }}/>
-        <Input
-        name="garage_parking_size"
-        placeholder="Garage Parking Size"
-        value={formData.garage_parking_size}
-        onChange={(e) => {
-          setFormData({ ...formData, garage_parking_size: e.target.value });
-        }}
-        />
-        <Input
-        name="address"
-        placeholder="Address"
-        value={formData.address}
-        onChange={(e) => {
-          setFormData({ ...formData, address: e.target.value });
-        }}
-        />
-
-      {/* Feature Image */}
-      <Label>Feature Image</Label>
-      <Input type="file" onChange={handleImageChange} />
-      {imagePreview && <img src={imagePreview} alt="Preview" />}
-
-      {/* We have to Image gallery mean multiple images  */}
-      <Input
-        type="file"
-        onChange={handlemultipleImageChange}
-        accept="image/*"
-        multiple
-      />
-      {multipleImage?.map((image, index) => (
-        <div key={index}>
-          <img src={URL.createObjectURL(image)} alt={`Image ${index}`} />
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md">
+      <h2 className="text-2xl font-semibold mb-4">Property Form</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <Label>Name</Label>
+          <Input
+            {...register("name", { required: "Name is required" })}
+            placeholder="Property Name"
+            className="w-full"
+          />
+          {errors.name && (
+            <span className="text-red-500 text-sm">{errors.name.message}</span>
+          )}
         </div>
-      ))}
 
-      <div className="space-y-2">
-        <Label>Property Types</Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-start">
-              Select Your Property Types...
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="p-0" align="start">
-            <Command>
-              <CommandInput placeholder="Search tags..." />
-              <CommandList>
-                <CommandEmpty>No type found.</CommandEmpty>
-                <CommandGroup>
-                  {propertyTypes.map((type) => (
-                    <CommandItem
-                      key={type._id}
-                      onSelect={() => handleTypeChange(type._id)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={types.includes(type._id)}
-                          readOnly
-                          className="h-4 w-4 rounded border-primary text-primary focus:ring-primary"
-                        />
-                        {type.title}
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {types.map((typeId) => {
-            const type = propertyTypes.find((t) => t._id === typeId);
-            return (
-              <Badge
-                key={typeId}
-                variant="secondary"
-                className="px-3 py-1 text-sm"
-              >
-                {type?.title || "Unknown Tag"}
-                <button
-                  type="button"
-                  onClick={() => removeType(typeId)}
-                  className="ml-2 rounded-full outline-none focus:ring-2 focus:ring-ring"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            );
-          })}
+        <div>
+          <Label>Description</Label>
+          <Input
+            {...register("description", {
+              required: "Description is required",
+            })}
+            placeholder="Property Description"
+            className="w-full"
+          />
+          {errors.description && (
+            <span className="text-red-500 text-sm">
+              {errors.description.message}
+            </span>
+          )}
         </div>
-      </div>
 
-      <Label>Property Status</Label>
-       <Select value="" onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value }))} className="w-full">
-        <SelectTrigger>
-          <SelectValue placeholder="Select your Property Status" />
-        </SelectTrigger>
-        <SelectContent>
-          {propertyStatus.map((status) => (
-            <SelectItem key={status._id} value={status._id}>
-              {status.title}
-            </SelectItem>
-          ))}
-        </SelectContent>
-       </Select>
-      <Label>select Agent</Label>
-       <Select value="" onValueChange={(value) =>  setAgentId(value)} className="w-full">
-        <SelectTrigger>
-          <SelectValue placeholder="Select your Property Status" />
-        </SelectTrigger>
-        <SelectContent>
-          {agent.map((status) => (
-            <SelectItem key={status._id} value={status._id}>
-              {status.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-       </Select>
+        {/* Feature Image (Single File) */}
+        <div>
+                <Label>Feature Image</Label>
+                <Input type="file" {...register("featureImage")}onChange={handleFeatureImageChange}  className="w-full" />
+                {errors.featureImage && <span className="text-red-500 text-sm">{errors.featureImage.message}</span>}
+                {/* Preview */}
+                {previewFeatureImage && <img src={previewFeatureImage} alt="Feature Preview" className="mt-2 w-32 h-32 object-cover rounded-md" />}
+            </div>
 
-      <div className="space-y-2">
-        <Label>Property Features</Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-start">
-              Select Your Property Features...
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="p-0" align="start">
-            <Command>
-              <CommandInput placeholder="Search tags..." />
-              <CommandList>
-                <CommandEmpty>No Feature found.</CommandEmpty>
-                <CommandGroup>
-                  {propertyFeatures.map((type) => (
-                    <CommandItem
-                      key={type._id}
-                      onSelect={() => handlefeatureChange(type._id)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={types.includes(type._id)}
-                          readOnly
-                          className="h-4 w-4 rounded border-primary text-primary focus:ring-primary"
-                        />
-                        {type.title}
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {features.map((typeId) => {
-            const type = propertyFeatures.find((t) => t._id === typeId);
-            return (
-              <Badge
-                key={typeId}
-                variant="secondary"
-                className="px-3 py-1 text-sm"
-              >
-                {type?.title || "Unknown Feature"}
-                <button
-                  type="button"
-                  onClick={() => removefeature(typeId)}
-                  className="ml-2 rounded-full outline-none focus:ring-2 focus:ring-ring"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            );
-          })}
+            {/* Image Gallery (Multiple Files) */}
+            <div>
+                <Label>Image Gallery</Label>
+                <Input type="file" {...register("imageGallery")} multiple className="w-full" onChange={handleGalleryChange}  />
+                {errors.imageGallery && <span className="text-red-500 text-sm">{errors.imageGallery.message}</span>}
+                {/* Previews */}
+                <div className="mt-2 flex flex-wrap gap-2">
+                    {previewGallery.map((src, index) => (
+                        <img key={index} src={src} alt={`Gallery Preview ${index}`} className="w-20 h-20 object-cover rounded-md" />
+                    ))}
+                </div>
+            </div>
+
+        <div>
+          <Label>Video Link</Label>
+          <Input
+            {...register("videoLink")}
+            placeholder="Video Link (comma separated)"
+            className="w-full"
+          />
         </div>
-      </div>
 
-
-      <div className="space-y-2">
-        <Label>Property Types</Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="w-full justify-start">
-              Select Your Property Label...
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="p-0" align="start">
-            <Command>
-              <CommandInput placeholder="Search tags..." />
-              <CommandList>
-                <CommandEmpty>No Label found.</CommandEmpty>
-                <CommandGroup>
-                  {propertyLabels.map((type) => (
-                    <CommandItem
-                      key={type._id}
-                      onSelect={() => handleLabelChange(type._id)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={types.includes(type._id)}
-                          readOnly
-                          className="h-4 w-4 rounded border-primary text-primary focus:ring-primary"
-                        />
-                        {type.title}
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {labels.map((typeId) => {
-            const type = propertyLabels.find((t) => t._id === typeId);
-            return (
-              <Badge
-                key={typeId}
-                variant="secondary"
-                className="px-3 py-1 text-sm"
-              >
-                {type?.title || "Unknown Tag"}
-                <button
-                  type="button"
-                  onClick={() => removeLabel(typeId)}
-                  className="ml-2 rounded-full outline-none focus:ring-2 focus:ring-ring"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            );
-          })}
+        <div>
+          <Label>RERA Number</Label>
+          <Input
+            {...register("reraNumber")}
+            placeholder="RERA Number"
+            className="w-full"
+          />
         </div>
-      </div>
 
-      <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Select Country</label>
-          <select 
-            value={countryId} 
-            onChange={(e) => setCountryId(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select a country</option>
-            {countries.map((country) => (
-              <option key={country._id} value={country._id}>{country.name}</option>
-            ))}
-          </select>
+        <div>
+          <Label>Regular Price</Label>
+          <Input
+            type="number"
+            {...register("regularPrice")}
+            placeholder="Enter regular price"
+            className="w-full"
+          />
         </div>
-        {countryId && (
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Select State</label>
-            <select 
-              value={stateId} 
-              onChange={(e) => setStateId(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Select a state</option>
-              {states.map((state) => (
-                <option key={state._id} value={state._id}>{state.name}</option>
+
+        <div>
+          <Label>Selling Price</Label>
+          <Input
+            type="number"
+            {...register("sellingPrice")}
+            placeholder="Enter selling price"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Price Prefix</Label>
+          <Input
+            {...register("pricePrefix")}
+            placeholder="Enter price prefix"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Price Postfix</Label>
+          <Input
+            {...register("pricePostfix")}
+            placeholder="Enter price postfix"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Area Size</Label>
+          <Input
+            type="number"
+            {...register("areaSize")}
+            placeholder="Enter area size"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Area Size Postfix</Label>
+          <Input
+            {...register("areaSizePostfix")}
+            placeholder="Enter area size postfix"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Total Rooms</Label>
+          <Input
+            type="number"
+            {...register("totalRooms")}
+            placeholder="Enter total rooms"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Total Bedrooms</Label>
+          <Input
+            type="number"
+            {...register("totalBedRooms")}
+            placeholder="Enter total bedrooms"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Garage Parking</Label>
+          <Input
+            {...register("garage_parking")}
+            placeholder="Garage Parking"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Garage Parking Size</Label>
+          <Input
+            {...register("garage_parking_size")}
+            placeholder="Garage Parking Size"
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <Label>Address</Label>
+          <Input
+            {...register("address")}
+            placeholder="Address"
+            className="w-full"
+          />
+        </div>
+        <div>
+          <Label>Agent</Label>
+          <Select onValueChange={handleSelectAgent}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select an agent" />
+            </SelectTrigger>
+            <SelectContent>
+              {agents.map((agent) => (
+                <SelectItem key={agent._id} value={agent._id}>{agent.name}</SelectItem>
               ))}
-            </select>
-          </div>
-        )}
-
-       {stateId && (
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Select City</label>
-          <select 
-            value={cityId} 
-            onChange={(e) => setCityId(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select a city</option>
-            {cities.map((city) => (
-              <option key={city._id} value={city._id}>{city.name}</option>
-            ))}
-          </select>
+            </SelectContent>
+          </Select>
+          {errors.agentId && <span className="text-red-500 text-sm">{errors.agentId.message}</span>}
         </div>
-       )}
+        <div>
+          <Label>Status</Label>
+          <Select onValueChange={handleSelectStatus}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a status"/>
+            </SelectTrigger>
+            <SelectContent>
+              {propertyStatus.map((status)=>(
+                <SelectItem key={status._id} value={status._id} >{status.title}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-       <Button type="submit">Submit</Button>
-       </form>
-    </>
+        <div>
+          <Label>Property Types</Label>
+          <Select onValueChange={handleSelectType}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select property type" />
+            </SelectTrigger>
+            <SelectContent>
+              {propertyTypes.map((type) => (
+                <SelectItem key={type._id} value={type._id}>{type.title}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {selectedTypes.map((type) => (
+              <Badge key={type._id} onClick={() => handleRemoveType(type._id)} className="cursor-pointer">{type.title} ✕</Badge>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <Label>Property Labels</Label>
+          <Select onValueChange={handleSelectLabel}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select property label" />
+            </SelectTrigger>
+            <SelectContent>
+              {propertyLabels.map((label) => (
+                <SelectItem key={label._id} value={label._id}>{label.title}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {selectedLabels.map((label) => (
+              <Badge key={label._id} onClick={() => handleRemoveLabel(label._id)} className="cursor-pointer">{label.title} ✕</Badge>
+            ))}
+          </div>
+        </div>
+        <div>
+          <Label>Propety Features</Label>
+          <Select onValueChange={handleSelectFeature}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select property Feature"/>
+            </SelectTrigger>
+            <SelectContent>
+              {propertyFeatures.map((feature)=>(
+                <SelectItem key={feature._id} value={feature._id}>{feature.title}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="flex flex-wrap gap-2 mt-2">
+              {selectedFeatures.map((feature)=>(
+                <Badge key={feature._id} onClick={()=> handleRemoveFeature(feature._id) } className="cursor-pointer">{feature.title} ✕</Badge>
+              ))}
+          </div>
+        </div>
+
+        <div>
+          <Label>Country</Label>
+          <Select onValueChange={handleSelectCountry}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select country"/>
+            </SelectTrigger>
+            <SelectContent>
+              {countries.map((country)=>(
+                <SelectItem key={country._id} value={country._id}>{country.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        { countryId &&   <div>
+          <Label>State</Label>
+          <Select onValueChange={handleSelectState}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select state"/>
+            </SelectTrigger>
+            <SelectContent>
+              {states.map((state)=>(
+                <SelectItem key={state._id} value={state._id}>{state.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        }
+        {
+          stateId &&  <div>
+          <Label>city</Label>
+          <Select onValueChange={handleSelectCity}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select city"/>
+            </SelectTrigger>
+            <SelectContent>
+              {cities.map((city)=>(
+                <SelectItem key={city._id} value={city._id}>{city.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        }
+
+
+        <Button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        >
+          Submit
+        </Button>
+      </form>
+    </div>
   );
 };
 
 export default PropertyForm;
-

@@ -2,16 +2,23 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-
+import path from "path";
 
 dotenv.config({
     path: "./.env",
 });
 
+// Fix __dirname for ES Modules
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/public/images", express.static("/public/images"));
+// app.use("/public/images", express.static("/public/images"));
+// Serve uploaded images statically
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+
 
 const connectDb = async () => {
     try {
@@ -70,6 +77,12 @@ app.use("/api/v1/blogtag",blogtagRoutes)
 
 import blogRoutes from "./routes/blogRoutes.js";
 app.use("/api/v1/blog",blogRoutes)
+
+import ProjectTypeRoutes from "./routes/projectTypeRoutes.js"
+app.use("/api/v1/projectType", ProjectTypeRoutes)
+
+import ProjectFeatureRoutes from "./routes/projectFeatureRoutes.js"
+app.use("/api/v1/projectFeature", ProjectFeatureRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

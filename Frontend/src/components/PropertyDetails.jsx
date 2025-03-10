@@ -1,65 +1,94 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSelector } from "react-redux";
 
-export const PropertyDetails = () => {
-  const { slug } = useParams();
+const PropertyDetails = () => {
+  const { slug } = useParams(); // Get slug from URL
   const [property, setProperty] = useState(null);
-
+  const [loading, setLoading] = useState(true);
+const token = useSelector((state)=> state.auth.token)
   useEffect(() => {
-    const fetchProperty = async () => {
-      try {
-        const response = await api.get(`/properties/${slug}`);
-        setProperty(response.data);
-      } catch (error) {
-        console.error('Error fetching property:', error);
-      }
-    };
-    fetchProperty();
+    fetchPropertyDetails();
   }, [slug]);
 
-  if (!property) return <div>Loading...</div>;
+  const fetchPropertyDetails = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(`http://localhost:8000/api/v1/property/properties/${slug}`,{headers:{Authorization:token}});
+      setProperty(data.property);
+      console.log(data)
+    } catch (error) {
+      console.error("Error fetching property details:", error);
+    }
+    setLoading(false);
+  };
+
+  if (loading) {
+    return <Skeleton className="h-40 w-full rounded-lg" />;
+  }
+
+  if (!property) {
+    return <p className="text-center text-red-500">Property not found.</p>;
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <Card className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <img
-              src={property.featuredImage}
-              alt={property.name}
-              className="rounded-lg w-full h-64 object-cover"
-            />
-            <div className="grid grid-cols-3 gap-2 mt-4">
-              {property.imageGallery.map((img, index) => (
+    <div className="p-6">
+      <Card className="border rounded-lg">
+        {/* Feature Image */}
+        {property.featureImage && (
+          <img
+            src={property.featureImage} // Directly using base64 string
+            alt={property.name}
+            className="w-full h-60 object-cover"
+          />
+        )}
+
+        <CardContent className="p-4">
+          <h2 className="text-2xl font-semibold">{property.name}</h2>
+          <p className="text-gray-600">{property.address}</p>
+          <p className="font-semibold">
+            {property.Prefix} {property.price} {property.pricePostfix}
+          </p>
+          <p className="text-sm">
+            {property.areaSize} {property.areaSizePostfix} | {property.totalBedRooms} Beds |{" "}
+            {property.totalRooms} Rooms | {property.garage_parking_size} Parking
+          </p>
+
+          {/* Image Gallery */}
+          {Array.isArray(property.imageGallery) && property.imageGallery.length > 0 && (
+            <div className="mt-4 flex gap-2 overflow-x-auto">
+              {property.imageGallery.map((image, index) => (
                 <img
                   key={index}
-                  src={img}
+                  src={image} // Directly using base64 string
                   alt={`Gallery ${index + 1}`}
-                  className="h-24 w-full object-cover rounded"
+                  className="w-20 h-20 object-cover rounded-md"
                 />
               ))}
             </div>
+          )}
+
+          {/* Additional Details */}
+          <div className="mt-4">
+            <p className="text-lg font-semibold">Features:</p>
+            <ul className="list-disc list-inside text-gray-600">
+              {property.features?.map((feature, index) => (
+                <li key={index}>{feature.name}</li>
+              ))}
+            </ul>
           </div>
-          
-          <div>
-            <h1 className="text-3xl font-bold mb-4">{property.name}</h1>
-            <div className="space-y-2">
-              <p><span className="font-semibold">Price:</span> ${property.sellingPrice}</p>
-              <p><span className="font-semibold">Address:</span> {property.address}</p>
-              <p><span className="font-semibold">Description:</span> {property.description}</p>
-              {/* Add other property details */}
-            </div>
-            
-            <div className="mt-6 flex space-x-4">
-              <Button asChild>
-                <Link to={`/properties/edit/${property.slug}`}>Edit</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
+
+          <Button onClick={() => window.history.back()} className="mt-4">
+            Go Back
+          </Button>
+        </CardContent>
       </Card>
     </div>
   );
 };
+
+export default PropertyDetails;

@@ -31,7 +31,7 @@ import PropertyTypes from "../pages/admin/PropertyTypes";
 import ProjectCRUD from "../admin-auth/Test";
 import  PropertyList  from "../components/PropertyList";
 import PropertyForm from "../components/PropertyForm";
-import { PropertyDetails } from "../components/PropertyDetails";
+import  PropertyDetails  from "../components/PropertyDetails";
 
 const getDashboardRoute = (role) => {
   switch (role) {

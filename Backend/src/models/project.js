@@ -1,23 +1,10 @@
 import mongoose from "mongoose";
 
-// Input Fields
-// Name
-// Description
-// Features (obj id)
-// Project type (obj id)
-// Featured image
-// Image gallery (add multiple images) 
-// Video links
-// Agent information (obj id) (for contact)
-// Properties  (Obj)
-// slug
-
-
 const projectSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
-    features: [{ type: mongoose.Schema.Types.ObjectId, ref: "PropertyFeature" }],
-    projectType: { type: mongoose.Schema.Types.ObjectId, ref: "PropertyType" },
+    projectFeatures: [{ type: mongoose.Schema.Types.ObjectId, ref: "ProjectFeature" }],
+    projectType: { type: mongoose.Schema.Types.ObjectId, ref: "ProjectType" },
     featuredImage: { type: String, required: true },
     imageGallery: [String],
     videoLinks: [String],
