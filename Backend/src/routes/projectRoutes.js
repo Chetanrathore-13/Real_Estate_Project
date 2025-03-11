@@ -8,10 +8,14 @@ import {
 } from "../controllers/project.controller.js";
 
 const router = express.Router();    
+import { upload } from "../multer/upload.js";
 
 router.get("/projects", authMiddleware, getprojects);
-router.post("/add_project", authMiddleware, addproject);
-router.delete("/delete_project/:id", authMiddleware, deleteproject);
-router.patch("/update_project/:id", authMiddleware, updateproject);
+router.post("/add_project", authMiddleware, upload.fields([
+    { name: "featureImage", maxCount: 1 },
+    { name: "imageGallery", maxCount: 5 },
+  ]), addproject);
+router.delete("/delete_project/:slug", authMiddleware, deleteproject);
+router.patch("/update_project/:slug", authMiddleware, updateproject);
 
 export default router;

@@ -4,7 +4,7 @@ import Agent from "../models/agent.js";
 export const getAgents = async (req, res) => {
     try {
         const agents = await Agent.find();
-        res.status(200).json({ success: true, data: agents });
+        res.status(200).json(agents);
     } catch (error) {
         res.status(500).json({ success: false, message: "Server Error" });
     }

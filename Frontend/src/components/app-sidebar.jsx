@@ -123,13 +123,21 @@ const data = {
     },
     {
       title: "Projects",
-      url: "/admnin/projects",
+      url: "#",
       icon: BookOpen,
       items: [
         {
           title: "All Projects",
           url: "/admin/projects",
         },
+        {
+          title:"Project Types",
+          url:"/admin/projects/project-types"
+        },
+        {
+          title:"Project Features",
+          url:"/admin/projects/project-features"
+        }
       ],
     },
     {

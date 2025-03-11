@@ -28,10 +28,15 @@ import PropertyFeatures from "../pages/admin/PropertyFeatures";
 import PropertyStatusManager from "../pages/admin/PropertyStatus";
 import PropertyLabelCRUD from "../pages/admin/PropertyLabel";
 import PropertyTypes from "../pages/admin/PropertyTypes";
-import ProjectCRUD from "../admin-auth/Test";
 import  PropertyList  from "../components/PropertyList";
 import PropertyForm from "../components/PropertyForm";
 import  PropertyDetails  from "../components/PropertyDetails";
+import Project from "../pages/admin/Project";
+import { ProjectList } from "../components/ProjectList";
+import ProjectForm from "../components/ProjectForm";
+import ProjectTypes from "../components/ProjectType";
+import ProjectFeatures from "../components/ProjectFeature";
+import {ProjectDetail} from"../components/ProjectDetail"
 
 const getDashboardRoute = (role) => {
   switch (role) {
@@ -105,7 +110,15 @@ const router = createBrowserRouter([
       },
       {
         path: "projects",
-        element: <ProjectCRUD/>
+        element: <Project/>,
+        children:[
+          {index:true,element:<ProjectList/>},
+          {path:"edit/:slug",element:<ProjectForm/>},
+          {path:":slug",element:<ProjectDetail/>},
+          {path:"new",element:<ProjectForm/>},
+          {path:"project-types", element:<ProjectTypes/>},
+          {path:"project-features",element:<ProjectFeatures/>}
+        ]
       },
     ],
   },

@@ -9,8 +9,8 @@ const projectTypeSchema = new mongoose.Schema({
 
 // Middleware to generate slug before saving
 projectTypeSchema.pre("save", function (next) {
-    if (this.name) {
-      this.slug = slugify(this.name, { lower: true, strict: true });
+    if (this.title) {
+      this.slug = slugify(this.title, { lower: true, strict: true });
     }
     next();
 })

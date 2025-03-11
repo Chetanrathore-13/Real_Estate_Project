@@ -24,21 +24,28 @@ const PropertyList = () => {
     try {
       const { data } = await axios.get("http://localhost:8000/api/v1/property/properties", {
         params: { search, page, limit: 10 },
-        headers:{Authorization:token}
+        headers: { Authorization: token }
       });
-       console.log(data)
-      setProperties(data.properties);
-      setHasMore(data.hasMore);
+    console.log(data)
+      if (data && Array.isArray(data.formattedProperties)) {
+        setProperties(data.formattedProperties);
+      } else {
+        setProperties([]); // Fallback to empty array
+      }
+  
+      setHasMore(data.hasMore || false);
     } catch (error) {
       console.error("Error fetching properties:", error);
+      setProperties([]); // Prevent undefined
     }
     setLoading(false);
   };
+  
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this property?")) {
       try {
-        await axios.delete(`/api/properties/${id}`);
+        await axios.delete(`http://localhost:8000/api/v1/property/delete_property/${id}`,{headers:{Authorization:token}});
         setProperties(properties.filter((property) => property._id !== id));
       } catch (error) {
         console.error("Error deleting property:", error);
@@ -51,7 +58,7 @@ const PropertyList = () => {
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Properties</h2>
-        <Button onClick={() => navigate("/add-property")}>Add Property</Button>
+        <Button onClick={() => navigate("/admin/property/new")}>Add Property</Button>
       </div>
 
       {/* Search Input */}
@@ -93,7 +100,7 @@ const PropertyList = () => {
                 {/* Image Gallery (Base64) */}
                 {Array.isArray(property.imageGallery) && property.imageGallery.length > 0 && (
                   <div className="mt-2 flex gap-2 overflow-x-auto">
-                    {property.imageGallery.map((image, index) => (
+                    {property?.imageGallery?.map((image, index) => (
                       <img
                         key={index}
                         src={image} // Base64 image
@@ -109,12 +116,14 @@ const PropertyList = () => {
                   <Button onClick={() => navigate(`${property.slug}`)} variant="outline">
                     View
                   </Button>
+                  <div className="flex gap-2">
                   <Button onClick={() => navigate(`/edit-property/${property.slug}`)} variant="secondary">
                     Edit
                   </Button>
                   <Button onClick={() => handleDelete(property._id)} variant="destructive">
                     Delete
                   </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

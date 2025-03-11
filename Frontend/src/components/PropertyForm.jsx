@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PropertyForm = () => {
   const {
@@ -27,7 +28,7 @@ const PropertyForm = () => {
   const userId = useSelector((state) => state.auth.id);
   const token = useSelector((state) => state.auth.token);
   const {slug} = useParams() 
-  const [agents, setAgente] = useState([]);
+  const [agents, setAgents] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedLabels, setSelectedLabels] = useState([]);
   const [propertyTypes, setPropertyTypes] = useState([]);
@@ -45,6 +46,7 @@ const PropertyForm = () => {
   const [previewGallery, setPreviewGallery] = useState([]);
   const [file,setFile] = useState(null)
   const[imageGallery, setImageGallery]= useState([])
+  const navigate = useNavigate()
 
 
   const isEditMode = !!slug
@@ -62,7 +64,7 @@ const PropertyForm = () => {
             headers: { Authorization: token },
           }
         );
-        setAgente(response.data.data);
+        setAgents(response.data);
       } catch (error) {
         console.error("Failed to fetch tags ", error);
       }
@@ -202,14 +204,14 @@ const PropertyForm = () => {
     if (type && !selectedTypes.some((t) => t._id === type._id)) {
       const updatedTypes = [...selectedTypes, type];
       setSelectedTypes(updatedTypes);
-      setValue("propertyTypes", updatedTypes.map((t) => t._id));
+      setValue("type", updatedTypes?.map((t) => t._id));
     }
   };
 
   const handleRemoveType = (id) => {
     const updatedTypes = selectedTypes.filter((item) => item._id !== id);
     setSelectedTypes(updatedTypes);
-    setValue("propertyTypes", updatedTypes.map((t) => t.id));
+    setValue("type", updatedTypes?.map((t) => t._id));
   };
 
   const handleSelectLabel = (value) => {
@@ -217,14 +219,14 @@ const PropertyForm = () => {
     if (label && !selectedLabels.some((l) => l._id === label._id)) {
       const updatedLabels = [...selectedLabels, label];
       setSelectedLabels(updatedLabels);
-      setValue("propertyLabels", updatedLabels.map((l) => l._id));
+      setValue("label", updatedLabels?.map((l) => l._id));
     }
   };
 
   const handleRemoveLabel = (id) => {
     const updatedLabels = selectedLabels.filter((item) => item._id !== id);
     setSelectedLabels(updatedLabels);
-    setValue("propertyLabels", updatedLabels.map((l) => l._id));
+    setValue("label", updatedLabels?.map((l) => l._id));
   };
 
   const handleSelectFeature = (value) =>{
@@ -232,13 +234,13 @@ const PropertyForm = () => {
     if(feature && !selectedFeatures.some((f)=> f._id === feature._id)){
       const updatedFeature = [...selectedFeatures,feature];
       setSelectedFeatures(updatedFeature);
-      setValue("propertyFeatures", updatedFeature.map((f)=> f._id))
+      setValue("features", updatedFeature?.map((f)=> f._id))
     }
   }
   const handleRemoveFeature = (id) =>{
     const updatedFeatures = selectedFeatures.filter((item) => item._id !== id)
     setSelectedFeatures(updatedFeatures);
-    setValue("propertyFeatures", updatedFeatures.map((f)=>f._id))
+    setValue("features", updatedFeatures?.map((f)=>f._id))
   }
 
   const handleSelectCountry = (id) => {
@@ -269,7 +271,7 @@ const handleGalleryChange = async (e) => {
     console.log(files)
    setImageGallery([...files])
     setValue("imageGallery", files , { shouldValidate: true });
-    setPreviewGallery(files.map(file => URL.createObjectURL(file))); // Generate preview URLs
+    setPreviewGallery(files?.map(file => URL.createObjectURL(file))); // Generate preview URLs
 };
 
 const onSubmit = async (data) => {
@@ -314,7 +316,10 @@ const onSubmit = async (data) => {
         },
       }
     );
-    console.log("✅ Response:", response.data);
+    console.log("✅ Response:", response);
+    if(response.status == 200){
+      navigate("/admin/property")
+    }
   } catch (error) {
     console.error("❌ Error:", error.response?.data || error.message);
   }
@@ -368,7 +373,7 @@ const onSubmit = async (data) => {
                 {errors.imageGallery && <span className="text-red-500 text-sm">{errors.imageGallery.message}</span>}
                 {/* Previews */}
                 <div className="mt-2 flex flex-wrap gap-2">
-                    {previewGallery.map((src, index) => (
+                    {previewGallery?.map((src, index) => (
                         <img key={index} src={src} alt={`Gallery Preview ${index}`} className="w-20 h-20 object-cover rounded-md" />
                     ))}
                 </div>
@@ -502,7 +507,7 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select an agent" />
             </SelectTrigger>
             <SelectContent>
-              {agents.map((agent) => (
+              {agents?.map((agent) => (
                 <SelectItem key={agent._id} value={agent._id}>{agent.name}</SelectItem>
               ))}
             </SelectContent>
@@ -516,7 +521,7 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select a status"/>
             </SelectTrigger>
             <SelectContent>
-              {propertyStatus.map((status)=>(
+              {propertyStatus?.map((status)=>(
                 <SelectItem key={status._id} value={status._id} >{status.title}</SelectItem>
               ))}
             </SelectContent>
@@ -530,13 +535,13 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select property type" />
             </SelectTrigger>
             <SelectContent>
-              {propertyTypes.map((type) => (
+              {propertyTypes?.map((type) => (
                 <SelectItem key={type._id} value={type._id}>{type.title}</SelectItem>
               ))}
             </SelectContent>
           </Select>
           <div className="flex flex-wrap gap-2 mt-2">
-            {selectedTypes.map((type) => (
+            {selectedTypes?.map((type) => (
               <Badge key={type._id} onClick={() => handleRemoveType(type._id)} className="cursor-pointer">{type.title} ✕</Badge>
             ))}
           </div>
@@ -549,13 +554,13 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select property label" />
             </SelectTrigger>
             <SelectContent>
-              {propertyLabels.map((label) => (
+              {propertyLabels?.map((label) => (
                 <SelectItem key={label._id} value={label._id}>{label.title}</SelectItem>
               ))}
             </SelectContent>
           </Select>
           <div className="flex flex-wrap gap-2 mt-2">
-            {selectedLabels.map((label) => (
+            {selectedLabels?.map((label) => (
               <Badge key={label._id} onClick={() => handleRemoveLabel(label._id)} className="cursor-pointer">{label.title} ✕</Badge>
             ))}
           </div>
@@ -567,13 +572,13 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select property Feature"/>
             </SelectTrigger>
             <SelectContent>
-              {propertyFeatures.map((feature)=>(
+              {propertyFeatures?.map((feature)=>(
                 <SelectItem key={feature._id} value={feature._id}>{feature.title}</SelectItem>
               ))}
             </SelectContent>
           </Select>
           <div className="flex flex-wrap gap-2 mt-2">
-              {selectedFeatures.map((feature)=>(
+              {selectedFeatures?.map((feature)=>(
                 <Badge key={feature._id} onClick={()=> handleRemoveFeature(feature._id) } className="cursor-pointer">{feature.title} ✕</Badge>
               ))}
           </div>
@@ -586,7 +591,7 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select country"/>
             </SelectTrigger>
             <SelectContent>
-              {countries.map((country)=>(
+              {countries?.map((country)=>(
                 <SelectItem key={country._id} value={country._id}>{country.name}</SelectItem>
               ))}
             </SelectContent>
@@ -600,7 +605,7 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select state"/>
             </SelectTrigger>
             <SelectContent>
-              {states.map((state)=>(
+              {states?.map((state)=>(
                 <SelectItem key={state._id} value={state._id}>{state.name}</SelectItem>
               ))}
             </SelectContent>
@@ -615,7 +620,7 @@ const onSubmit = async (data) => {
               <SelectValue placeholder="Select city"/>
             </SelectTrigger>
             <SelectContent>
-              {cities.map((city)=>(
+              {cities?.map((city)=>(
                 <SelectItem key={city._id} value={city._id}>{city.name}</SelectItem>
               ))}
             </SelectContent>

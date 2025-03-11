@@ -77,9 +77,19 @@ export const getBlogs = async (req, res) => {
         const author = await User.findById(blog.authorId);
        return author.username;
     }))
+    const categoryName = await Promise.all(blogwithicon.map(async (blog) => {
+        const category = await BlogCategory.findById(blog.categoryId);
+       return category.name;
+    }))
+    const tagNames = await Promise.all(blogwithicon.map(async (blog) => {
+        const tags = await BlogTag.find({ _id: { $in: blog.tagId } });
+        return tags.map((tag) => tag.name);
+    }));
 
     blogwithicon.forEach((blog, index) => {
         blog.authorName = authorName[index];
+        blog.categoryName = categoryName[index];
+        blog.tagNames = tagNames[index];
     });
     return res.status(200).json(blogwithicon);
   } catch (error) {

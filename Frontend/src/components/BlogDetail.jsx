@@ -71,7 +71,7 @@ function BlogDetail() {
       <div className="space-y-6">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Badge variant="outline">{blog.category}</Badge>
+            <Badge variant="outline">{blog.categoryName}</Badge>
             <span className="text-sm text-muted-foreground">By {blog.authorName}</span>
           </div>
           <h1 className="text-4xl font-bold tracking-tight">{blog.title}</h1>

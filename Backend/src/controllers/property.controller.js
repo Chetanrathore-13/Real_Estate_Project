@@ -1,5 +1,12 @@
 import Property from "../models/property.js";
 import fs from "fs";
+import PropertyFeature from "../models/propertyFeatures.js";
+import PropertyType from "../models/propertyType.js";
+import PropertyLabel from "../models/propertyLabel.js";
+import PropertyStatus from "../models/propertyStatus.js";
+import {Country} from "../models/location.js";
+import {State} from "../models/location.js";
+import {City} from "../models/location.js";
 
 
 export const getProperties = async (req, res) => {
@@ -48,7 +55,7 @@ export const getProperties = async (req, res) => {
 
       res.json({
           success: true,
-          properties: formattedProperties,
+          formattedProperties,
           total,
           hasMore: total > page * limit,
       });
@@ -88,8 +95,29 @@ export const updateProperty = async (req,res) => {
 export const deleteProperty = async (req,res) => {
     try {
         const { id } = req.params;
-        await Property.findByIdAndDelete(id);
+      const deletedproperty =  await Property.findByIdAndDelete(id);
         res.json({ message: "Property deleted successfully" });
+        // Delete the image file from the server
+            if (deletedproperty.featureImage) {
+              const imagePath = blog.featureImage;
+              if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath, (err) => {
+                  if (err) {
+                    console.error("Error deleting image file:", err);
+                  }
+                });
+              }
+            }
+        // delete imagegallleryy 
+        if(deletedproperty.imageGallery){
+            deletedproperty.imageGallery.forEach((image) => {
+                fs.unlinkSync(image, (err) => {
+                    if (err) {
+                        console.error("Error deleting image file:", err);
+                    }
+                });
+            });
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

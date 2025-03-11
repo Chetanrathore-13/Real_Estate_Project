@@ -172,7 +172,7 @@ function BlogList() {
                 </div>
                 <div className="mt-4">
                   <Badge variant="outline" className="mb-2">
-                    {blog.category}
+                    {blog.categoryName}
                   </Badge>
                   <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
                   <CardDescription className="flex items-center text-xs mt-1">By {blog.authorName}</CardDescription>
@@ -183,7 +183,7 @@ function BlogList() {
               </CardContent>
               <CardFooter>
                 <div className="flex flex-wrap gap-1">
-                  {blog.tags?.map((tag, index) => ( // ✅ Added optional chaining
+                  {blog.tagNames?.map((tag, index) => ( // ✅ Added optional chaining
                     <Badge key={index} variant="secondary" className="text-xs">
                       {tag}
                     </Badge>
