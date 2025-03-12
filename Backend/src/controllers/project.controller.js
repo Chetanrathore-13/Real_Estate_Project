@@ -1,5 +1,8 @@
 import Project from "../models/project.js";
 import fs from "fs"
+import ProjectFeature from "../models/projectFeature.js";
+import ProjectType from "../models/projectType.js";
+import Property from "../models/property.js";
 
 // Use all the CRUD operations
 const getprojects = async (req, res) => {
@@ -27,7 +30,24 @@ const getprojects = async (req, res) => {
             ? property.imageGallery.map((img) => convertToBase64(img))
             : [],
     }));
-        res.status(200).json({ formattedProjects });
+
+    const featureName = await  Promise.all(formattedProjects.map(async (project) => {
+        const feature = await ProjectFeature.find({_id:{$in:project.projectFeatures}});
+        return feature.map((feature) => feature.title);
+    }))
+    formattedProjects.forEach((project, index) => {
+        project.featureName = featureName[index];
+    })
+    
+    const typeName = await Promise.all(formattedProjects.map(async (project)=>{
+        const type = await ProjectType.find({_id:{$in:project.projectType}});
+        return type.map((type)=> type.title);
+    }))
+    formattedProjects.forEach((project,index)=>{
+        project.typeName = typeName[index];
+    })
+    
+    res.status(200).json({ formattedProjects });
     } catch (error) {
         res.status(500).send("Error fetching projects");
     }

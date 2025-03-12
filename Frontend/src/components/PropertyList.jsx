@@ -82,7 +82,7 @@ const PropertyList = () => {
                 <img
                   src={property.featureImage}
                   alt={property.name}
-                  className="w-full h-40 object-cover"
+                  className="w-full h-60 object-cover"
                 />
               )}
               <CardContent className="p-4">

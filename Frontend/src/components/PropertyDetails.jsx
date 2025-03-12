@@ -43,7 +43,7 @@ const token = useSelector((state)=> state.auth.token)
           <img
             src={property.featureImage} // Directly using base64 string
             alt={property.name}
-            className="w-full h-60 object-cover"
+            className="w-full h-90 object-cover"
           />
         )}
 
@@ -76,8 +76,8 @@ const token = useSelector((state)=> state.auth.token)
           <div className="mt-4">
             <p className="text-lg font-semibold">Features:</p>
             <ul className="list-disc list-inside text-gray-600">
-              {property.features?.map((feature, index) => (
-                <li key={index}>{feature.name}</li>
+              {property.featureName?.map((feature, index) => (
+                <li key={index}>{feature}</li>
               ))}
             </ul>
           </div>

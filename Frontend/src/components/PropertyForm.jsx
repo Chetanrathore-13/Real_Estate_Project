@@ -76,7 +76,7 @@ const PropertyForm = () => {
     const fetchPropertyTypes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/property_labels",
+          "http://localhost:8000/api/v1/property/property_types",
           {
             headers: { Authorization: token },
           }
@@ -110,7 +110,7 @@ const PropertyForm = () => {
     const fetchPropertyLabels = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/property_types",
+          "http://localhost:8000/api/v1/property/property_labels",
           {
             headers: { Authorization: token },
           }
@@ -276,6 +276,7 @@ const handleGalleryChange = async (e) => {
 
 const onSubmit = async (data) => {
   data.userId = userId;
+  console.log(data)
   const formData = new FormData();
    console.log(data.featureImage)
    console.log(data.featureImage instanceof File)
@@ -294,7 +295,7 @@ const onSubmit = async (data) => {
   }
 
   // Fixed: Handle array fields correctly
-  const arrayFields = ['propertyTypes', 'propertyLabels', 'propertyFeatures'];
+  const arrayFields = ['label', 'features', 'type'];
   Object.keys(data).forEach((key) => {
     if (key === "featureImage" || key === "imageGallery") return;
     

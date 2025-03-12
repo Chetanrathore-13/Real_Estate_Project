@@ -58,9 +58,9 @@ export const ProjectList = () => {
                   </CardDescription>
                   <div className="mt-4 flex flex-wrap gap-2">
                     <Badge variant="outline">{project.projectType?.title}</Badge>
-                    {project.projectFeatures?.map((feature) => (
+                    {project.featureName?.map((feature) => (
                       <Badge key={feature._id} variant="secondary">
-                        {feature.name}
+                        {feature}
                       </Badge>
                     ))}
                   </div>
