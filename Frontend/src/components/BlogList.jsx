@@ -23,23 +23,30 @@ function BlogList() {
   const [blogs, setBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [hasMore, setHasMore] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
+
+
   useEffect(() => {
+    setIsLoading(true)
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/v1/blog/get_blogs", {
+          params: { search, page, limit: 10 },
           headers: {
             Authorization:token, // ✅ Fixed Authorization Header
           },
         });
 
         console.log("API Response:", response.data); // ✅ Debugging
-
         // ✅ Ensure response is an array
-        setBlogs(response.data);
+        setBlogs(response.data.blogwithicon);
+        setHasMore(response.data.hasMore || false);
         
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
@@ -51,7 +58,7 @@ function BlogList() {
 
 
     if (token) fetchBlogs();
-  }, [token]);
+  }, [token,page,search]);
 
   const handleDeleteClick = (id) => {
     setBlogToDelete(id);
@@ -211,6 +218,16 @@ function BlogList() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+       {/* Pagination Buttons */}
+       <div className="mt-4 flex justify-between">
+        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous
+        </Button>
+        <Button disabled={!hasMore} onClick={() => setPage(page + 1)}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

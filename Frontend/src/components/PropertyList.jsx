@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom"; // For navigation
 import { useSelector } from "react-redux";
+
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
   const [search, setSearch] = useState("");

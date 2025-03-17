@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 export const ProjectList = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
   const token = useSelector((state) => state.auth.token);
   
   useEffect(() => {
@@ -26,7 +28,7 @@ export const ProjectList = () => {
       }
     };
     fetchProjects();
-  }, [token]);
+  }, [token,page]);
 
   return (
     <div className="container mx-auto p-4">
@@ -70,6 +72,15 @@ export const ProjectList = () => {
           ))}
         </div>
       )}
+       {/* Pagination Buttons */}
+       <div className="mt-4 flex justify-between">
+        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous
+        </Button>
+        <Button disabled={!hasMore} onClick={() => setPage(page + 1)}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 };

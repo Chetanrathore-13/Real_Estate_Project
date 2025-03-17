@@ -37,6 +37,7 @@ import ProjectForm from "../components/ProjectForm";
 import ProjectTypes from "../components/ProjectType";
 import ProjectFeatures from "../components/ProjectFeature";
 import {ProjectDetail} from"../components/ProjectDetail"
+import HomePage from "../pages/public/HomePage"
 
 const getDashboardRoute = (role) => {
   switch (role) {
@@ -62,11 +63,14 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <PublicRoute />,
-    children: [{ index: true, element: <LoginPage /> }],
+    children: [{ index: true, element: <HomePage /> }],
   },
   {
     path: "/test",
     element: <Test />,
+  },{
+    path: "/login",
+    element: <LoginPage/>
   },
 
   // Admin Routes

@@ -7,8 +7,25 @@ import Property from "../models/property.js";
 // Use all the CRUD operations
 const getprojects = async (req, res) => {
     try {
-        const projects = await Project.find({});
+        let { search = "", page = 1, limit = 10 } = req.query;
 
+        page = Math.max(1, parseInt(page) || 1);
+        limit = Math.max(1, parseInt(limit) || 10);
+    
+        const filter = search.trim()
+          ? {
+              $or: [
+                { name: { $regex: search, $options: "i" } },
+                { slug: { $regex: search, $options: "i" } },
+              ],
+            }
+          : {};
+        const projects = await Project.find(filter)
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .sort({ createdAt: -1 });
+        
+    const total = await Blog.countDocuments(filter)
          // Convert image file to Base64
               const convertToBase64 = (filePath) => {
                   try {

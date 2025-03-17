@@ -52,7 +52,25 @@ export const createBlog = async (req, res) => {
 // Get all blogs
 export const getBlogs = async (req, res) => {
   try {
-    const blogs = await Blog.find();
+    let { search = "", page = 1, limit = 10 } = req.query;
+
+    page = Math.max(1, parseInt(page) || 1);
+    limit = Math.max(1, parseInt(limit) || 10);
+
+    const filter = search.trim()
+      ? {
+          $or: [
+            { name: { $regex: search, $options: "i" } },
+            { slug: { $regex: search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const blogs = await Blog.find(filter)
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .sort({ createdAt: -1 });
+    const total = await Blog.countDocuments(filter)
     const blogwithicon = blogs.map((blog) => {
         let imageBase64 = null;
         if(blog.featureImage){
@@ -91,7 +109,11 @@ export const getBlogs = async (req, res) => {
         blog.categoryName = categoryName[index];
         blog.tagNames = tagNames[index];
     });
-    return res.status(200).json(blogwithicon);
+    return res.status(200).json({
+      success: true,
+      blogwithicon, 
+      total,
+      hasMore: total > page * limit,});
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

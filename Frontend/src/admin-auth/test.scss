@@ -1,0 +1,29 @@
+
+ul.nav-link{
+    li {
+
+        a{
+            &:hover{
+                color:#e86822;
+            }
+        }
+        
+    }
+}
+
+.icon-box{
+
+    transition: all .2s ease-in;
+
+    &:hover{
+        transform: scale(1.05, 1.05); 
+
+    }
+
+    &:hover .invisible{
+        visibility: visible!important;
+    }
+
+ 
+    
+}
