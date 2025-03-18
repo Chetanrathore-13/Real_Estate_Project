@@ -56,11 +56,11 @@ export default function PropertyListings() {
   return (
     <div className="space-y-8 flex m-10">
       <div className="flex flex-col space-y-2 gap-4 justify-center items-center m-10 w-[25%]">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl text-center font-semibold text-navy-900">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl text-center text-blue-950 font-semibold text-navy-900">
           Properties
           <br className="md:hidden" /> for Sale
         </h1>
-        <p className="text-xl text-gray-600">Listings we think you&apos;ll love.</p>
+        <p className="text-xl text-blue-950">Listings we think you&apos;ll love.</p>
         <div className="flex items-center justify-between mb-4">
           <div className="flex space-x-2">
             <Button
