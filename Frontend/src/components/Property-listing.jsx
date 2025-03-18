@@ -15,49 +15,6 @@ export default function PropertyListings() {
     const [properties, setProperties] = useState([]);
     const [hasMore, setHasMore] = useState(false);
 
-//   const properties = [
-//     {
-//       id: 1,
-//       title: "Store in Woodside, New York",
-//       price: "$1,250,000",
-//       image: "/placeholder.svg?height=400&width=600",
-//       featured: true,
-//       forSale: true,
-//     },
-//     {
-//       id: 2,
-//       title: "Hermosa casa al norte",
-//       price: "$1,250,000",
-//       image: "/placeholder.svg?height=400&width=600",
-//       featured: true,
-//       forSale: true,
-//     },
-//     {
-//       id: 3,
-//       title: "Casa Lomas de Machalí",
-//       price: "$1,250,000",
-//       image: "/placeholder.svg?height=400&width=600",
-//       featured: true,
-//       forSale: true,
-//     },
-//     {
-//       id: 4,
-//       title: "Modern Apartment in Downtown",
-//       price: "$950,000",
-//       image: "/placeholder.svg?height=400&width=600",
-//       featured: true,
-//       forSale: true,
-//     },
-//     {
-//       id: 5,
-//       title: "Luxury Villa with Ocean View",
-//       price: "$2,750,000",
-//       image: "/placeholder.svg?height=400&width=600",
-//       featured: true,
-//       forSale: true,
-//     },
-//   ]
-
   
   const fetchProperties = async () => {
     
@@ -98,12 +55,12 @@ export default function PropertyListings() {
 
   return (
     <div className="space-y-8 flex m-10">
-      <div className="flex flex-col space-y-2 justify-center items-center m-10">
-        <h1 className="text-4xl md:text-5xl lg:text-4xl font-semibold text-navy-900">
+      <div className="flex flex-col space-y-2 gap-4 justify-center items-center m-10 w-[25%]">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl text-center font-semibold text-navy-900">
           Properties
           <br className="md:hidden" /> for Sale
         </h1>
-        <p className="text-lg text-gray-600">Listings we think you&apos;ll love.</p>
+        <p className="text-xl text-gray-600">Listings we think you&apos;ll love.</p>
         <div className="flex items-center justify-between mb-4">
           <div className="flex space-x-2">
             <Button
@@ -130,7 +87,7 @@ export default function PropertyListings() {
         </div>
       </div>
 
-      <div className="relative ml-28">
+      <div className="relative ml-28 w-[75%]">
         <div ref={scrollContainerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-hidden">
           {properties.slice(currentIndex, currentIndex + visibleItems).map((property) => (
             <PropertyCard key={property._id} property={property} />
@@ -143,32 +100,42 @@ export default function PropertyListings() {
 
 function PropertyCard({ property }) {
   return (
-    <Card className="overflow-hidden border-0 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md">
-      <div className="relative h-64 w-full">
-        <div className="absolute top-4 left-4 z-10 flex gap-2">
+    <Card className="relative w-full h-[400px] md:h-[450px] lg:h-[400px] overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src={property.featureImage || "/placeholder.svg"}
+          alt={property.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Content Box */}
+      <div className="absolute bottom-2 left-6 right-6 bg-white/80 backdrop-blur-md p-4 rounded-xl shadow-md">
+        {/* Badges */}
+        <div className="flex gap-2 mb-3">
           {property.featureName && (
             <Badge className="bg-orange-500 hover:bg-orange-600 text-white font-medium px-3 py-1 rounded">
-              {property.featureName.map((feature) => feature).join(", ")}
+              {property.featureName[0]}
             </Badge>
           )}
           {property.labelName && (
             <Badge className="bg-purple-500 hover:bg-purple-600 text-white font-medium px-3 py-1 rounded">
-             {property.labelName.map((label) => label).join(", ")}
+              {property.labelName[0]}
             </Badge>
           )}
         </div>
-        <img src={property.featureImage || "/placeholder.svg"} alt={property.title} fill className="object-cover" />
-      </div>
-      <CardContent className="p-0">
-        <div className="bg-white p-6 flex justify-between items-center">
-          <div>
-            <h3 className="font-medium text-lg">{property.name}</h3>
-            <p className="text-lg font-bold">{property.sellingPrice}</p>
-          </div>
-          <ChevronRight className="h-5 w-5 text-gray-400" />
+
+        {/* Title & Price */}
+        <h3 className="text-xl font-semibold text-gray-900">{property.name}</h3>
+        <p className="text-lg font-bold text-gray-800">{property.sellingPrice}</p>
+
+        {/* Arrow Icon */}
+        <div className="flex justify-end mt-4">
+          <ChevronRight className="h-6 w-6 text-gray-600 hover:text-gray-900 transition-all" />
         </div>
-      </CardContent>
+      </div>
     </Card>
-  )
+  );
 }
 
