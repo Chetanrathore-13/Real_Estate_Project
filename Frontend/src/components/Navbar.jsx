@@ -28,14 +28,15 @@ const Navbar = () => {
         isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-4"
       } ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
     >
-      <nav className="border-gray-200 px-4 lg:px-6">
-        <div className="flex flex-wrap justify-between items-center mx-10 max-w-screen-xl">
+      <nav className="border-gray-200 h-full">
+        <div className="flex flex-wrap justify-between items-center w-full container mx-auto ">
+
           {/* Logo Section */}
           <a href="/" className="flex items-center gap-2">
             <img src={logo} className="w-auto h-12 md:h-16" alt="Real Estate Logo" />
             <span
               className={`text-2xl md:text-3xl font-semibold transition-all ${
-                isScrolled ? "text-[#e86822]" : "text-white"
+                isScrolled ? "text-[#e86822]" : "text-[#e86822]"
               }`}
             >
               Real Estate
@@ -76,7 +77,7 @@ const Navbar = () => {
                   <a
                     href="#"
                     className={`block py-2 text-lg transition-all ${
-                      isScrolled ? "text-[#e86822]" : "text-white"
+                      isScrolled ? "text-[#e86822]" : "text-blue-950"
                     } hover:text-[#e86822]`}
                   >
                     {item}
@@ -85,6 +86,8 @@ const Navbar = () => {
               ))}
             </ul>
           </div>
+
+
         </div>
       </nav>
     </header>

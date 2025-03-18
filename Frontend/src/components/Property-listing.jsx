@@ -111,7 +111,7 @@ function PropertyCard({ property }) {
       </div>
 
       {/* Content Box */}
-      <div className="absolute bottom-2 left-6 right-6 bg-white/80 backdrop-blur-md p-4 rounded-xl shadow-md">
+      <div className="absolute bottom-2 left-6 right-6 bg-white backdrop-blur-md p-4 rounded-xl shadow-md">
         {/* Badges */}
         <div className="flex gap-2 mb-3">
           {property.featureName && (

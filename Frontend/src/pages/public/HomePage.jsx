@@ -78,18 +78,16 @@ const HomePage = () => {
       <div
         className="herosection min-h-screen  bg-center bg-no-repeat bg-cover flex items-center justify-center px-5  sm:px-10 "
         style={{
-          backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${backgroundImage})`,
+          backgroundImage: ` url('https://homeid-elementor-demo9.g5plus.net/wp-content/uploads/2022/12/bg-homepage.jpg')`,
         }}
       >
         <div className="container mx-auto">
-          <div className="content w-full md:w-[60%] lg:w-[50%] space-y-5 text-center md:text-left">
-            <h1 className="text-white text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+          <div className="content w-full md:w-[60%] lg:w-[50%] space-y-12 text-center md:text-left">
+            <h1 className="text-blue-950 text-4xl sm:text-5xl md:text-8xl font-semibold leading-tight">
               Find a Home You'll Love
             </h1>
-            <p className="text-gray-100 text-lg sm:text-xl">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
-              illo labore! Architecto, perspiciatis atque! Aspernatur
-              perspiciatis unde, vitae maiores cumque.
+            <p className="text-blue-950 text-lg sm:text-3xl sm:font-semibold">
+            Discover a Place You'll Love to Live
             </p>
             <div className="flex justify-center md:justify-start">
               <a
