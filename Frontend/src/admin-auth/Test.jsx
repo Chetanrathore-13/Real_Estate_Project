@@ -1,281 +1,499 @@
-import { useState } from "react";
-import "./test.scss";
-import backgroundImage from "../../public/hero.jpg";
-import iconOne from "../../public/home-search.svg";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import PropertyListings from "../components/Property-listing";
-import PropertyListings2 from "../components/Propety-listings2";
-import balcony from "../../public/images/balcony.jpg";
-import discussion from "../../public/images/discussion.jpg";
-import office from "../../public/images/office.jpg";
-import Footer from "../components/Footer";
-import ContactUs from "../components/ContactUs";
-import ContactForm from "../components/ContactUs2";
-import NewsArticlesSection from "../components/NewsArticleSection";
+import React from "react";
+import {
+  Printer,
+  Share2,
+  Plus,
+  Star,
+  HousePlus,
+  Home,
+  FileText,
+  Bed,
+  LayoutGrid,
+  FileType,
+  BedDouble,
+  Bath,
+  Car,
+  Grid2x2Plus,
+  Proportions,
+  Building2,
+  Instagram,
+  Twitter,
+  Facebook,
+  Linkedin,
+  Phone
+} from "lucide-react";
+import {Button} from "../components/ui/button";
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Function to close the menu after clicking a link
-  const closeMenu = () => setIsOpen(false);
-
+const Test = () => {
   return (
     <>
-      {/* Header */}
-      <div className="header-container py-10 bg-white z-40">
-        <header className="header container mx-auto flex justify-between items-center lg:px-5 ">
-          <div className="logo-container">
-            <h3 className="business-name font-bold uppercase tracking-wide text-white text-xl">
-              Roots & Roofs
-            </h3>
-          </div>
-          <div className="navigation-container">
-            <nav className="navigation">
-              <ul className="nav-link flex justify-center items-center gap-8 uppercase text-sm  text-white tracking-wider font-normal ">
-                <li>
-                  <a href="#">Home</a>
-                </li>
-                <li>
-                  <a href="#">Projects</a>
-                </li>
-                <li>
-                  <a href="#">Properties</a>
-                </li>
-                <li>
-                  <a href="#">About Us</a>
-                </li>
-                <li>
-                  <a href="#">Contact Us</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div className="call-to-action-container">
-            <div className="call-to-action-btn space-x-4">
-              <a
-                href="/login"
-                className="  pt-2 pb-3 px-6 hover:bg-[#e86822] bg-white hover:text-white text-black transition-all rounded-sm"
-              >
-                Login
-              </a>
-              <a
-                href="/signup"
-                className="bg-[#e86822] text-white pt-2 pb-3 px-6 hover:bg-white hover:text-black transition-all rounded-sm"
-              >
-                Sign Up
-              </a>
+      <div className="flex flex-col justify-center items-center ">
+
+        <div className="flex flex-col container m-8 p-8 gap-4 w-[80vw]">
+          <div className="flex justify-between">
+            <div className="flex gap-2">
+              <p className="bg-orange-500 text-white px-4  rounded-sm">
+                Feature
+              </p>
+              <span className="bg-purple-700 text-white px-4  rounded-sm">
+                Time{" "}
+              </span>
+            </div>
+            <div className="flex gap-4">
+              <span>
+                <Star />
+              </span>
+              <span>
+                <Plus />
+              </span>
+              <span>
+                <Share2 />
+              </span>
+              <span>
+                <Printer />
+              </span>
             </div>
           </div>
-        </header>
-      </div>
-
-      {/* Hero Section */}
-      <div
-        className="herosection h-screen bg-center bg-no-repeat bg-cover -mt-[120px]"
-        style={{
-          backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${backgroundImage})`,
-        }}
-      >
-        <div className="container mx-auto px-5 flex items-center h-full">
-          <div className="content w-[50%] space-y-5">
-            <h1 className="text-white text-[60px] font-bold">
-              Find a Home You'll Love
-            </h1>
-            <p className="text-gray-100 pb-10 text-[18px]">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
-              illo labore! Architecto, perspiciatis atque! Aspernatur
-              perspiciatis unde, vitae maiores cumque nisi sint repudiandae
-              asperiores suscipit officia delectus qui. Eaque, officiis.
-            </p>
-            <a
-              href="/login"
-              className="pt-2 pb-3 px-6 hover:bg-white bg-[#e86822]  hover:text-black text-white transition-all rounded-sm text-xl font-semibold"
-            >
-              Explore Properties
-            </a>
+          <div className="flex justify-between items-center">
+            <h2 className="text-3xl font-semibold text-blue-950">
+              Store in Woodside, New York
+            </h2>
+            <p className="text-2xl font-semibold">$1,250,000</p>
           </div>
-        </div>
-      </div>
-
-      {/* Property */}
-      <div className="property-container bg-[#f8f8f8] py-16 h-screen">
-        <div className="container mx-auto px-5 flex justify-between items-strech flex-wrap">
-          <div className="left basis-[50%] min-w-[50%] pr-10 space-y-5">
-            {/* Icon box */}
-            <div className="icon-box bg-white shadow-md p-8 flex space-x-6 rounded-md">
-              <div className="icon min-w-[10%]">
-                <img src={iconOne} alt="" srcset="" className="w-[50px]" />
-              </div>
-              <div className="icon-box-content min-w-[90%]">
-                <h3 className="font-semibold text-[25px]">Buy a new home</h3>
-                <p className="pt-3  pb-7">
-                  Lorem ipsum dolor sit amet, consec tetur cing elit. Suspe
-                  suscorem ipsum dolor sit ametcipsum
-                </p>
-                <a
-                  href="/signup"
-                  className="bg-[#e86822] text-white pt-2 pb-3 px-6 hover:bg-white hover:text-black transition-all rounded-sm invisible"
-                >
-                  Sign Up
-                </a>
-              </div>
-            </div>
-
-            {/* Icon box */}
-            <div className="icon-box bg-white shadow-md p-8 flex space-x-6 rounded-md">
-              <div className="icon min-w-[10%]">
-                <img src={iconOne} alt="" srcset="" className="w-[50px]" />
-              </div>
-              <div className="icon-box-content min-w-[90%]">
-                <h3 className="font-semibold text-[25px]">Buy a new home</h3>
-                <p className="pt-3  pb-7">
-                  Lorem ipsum dolor sit amet, consec tetur cing elit. Suspe
-                  suscorem ipsum dolor sit ametcipsum
-                </p>
-                <a
-                  href="/signup"
-                  className="bg-[#e86822] text-white pt-2 pb-3 px-6 hover:bg-white hover:text-black transition-all rounded-sm invisible"
-                >
-                  Sign Up
-                </a>
-              </div>
-            </div>
-
-            {/* Icon box */}
-            <div className="icon-box bg-white shadow-md p-8 flex space-x-6 rounded-md">
-              <div className="icon min-w-[10%]">
-                <img src={iconOne} alt="" srcset="" className="w-[50px]" />
-              </div>
-              <div className="icon-box-content min-w-[90%]">
-                <h3 className="font-semibold text-[25px]">Buy a new home</h3>
-                <p className="pt-3  pb-7">
-                  Lorem ipsum dolor sit amet, consec tetur cing elit. Suspe
-                  suscorem ipsum dolor sit ametcipsum
-                </p>
-                <a
-                  href="/signup"
-                  className="bg-[#e86822] text-white pt-2 pb-3 px-6 hover:bg-white hover:text-black transition-all rounded-sm invisible icon-btn"
-                >
-                  Sign Up
-                </a>
-              </div>
-            </div>
+          <div>
+            <p> 39-11 61st St, Woodside, New York</p>
           </div>
-          <div className="rightp-6 basis-[50%] min-w-[50%] flex flex-col gap-5 justify-center items-center  ">
-            <div className="m-10 flex  flex-col gap-5">
-            <h3 className="font-semibold text-[50px] ">
-              We Understand <br/>The Real Value <br/> of Home
-            </h3>
-           
-            <p className="text-[20px]">
-              We’ll make sure your property gets in front of the right people.
-              Lorem ipsum dolor sit amet, consec tetur cing elit.
-            </p>
-           
-            <div className="flex gap-10">
-             <div className="flex ">
-             <Avatar className="h-20 w-20 ">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-20 w-20 -translate-x-6">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-20 w-20 -translate-x-12">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-             </div>
-              <div className="flex justify-center items-center hover:underline">
-              <a className="text-[18px] font-bold" href="">View Property Type</a>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Property Listing */}
-      <PropertyListings/>
-
-      {/* Property Listing Part 2 */}
-      <PropertyListings2/>
-
-      {/* why choose us */}
-      <section className="bg-[#0a0f47] text-white py-16 px-4 md:px-8 lg:px-16">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-5xl font-semibold mb-4">Why choose Real Estate</h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto">
-            We'll make sure your property gets in front of the right people.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Feature 1 */}
-          <div className="flex flex-col">
-            <div className="mb-6 rounded-lg overflow-hidden">
+          <div className="flex gap-4 w-full justify-between">
+            <div className="h-[80vh]">
               <img
-                src={balcony}
-                alt="Property with balcony"
-                width={400}
-                height={300}
-                className="w-full h-auto object-cover"
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt=""
+                className="h-[650px] w-[700px] rounded-lg"
               />
             </div>
-            <h3 className="text-2xl font-bold mb-3">Wider range of properties</h3>
-            <p className="text-gray-300">
-              Lorem ipsum dolor sit amet, consec tetur cing elit. Suspe ndisse suscorem ipsum dolor sit ametcipsum
-              suscorein ipsumg elit.
-            </p>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="flex flex-col">
-            <div className="mb-6 rounded-lg overflow-hidden">
+            <div className="grid grid-cols-2 grid-rows-2 gap-6 h-[80vh]">
               <img
-                src={discussion}
-                alt="People collage"
-                width={400}
-                height={300}
-                className="w-full h-auto object-cover"
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt=""
+                className="h-[310px] w-[275px] rounded-lg"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt=""
+                className="h-[310px] w-[275px] rounded-lg"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt=""
+                className="h-[330px] w-[275px] rounded-lg"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                alt=""
+                className="h-[330px] w-[275px] rounded-lg"
               />
             </div>
-            <h3 className="text-2xl font-bold mb-3">Trusted by thousands</h3>
-            <p className="text-gray-300">
-              Lorem ipsum dolor sit amet, consec tetur cing elit. Suspe ndisse suscorem ipsum dolor sit ametcipsum
-              suscorein ipsumg elit.
-            </p>
           </div>
+        </div>
 
-          {/* Feature 3 */}
-          <div className="flex flex-col">
-            <div className="mb-6 rounded-lg overflow-hidden">
-              <img
-                src={office}
-                alt="Modern building"
-                width={400}
-                height={300}
-                className="w-full h-auto object-cover hover:scale-150 transition-all duration-500"
-              />
+      </div>
+
+      <div className="flex flex-col justify-center  items-center bg-[#f2f2f2] ">
+        <div className=" flex container  p-6 rounded-md w-[80vw] bg-[#f2f2f2]">
+          <div className="w-[70%]">
+            <div className="flex flex-col gap-4">
+              <div className=" bg-white m-4 space-y-4 p-6">
+                <h3 className="text-2xl text-blue-950 font-semibold">
+                  Description
+                </h3>
+                <p className="text-lg text-gray-600">
+                  Massa tempor nec feugiat nisl pretium. Egestas fringilla
+                  phasellus faucibus scelerisque eleifend donec. Porta nibh
+                  venenatis cras sed felis eget velit aliquet. Neque volutpat ac
+                  tincidunt vitae semper quis lectus. Turpis in eu mi bibendum
+                  neque egestas congue quisque. Sed elementum tempus egestas sed
+                  sed risus pretium quam. Dignissim sodales ut eu sem. Nibh
+                  mauris cursus mattis molestie a iaculis at erat pellentesque.
+                  Id interdum velit laoreet id donec ultrices tincidunt.
+                </p>
+              </div>
+
+              {/* <div className="flex ">
+                <h4>Overview</h4>
+                <div className="gird grid-rows-2 grid-cols-4">
+                  <div>
+                    <span><HousePlus /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span><FileType /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span><BedDouble /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span><Bath /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span><Car /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span><Grid2x2Plus /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span><Proportions /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span><Building2 /></span>{" "}
+                    <div>
+                      <p>id</p>
+                      <p>detail</p>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+
+              <div className="max-w-4xl mx-3 p-6 bg-white">
+                <h1 className="text-3xl font-bold text-[#0a1158] mb-8">
+                  Overview
+                </h1>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {/* ID */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <Home className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">ID</p>
+                      <p className="text-lg font-bold text-[#0a1158]">2297</p>
+                    </div>
+                  </div>
+
+                  {/* TYPE */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <FileText className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">TYPE</p>
+                      <p className="text-lg font-bold text-[#0a1158]">House</p>
+                    </div>
+                  </div>
+
+                  {/* BEDROOMS */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <Bed className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">
+                        BEDROOMS
+                      </p>
+                      <p className="text-lg font-bold text-[#0a1158]">3</p>
+                    </div>
+                  </div>
+
+                  {/* BATHROOMS */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <Bath className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">
+                        BATHROOMS
+                      </p>
+                      <p className="text-lg font-bold text-[#0a1158]">2</p>
+                    </div>
+                  </div>
+
+                  {/* GARAGES */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <Car className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">
+                        GARAGES
+                      </p>
+                      <p className="text-lg font-bold text-[#0a1158]">1</p>
+                    </div>
+                  </div>
+
+                  {/* SIZE */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <LayoutGrid className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">SIZE</p>
+                      <p className="text-lg font-bold text-[#0a1158]">
+                        900 SqFt
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* LAND SIZE */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <Grid2x2Plus className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">
+                        LAND SIZE
+                      </p>
+                      <p className="text-lg font-bold text-[#0a1158]">
+                        2,000 SqFt
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* YEAR BUILT */}
+                  <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-orange-50">
+                      <Building2 className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">
+                        YEAR BUILT
+                      </p>
+                      <p className="text-lg font-bold text-[#0a1158]">2020</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-sm p-6 max-w-4xl mx-3">
+                <h2 className="text-2xl font-bold text-indigo-950 mb-6">
+                  Details
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Property ID
+                    </span>
+                    <span className="text-gray-700">2297</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Price</span>
+                    <span className="text-gray-700">$1,250,000</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Property Type
+                    </span>
+                    <span className="text-gray-700">House</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Property Status
+                    </span>
+                    <span className="text-gray-700">For Sale</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Rooms</span>
+                    <span className="text-gray-700">4</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Bedrooms
+                    </span>
+                    <span className="text-gray-700">3</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Bathrooms
+                    </span>
+                    <span className="text-gray-700">2</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Year Built
+                    </span>
+                    <span className="text-gray-700">2020</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Size</span>
+                    <span className="text-gray-700">900 SqFt</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Land area
+                    </span>
+                    <span className="text-gray-700">2,000 SqFt</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Garages</span>
+                    <span className="text-gray-700">1</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Garage area
+                    </span>
+                    <span className="text-gray-700">50 SqFt</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-sm p-6 max-w-4xl mx-3">
+                <h2 className="text-2xl font-bold text-indigo-950 mb-6">
+                  Details
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Property ID
+                    </span>
+                    <span className="text-gray-700">2297</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Price</span>
+                    <span className="text-gray-700">$1,250,000</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Property Type
+                    </span>
+                    <span className="text-gray-700">House</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Property Status
+                    </span>
+                    <span className="text-gray-700">For Sale</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Rooms</span>
+                    <span className="text-gray-700">4</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Bedrooms
+                    </span>
+                    <span className="text-gray-700">3</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Bathrooms
+                    </span>
+                    <span className="text-gray-700">2</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Year Built
+                    </span>
+                    <span className="text-gray-700">2020</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Size</span>
+                    <span className="text-gray-700">900 SqFt</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Land area
+                    </span>
+                    <span className="text-gray-700">2,000 SqFt</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">Garages</span>
+                    <span className="text-gray-700">1</span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-indigo-950">
+                      Garage area
+                    </span>
+                    <span className="text-gray-700">50 SqFt</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <h3 className="text-2xl font-bold mb-3">Dedicated property service</h3>
-            <p className="text-gray-300">
-              Lorem ipsum dolor sit amet, consec tetur cing elit. Suspe ndisse suscorem ipsum dolor sit ametcipsum
-              suscorein ipsumg elit.
-            </p>
+          </div>
+          <div className=" w-[30%] bg-white">
+            <div className="flex flex-col gap-4 justify-center items-center mt-16">
+              <img src="https://images.pexels.com/photos/7821936/pexels-photo-7821936.jpeg" alt="" className="rounded-full w-44 h-44" />
+              <div className="flex flex-col justify-center items-center gap-1">
+              <p className="text-xl font-semibold text-blue-950"> Abody Swedey</p>
+              <p className="text-lg">Sales Excutive</p>
+              </div>
+              <span className="flex gap-2"><Star /> <Star /> <Star /> <Star /> <Star /></span>
+              <span>b.gordon@homeid.com</span>
+              <span>+98 0390 909 039</span>
+            </div>
+
+            <div className="flex items-center justify-center gap-4 m-10">
+              <span><Facebook  className="shadow-xl  w-10 rounded-full border-sm border-slate-50"/></span>
+              <span><Twitter  className="shadow-xl w-10 rounded-full border-sm border-slate-50" /></span>
+              <span><Linkedin  className="shadow-xl w-10  border-sm border-slate-50" /></span>
+              <span><Instagram   className="shadow-xl w-10 rounded-full border-sm border-slate-50"/></span>
+            </div>
+
+            <div>
+              <form action="" className="flex space-y-2 flex-col gap-2 m-2 p-4">
+                <input type="text" placeholder="Full Name"  className=" py-4 px-2 rounded-lg bg-[#f8f8f8]"/>
+                <input type="tel" placeholder="Phone Number" className=" py-4 px-2 rounded-lg bg-[#f8f8f8]"/>
+                <input type="email" placeholder="Email Address" className=" py-4 px-2 rounded-lg bg-[#f8f8f8]" />
+                <input type="text" placeholder="Hello, I am interested in [Affordable Urban House]" className=" bg-[#f8f8f8] py-10 px-2 rounded-lg" />
+                <Button className="p-8 text-xl bg-orange-600">Send Message</Button>
+                <Button className="p-8 text-xl bg-white text-black hover:text-white"> <Phone /> Call</Button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </section>
-    {/* <ContactUs/> */}
-    <ContactForm/>
-
-    <NewsArticlesSection/>
-    <Footer/>
     </>
   );
 };
 
-export default Navbar;
+export default Test;

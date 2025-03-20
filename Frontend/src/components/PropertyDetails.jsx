@@ -5,12 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSelector } from "react-redux";
+import { Printer, Share2, Plus, Star } from "lucide-react";
 
 const PropertyDetails = () => {
   const { slug } = useParams(); // Get slug from URL
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
-const token = useSelector((state)=> state.auth.token)
+  const token = useSelector((state) => state.auth.token);
   useEffect(() => {
     fetchPropertyDetails();
   }, [slug]);
@@ -18,9 +19,12 @@ const token = useSelector((state)=> state.auth.token)
   const fetchPropertyDetails = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`http://localhost:8000/api/v1/property/properties/${slug}`,{headers:{Authorization:token}});
+      const { data } = await axios.get(
+        `http://localhost:8000/api/v1/property/properties/${slug}`,
+        { headers: { Authorization: token } }
+      );
       setProperty(data.property);
-      console.log(data)
+      console.log(data);
     } catch (error) {
       console.error("Error fetching property details:", error);
     }
@@ -46,7 +50,6 @@ const token = useSelector((state)=> state.auth.token)
             className="w-full h-90 object-cover"
           />
         )}
-
         <CardContent className="p-4">
           <h2 className="text-2xl font-semibold">{property.name}</h2>
           <p className="text-gray-600">{property.address}</p>
@@ -88,6 +91,7 @@ const token = useSelector((state)=> state.auth.token)
         </CardContent>
       </Card>
     </div>
+   
   );
 };
 

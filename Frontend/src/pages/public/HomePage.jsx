@@ -204,7 +204,7 @@ const HomePage = () => {
                   alt="Property with balcony"
                   width={400}
                   height={300}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover hover:scale-125 transition-all duration-500"
                 />
               </div>
               <h3 className="text-2xl font-bold mb-3">
@@ -224,7 +224,7 @@ const HomePage = () => {
                   alt="People collage"
                   width={400}
                   height={300}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover hover:scale-125 transition-all duration-500"
                 />
               </div>
               <h3 className="text-2xl font-bold mb-3">Trusted by thousands</h3>
@@ -242,7 +242,7 @@ const HomePage = () => {
                   alt="Modern building"
                   width={400}
                   height={300}
-                  className="w-full h-auto object-cover hover:scale-150 transition-all duration-500"
+                  className="w-full h-auto object-cover hover:scale-125 transition-all duration-500"
                 />
               </div>
               <h3 className="text-2xl font-bold mb-3">

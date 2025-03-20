@@ -63,15 +63,20 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <PublicRoute />,
-    children: [{ index: true, element: <HomePage /> }],
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "property/:slug", element: <PropertyDetails /> },
+    ],
   },
   {
     path: "/test",
     element: <Test />,
-  },{
-    path: "/login",
-    element: <LoginPage/>
   },
+  // {
+  //   path: "/login",
+  //   element: <LoginPage/>
+  // },
 
   // Admin Routes
   {

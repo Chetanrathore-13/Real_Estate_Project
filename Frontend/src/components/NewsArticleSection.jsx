@@ -86,7 +86,7 @@ export default function NewsArticlesSection() {
           {blogs.map((article) => (
             <Card
               key={article._id}
-              className="border-none shadow-sm hover:shadow-md transition-shadow"
+              className="border-none shadow-md hover:shadow-lg transition-shadow"
             >
               <div className="relative">
                 <img
