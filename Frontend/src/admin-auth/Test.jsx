@@ -4,39 +4,65 @@ import {
   Share2,
   Plus,
   Star,
-  HousePlus,
   Home,
   FileText,
   Bed,
   LayoutGrid,
-  FileType,
-  BedDouble,
   Bath,
   Car,
   Grid2x2Plus,
-  Proportions,
   Building2,
   Instagram,
   Twitter,
   Facebook,
   Linkedin,
-  Phone
+  Phone,
 } from "lucide-react";
-import {Button} from "../components/ui/button";
-
+import { Button } from "../components/ui/button";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 const Test = () => {
+
+  const token = useSelector((state) => state.auth.token);
+  const { slug } = useParams(); // Get slug from URL
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchPropertyDetails = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8000/api/v1/property/properties/${slug}`,
+        { headers: { Authorization: token } }
+      );
+      setProperty(data.property);
+      console.log(data.property);
+    } catch (error) {
+      console.error("Error fetching property details:", error);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchPropertyDetails();
+  }, [slug]);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center ">
-
         <div className="flex flex-col container m-8 p-8 gap-4 w-[80vw]">
           <div className="flex justify-between">
             <div className="flex gap-2">
-              <p className="bg-orange-500 text-white px-4  rounded-sm">
-                Feature
-              </p>
+              {property?.featureName?.map((feature) => (
+                <p key={feature} className="bg-orange-500 text-white px-4   rounded-sm">
+                   feature
+                </p>
+              ))}
               <span className="bg-purple-700 text-white px-4  rounded-sm">
-                Time{" "}
+                {property?.updatedAt.slice(0, 10)} 
               </span>
             </div>
             <div className="flex gap-4">
@@ -56,50 +82,38 @@ const Test = () => {
           </div>
           <div className="flex justify-between items-center">
             <h2 className="text-3xl font-semibold text-blue-950">
-              Store in Woodside, New York
+              {property?.name}
             </h2>
-            <p className="text-2xl font-semibold">$1,250,000</p>
+            <p className="text-2xl font-semibold">${property?.sellingPrice.toLocaleString()}</p>
           </div>
           <div>
-            <p> 39-11 61st St, Woodside, New York</p>
+            <p> {property?.address}</p>
           </div>
           <div className="flex gap-4 w-full justify-between">
             <div className="h-[80vh]">
               <img
-                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                src={property?.featureImage}
                 alt=""
                 className="h-[650px] w-[700px] rounded-lg"
               />
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-6 h-[80vh]">
-              <img
-                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt=""
-                className="h-[310px] w-[275px] rounded-lg"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt=""
-                className="h-[310px] w-[275px] rounded-lg"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt=""
-                className="h-[330px] w-[275px] rounded-lg"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                alt=""
-                className="h-[330px] w-[275px] rounded-lg"
-              />
+              {property?.imageGallery?.map((image) => (
+                <img
+                  key={image}
+                  src={image}
+                  alt=""
+                  className="h-[300px] w-[300px] rounded-lg"
+                />
+              ))}
+           
             </div>
           </div>
         </div>
-
       </div>
 
-      <div className="flex flex-col justify-center  items-center bg-[#f2f2f2] ">
-        <div className=" flex container  p-6 rounded-md w-[80vw] bg-[#f2f2f2]">
+       <div className="flex flex-col justify-center  items-center bg-[#f2f2f2] ">
+        <div className=" flex container  p-6 rounded-md w-[80vw] ">
           <div className="w-[70%]">
             <div className="flex flex-col gap-4">
               <div className=" bg-white m-4 space-y-4 p-6">
@@ -107,14 +121,7 @@ const Test = () => {
                   Description
                 </h3>
                 <p className="text-lg text-gray-600">
-                  Massa tempor nec feugiat nisl pretium. Egestas fringilla
-                  phasellus faucibus scelerisque eleifend donec. Porta nibh
-                  venenatis cras sed felis eget velit aliquet. Neque volutpat ac
-                  tincidunt vitae semper quis lectus. Turpis in eu mi bibendum
-                  neque egestas congue quisque. Sed elementum tempus egestas sed
-                  sed risus pretium quam. Dignissim sodales ut eu sem. Nibh
-                  mauris cursus mattis molestie a iaculis at erat pellentesque.
-                  Id interdum velit laoreet id donec ultrices tincidunt.
+                  {property?.description}
                 </p>
               </div>
 
@@ -193,7 +200,7 @@ const Test = () => {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 font-medium">ID</p>
-                      <p className="text-lg font-bold text-[#0a1158]">2297</p>
+                      <p className="text-lg font-bold text-[#0a1158]">{property?.reraNumber}</p>
                     </div>
                   </div>
 
@@ -204,7 +211,7 @@ const Test = () => {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 font-medium">TYPE</p>
-                      <p className="text-lg font-bold text-[#0a1158]">House</p>
+                      <p className="text-lg font-bold text-[#0a1158]">{property?.typeName}</p>
                     </div>
                   </div>
 
@@ -217,7 +224,7 @@ const Test = () => {
                       <p className="text-sm text-gray-500 font-medium">
                         BEDROOMS
                       </p>
-                      <p className="text-lg font-bold text-[#0a1158]">3</p>
+                      <p className="text-lg font-bold text-[#0a1158]">{property?.totalRooms}</p>
                     </div>
                   </div>
 
@@ -230,7 +237,7 @@ const Test = () => {
                       <p className="text-sm text-gray-500 font-medium">
                         BATHROOMS
                       </p>
-                      <p className="text-lg font-bold text-[#0a1158]">2</p>
+                      <p className="text-lg font-bold text-[#0a1158]">{property?.totalBedRooms}</p>
                     </div>
                   </div>
 
@@ -243,7 +250,7 @@ const Test = () => {
                       <p className="text-sm text-gray-500 font-medium">
                         GARAGES
                       </p>
-                      <p className="text-lg font-bold text-[#0a1158]">1</p>
+                      <p className="text-lg font-bold text-[#0a1158]">{property?.garage_parking_size}</p>
                     </div>
                   </div>
 
@@ -255,7 +262,7 @@ const Test = () => {
                     <div>
                       <p className="text-sm text-gray-500 font-medium">SIZE</p>
                       <p className="text-lg font-bold text-[#0a1158]">
-                        900 SqFt
+                       {property?.areaSize} {property?.areaSizePostfix}
                       </p>
                     </div>
                   </div>
@@ -270,7 +277,7 @@ const Test = () => {
                         LAND SIZE
                       </p>
                       <p className="text-lg font-bold text-[#0a1158]">
-                        2,000 SqFt
+                      {property?.areaSize + 200} {property?.areaSizePostfix}
                       </p>
                     </div>
                   </div>
@@ -292,88 +299,40 @@ const Test = () => {
 
               <div className="bg-white rounded-lg shadow-sm p-6 max-w-4xl mx-3">
                 <h2 className="text-2xl font-bold text-indigo-950 mb-6">
-                  Details
+                Address
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
-                      Property ID
+                    Address
                     </span>
-                    <span className="text-gray-700">2297</span>
+                    <span className="text-gray-700">{property?.address}</span>
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">Price</span>
-                    <span className="text-gray-700">$1,250,000</span>
+                    <span className="font-medium text-indigo-950">Country</span>
+                    <span className="text-gray-700">{property?.countryName}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
-                      Property Type
+                    City/Town
                     </span>
-                    <span className="text-gray-700">House</span>
+                    <span className="text-gray-700">{property?.cityName}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
-                      Property Status
+                    Province/State
                     </span>
-                    <span className="text-gray-700">For Sale</span>
+                    <span className="text-gray-700">{property?.stateName}</span>
                   </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">Rooms</span>
-                    <span className="text-gray-700">4</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">
-                      Bedrooms
-                    </span>
-                    <span className="text-gray-700">3</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">
-                      Bathrooms
-                    </span>
-                    <span className="text-gray-700">2</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">
-                      Year Built
-                    </span>
-                    <span className="text-gray-700">2020</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">Size</span>
-                    <span className="text-gray-700">900 SqFt</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">
-                      Land area
-                    </span>
-                    <span className="text-gray-700">2,000 SqFt</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">Garages</span>
-                    <span className="text-gray-700">1</span>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <span className="font-medium text-indigo-950">
-                      Garage area
-                    </span>
-                    <span className="text-gray-700">50 SqFt</span>
-                  </div>
+                  
                 </div>
               </div>
 
+              
               <div className="bg-white rounded-lg shadow-sm p-6 max-w-4xl mx-3">
                 <h2 className="text-2xl font-bold text-indigo-950 mb-6">
                   Details
@@ -384,52 +343,52 @@ const Test = () => {
                     <span className="font-medium text-indigo-950">
                       Property ID
                     </span>
-                    <span className="text-gray-700">2297</span>
+                    <span className="text-gray-700">{property?.reraNumber}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">Price</span>
-                    <span className="text-gray-700">$1,250,000</span>
+                    <span className="text-gray-700">${property?.sellingPrice.toLocaleString()}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
                       Property Type
                     </span>
-                    <span className="text-gray-700">House</span>
+                    <span className="text-gray-700">{property?.typeName}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
                       Property Status
                     </span>
-                    <span className="text-gray-700">For Sale</span>
+                    <span className="text-gray-700">{property?.statusName}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">Rooms</span>
-                    <span className="text-gray-700">4</span>
+                    <span className="text-gray-700">{property?.totalRooms}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
                       Bedrooms
                     </span>
-                    <span className="text-gray-700">3</span>
+                    <span className="text-gray-700">{property?.totalBedRooms}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
                       Bathrooms
                     </span>
-                    <span className="text-gray-700">2</span>
+                    <span className="text-gray-700">{property?.totalBedRooms}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">
                       Year Built
                     </span>
-                    <span className="text-gray-700">2020</span>
+                    <span className="text-gray-700">{property?.yearBuilt}</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -441,12 +400,12 @@ const Test = () => {
                     <span className="font-medium text-indigo-950">
                       Land area
                     </span>
-                    <span className="text-gray-700">2,000 SqFt</span>
+                    <span className="text-gray-700">{property?.areaSize + 200} {property?.areaSizePostfix}</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span className="font-medium text-indigo-950">Garages</span>
-                    <span className="text-gray-700">1</span>
+                    <span className="text-gray-700">{property?.garage_parking_size}</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -457,36 +416,73 @@ const Test = () => {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
           <div className=" w-[30%] bg-white">
             <div className="flex flex-col gap-4 justify-center items-center mt-16">
-              <img src="https://images.pexels.com/photos/7821936/pexels-photo-7821936.jpeg" alt="" className="rounded-full w-44 h-44" />
+              <img
+                src="https://images.pexels.com/photos/7821936/pexels-photo-7821936.jpeg"
+                alt=""
+                className="rounded-full w-44 h-44"
+              />
               <div className="flex flex-col justify-center items-center gap-1">
-              <p className="text-xl font-semibold text-blue-950"> Abody Swedey</p>
-              <p className="text-lg">Sales Excutive</p>
+                <p className="text-xl font-semibold text-blue-950">
+                  {" "}
+                  Abody Swedey
+                </p>
+                <p className="text-lg">Sales Excutive</p>
               </div>
-              <span className="flex gap-2"><Star /> <Star /> <Star /> <Star /> <Star /></span>
+              <span className="flex gap-2">
+                <Star /> <Star /> <Star /> <Star /> <Star />
+              </span>
               <span>b.gordon@homeid.com</span>
               <span>+98 0390 909 039</span>
             </div>
 
             <div className="flex items-center justify-center gap-4 m-10">
-              <span><Facebook  className="shadow-xl  w-10 rounded-full border-sm border-slate-50"/></span>
-              <span><Twitter  className="shadow-xl w-10 rounded-full border-sm border-slate-50" /></span>
-              <span><Linkedin  className="shadow-xl w-10  border-sm border-slate-50" /></span>
-              <span><Instagram   className="shadow-xl w-10 rounded-full border-sm border-slate-50"/></span>
+              <span>
+                <Facebook className="shadow-xl  w-10 rounded-full border-sm border-slate-50" />
+              </span>
+              <span>
+                <Twitter className="shadow-xl w-10 rounded-full border-sm border-slate-50" />
+              </span>
+              <span>
+                <Linkedin className="shadow-xl w-10  border-sm border-slate-50" />
+              </span>
+              <span>
+                <Instagram className="shadow-xl w-10 rounded-full border-sm border-slate-50" />
+              </span>
             </div>
 
             <div>
               <form action="" className="flex space-y-2 flex-col gap-2 m-2 p-4">
-                <input type="text" placeholder="Full Name"  className=" py-4 px-2 rounded-lg bg-[#f8f8f8]"/>
-                <input type="tel" placeholder="Phone Number" className=" py-4 px-2 rounded-lg bg-[#f8f8f8]"/>
-                <input type="email" placeholder="Email Address" className=" py-4 px-2 rounded-lg bg-[#f8f8f8]" />
-                <input type="text" placeholder="Hello, I am interested in [Affordable Urban House]" className=" bg-[#f8f8f8] py-10 px-2 rounded-lg" />
-                <Button className="p-8 text-xl bg-orange-600">Send Message</Button>
-                <Button className="p-8 text-xl bg-white text-black hover:text-white"> <Phone /> Call</Button>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  className=" py-4 px-2 rounded-lg bg-[#f8f8f8]"
+                />
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  className=" py-4 px-2 rounded-lg bg-[#f8f8f8]"
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  className=" py-4 px-2 rounded-lg bg-[#f8f8f8]"
+                />
+                <input
+                  type="text"
+                  placeholder="Hello, I am interested in [Affordable Urban House]"
+                  className=" bg-[#f8f8f8] py-10 px-2 rounded-lg"
+                />
+                <Button className="p-8 text-xl bg-orange-600">
+                  Send Message
+                </Button>
+                <Button className="p-8 text-xl bg-white text-black hover:text-white">
+                  {" "}
+                  <Phone /> Call
+                </Button>
               </form>
             </div>
           </div>

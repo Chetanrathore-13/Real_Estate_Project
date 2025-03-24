@@ -5,7 +5,7 @@ import { useSelector } from "react-redux"
 import { useEffect } from "react"
 import axios from "axios"
 import { useState } from "react"
-
+import { Link } from "react-router-dom"
 export default function PropertyListings2() {
     const token = useSelector((state)=> state.auth.token)
     const [page, setPage] = useState(1);
@@ -55,45 +55,57 @@ export default function PropertyListings2() {
 function PropertyCard({ property }) {
   return (
     <Card className="overflow-hidden h-full flex flex-col">
-      <div className="relative">
+    <div className="relative group">
+      <Link to={`/property/${property.slug}`}>
         <img
           src={property.featureImage || "/placeholder.svg"}
           alt={property.title}
           width={500}
           height={300}
-          className="w-full h-[220px] object-cover"
+          className="w-full h-[220px] object-cover transition-all duration-300"
         />
-        <div className="absolute top-4 left-4 flex gap-2">
-          {property.featured && (
-            <Badge className="bg-orange-500 hover:bg-orange-600 text-white font-medium">FEATURED</Badge>
-          )}
-          <Badge className="bg-green-500 hover:bg-green-600 text-white font-medium">FOR RENT</Badge>
+        {/* Black overlay effect */}
+        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+      </Link>
+  
+      <div className="absolute top-4 left-4 flex gap-2">
+        {property.featured && (
+          <Badge className="bg-orange-500 hover:bg-orange-600 text-white font-medium">FEATURED</Badge>
+        )}
+        <Badge className="bg-green-500 hover:bg-green-600 text-white font-medium">FOR RENT</Badge>
+      </div>
+    </div>
+  
+    <CardContent className="flex-grow pt-6">
+      <Link to={`/property/${property.slug}`}>
+        <h2 className="text-xl font-bold text-navy-900 mb-1 hover:text-orange-500">{property.name}</h2>
+      </Link>
+      <Link to={`/property/${property.slug}`}>
+        <p className="text-gray-500 mb-2 hover:text-orange-500">{property.address}</p>
+      </Link>
+      <p className="text-xl font-bold text-navy-900">
+        ${property.sellingPrice} <span className="text-gray-500 font-normal">/ month</span>
+      </p>
+    </CardContent>
+  
+    <CardFooter className="border-t pt-4 pb-4">
+      <div className="flex justify-between w-full">
+        <div className="flex items-center gap-1">
+          <Bed className="h-5 w-5 text-orange-500" />
+          <span className="text-gray-700">{property.totalRooms} Br</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <Bath className="h-5 w-5 text-orange-500" />
+          <span className="text-gray-700">{property.totalBedRooms} Ba</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <SquareFoot className="h-5 w-5 text-orange-500" />
+          <span className="text-gray-700">{property.areaSize} SqFt</span>
         </div>
       </div>
-      <CardContent className="flex-grow pt-6">
-        <h2 className="text-xl font-bold text-navy-900 mb-1">{property.title}</h2>
-        <p className="text-gray-500 mb-2">{property.address}</p>
-        <p className="text-xl font-bold text-navy-900">
-          ${property.sellingPrice} <span className="text-gray-500 font-normal">/ month</span>
-        </p>
-      </CardContent>
-      <CardFooter className="border-t pt-4 pb-4">
-        <div className="flex justify-between w-full">
-          <div className="flex items-center gap-1">
-            <Bed className="h-5 w-5 text-orange-500" />
-            <span className="text-gray-700">{property.totalRooms} Br</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Bath className="h-5 w-5 text-orange-500" />
-            <span className="text-gray-700">{property.totalBedRooms} Ba</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <SquareFoot className="h-5 w-5 text-orange-500" />
-            <span className="text-gray-700">{property.areaSize} SqFt</span>
-          </div>
-        </div>
-      </CardFooter>
-    </Card>
+    </CardFooter>
+  </Card>
+  
   )
 }
 

@@ -24,7 +24,7 @@ const PropertyList = () => {
     setLoading(true);
     try {
       const { data } = await axios.get("http://localhost:8000/api/v1/property/properties", {
-        params: { search, page, limit: 10 },
+        params: { search, page, limit: 9 },
         headers: { Authorization: token }
       });
     console.log(data)

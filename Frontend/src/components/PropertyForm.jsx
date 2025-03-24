@@ -192,7 +192,7 @@ const PropertyForm = () => {
   }, [stateId, token]);
 
   const handleSelectAgent = (value) => {
-    setValue("agentId", value);
+    setValue("agent", value);
   };
   
   const handleSelectStatus = (value)=>{
@@ -489,6 +489,22 @@ const onSubmit = async (data) => {
           <Input
             {...register("garage_parking_size")}
             placeholder="Garage Parking Size"
+            className="w-full"
+          />
+        </div>
+        <div>
+          <Label>Garage Area</Label>
+          <Input
+            {...register("garage_area")}
+            placeholder="Garage Area"
+            className="w-full"
+          />
+        </div>
+        <div>
+          <Label>Year Built</Label>
+          <Input
+            {...register("yearBuilt")}
+            placeholder="Year Built"
             className="w-full"
           />
         </div>

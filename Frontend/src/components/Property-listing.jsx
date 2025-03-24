@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { useSelector } from "react-redux"
 import { useEffect } from "react"
 import axios from "axios"
+import { Link } from "react-router-dom"
 
 
 export default function PropertyListings() {
@@ -127,8 +128,8 @@ function PropertyCard({ property }) {
         </div>
 
         {/* Title & Price */}
-        <h3 className="text-xl font-semibold text-gray-900">{property.name}</h3>
-        <p className="text-lg font-bold text-gray-800">{property.sellingPrice}</p>
+        <Link to={`/property/${property.slug}`}><h3 className=" hover:text-orange-500 text-xl font-semibold text-gray-900">{property.name}</h3></Link>
+        <p className="text-lg font-bold text-gray-800 ">{property.sellingPrice}</p>
 
         {/* Arrow Icon */}
         <div className="flex justify-end mt-4">

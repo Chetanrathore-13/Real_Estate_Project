@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../../admin-auth/test.scss";
-import backgroundImage from "../../../public/hero.jpg";
 import iconOne from "../../../public/home-search.svg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PropertyListings from "../../components/Property-listing";
@@ -16,6 +15,8 @@ import Navbar from "../../components/Navbar";
 import Badge1 from "../../../public/images/Badge1.jpg";
 import Badge2 from "../../../public/images/Badge2.jpg";
 import Badge3 from "../../../public/images/Badge3.jpg";
+import FooterMine from "./components/FooterMine";
+import NavbarMine from "./components/NavbarMine";
 const HomePage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -72,7 +73,7 @@ const HomePage = () => {
         </header>
       </div> */}
 
-      <Navbar />
+      <NavbarMine />
 
       {/* Hero Section */}
       <div
@@ -260,7 +261,7 @@ const HomePage = () => {
       <ContactForm />
 
       <NewsArticlesSection />
-      <Footer />
+      <FooterMine />
     </>
   );
 };

@@ -153,6 +153,7 @@ export const getProperties = async (req, res) => {
   }
 };
 export const addProperty = async (req, res) => {
+  console.log("req.body", req.body);
   try {
     const {
       name,
@@ -180,9 +181,14 @@ export const addProperty = async (req, res) => {
       type,
       showInFeature,
       showInProjectsOnly,
+      garage_area,
+      yearBuilt
     } = req.body;
 
-    // check features is array or not
+    
+   if(!name || !description || !agent || !country || !state || !city || !address || !features || !label || !status || !type){
+    return res.status(400).json({ message: "All fields are required" });
+   }
 
     const featureImage = req.files.featureImage[0].path;
     const imageGallery = req.files.imageGallery.map((file) => file.path);
@@ -214,6 +220,8 @@ export const addProperty = async (req, res) => {
       type,
       showInFeature,
       showInProjectsOnly,
+      garage_area,
+      yearBuilt
     });
     await property.save();
     res.status(200).json(property);

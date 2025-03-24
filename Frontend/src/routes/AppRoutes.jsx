@@ -38,6 +38,18 @@ import ProjectTypes from "../components/ProjectType";
 import ProjectFeatures from "../components/ProjectFeature";
 import {ProjectDetail} from"../components/ProjectDetail"
 import HomePage from "../pages/public/HomePage"
+import {SignupForm} from "../components/signup-form";
+import PropertyDetailsPublic from "../components/PropertyDetailsPublic";
+
+import Aboutus from "../pages/public/Aboutus";
+import Contact from "../pages/public/Contact";
+import FAQ from "../pages/public/FAQ";
+import PageNot from "../pages/public/PageNot";
+import Blog from "../pages/public/Blog";
+import Agency from "../pages/public/Agency";
+import Services from "../pages/public/Services";
+import Agent from "../pages/public/Agent";
+
 
 const getDashboardRoute = (role) => {
   switch (role) {
@@ -66,18 +78,47 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "login", element: <LoginPage /> },
-      { path: "property/:slug", element: <PropertyDetails /> },
+      { path: "property/:slug", element: <PropertyDetailsPublic /> },
+      { path: "signup", element: <SignupForm /> },
     ],
   },
   {
     path: "/test",
     element: <Test />,
   },
-  // {
-  //   path: "/login",
-  //   element: <LoginPage/>
-  // },
-
+  //mine 
+  {
+    path: "/about-us",
+    element: <Aboutus/>,
+  },
+  {
+    path: "/Blog",
+    element: <Blog/>,
+  },
+  {
+    path: "/contact-us",
+    element: <Contact/>,
+  },
+  {
+    path: "/faq",
+    element: <FAQ/>,
+  },
+  {
+    path: "/page-404",
+    element: <PageNot/>,
+  },
+  {
+    path: "/agency",
+    element: <Agency/>,
+  },
+  {
+    path: "/service",
+    element: <Services/>,
+  },
+  {
+    path: "/agent",
+    element: <Agent/>,
+  },
   // Admin Routes
   {
     path: "/admin",
@@ -157,7 +198,7 @@ const router = createBrowserRouter([
   // Redirect all other routes
   {
     path: "*",
-    element: <ProtectedRedirect />,
+    element: <HomePage/>,
   },
 ]);
 
