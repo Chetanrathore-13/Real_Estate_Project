@@ -73,7 +73,7 @@ const HomePage = () => {
         </header>
       </div> */}
 
-      <NavbarMine />
+
 
       {/* Hero Section */}
       <div
@@ -261,7 +261,7 @@ const HomePage = () => {
       <ContactForm />
 
       <NewsArticlesSection />
-      <FooterMine />
+     
     </>
   );
 };

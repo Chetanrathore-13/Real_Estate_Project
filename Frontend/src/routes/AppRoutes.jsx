@@ -49,6 +49,8 @@ import Blog from "../pages/public/Blog";
 import Agency from "../pages/public/Agency";
 import Services from "../pages/public/Services";
 import Agent from "../pages/public/Agent";
+import PropertyListings2 from "../components/Propety-listings2";
+import PropertyPublic from "../pages/public/PropertyPublic";
 
 
 const getDashboardRoute = (role) => {
@@ -77,20 +79,30 @@ const router = createBrowserRouter([
     element: <PublicRoute />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: "login", element: <LoginPage /> },
+      { path: "auth/:reason", element: <LoginPage /> },
       { path: "property/:slug", element: <PropertyDetailsPublic /> },
-      { path: "signup", element: <SignupForm /> },
+        // { path: "signup", element: <SignupForm /> },
+        {
+          path: "/projects",
+          element: <ProjectList />,
+        },
+      {
+        path: "/properties",
+        element: <PropertyPublic/>,
+      },
     ],
   },
   {
     path: "/test",
     element: <Test />,
   },
+
   //mine 
   {
     path: "/about-us",
     element: <Aboutus/>,
   },
+  
   {
     path: "/Blog",
     element: <Blog/>,
@@ -198,7 +210,7 @@ const router = createBrowserRouter([
   // Redirect all other routes
   {
     path: "*",
-    element: <HomePage/>,
+    element: <PageNot/>,
   },
 ]);
 

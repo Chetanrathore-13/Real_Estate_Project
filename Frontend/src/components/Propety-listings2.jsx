@@ -84,7 +84,7 @@ function PropertyCard({ property }) {
         <p className="text-gray-500 mb-2 hover:text-orange-500">{property.address}</p>
       </Link>
       <p className="text-xl font-bold text-navy-900">
-        ${property.sellingPrice} <span className="text-gray-500 font-normal">/ month</span>
+        ${property.sellingPrice.toLocaleString()} <span className="text-gray-500 font-normal">/ month</span>
       </p>
     </CardContent>
   
