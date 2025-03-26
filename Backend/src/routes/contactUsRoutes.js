@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/contacts", authMiddleware, getContactUs);
+router.get("/get_contacts", getContactUs);
 router.post("/add_contact", authMiddleware, createContactUs);
 router.delete("/delete_contact/:id", authMiddleware, deleteContactUs);
 router.patch("/update_contact/:id", authMiddleware, updateContactUs);

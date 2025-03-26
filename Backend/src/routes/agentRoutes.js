@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/agents", authMiddleware, getAgents);
+router.get("/get_agents", getAgents);
 router.post("/add_agent", authMiddleware, addAgent);
 router.delete("/delete_agent/:id", authMiddleware, deleteAgent);
 router.patch("/update_agent/:id", authMiddleware, updateAgent);

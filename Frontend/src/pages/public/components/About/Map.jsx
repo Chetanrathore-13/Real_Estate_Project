@@ -1,4 +1,4 @@
-export default function Map() {
+export default function Map({contact}) {
   return (
     <div className="relative w-full mt-5 h-[480px]">
       {/* Map Background */}
@@ -15,13 +15,11 @@ export default function Map() {
       <div className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-lg p-4 md:p-6 h-auto w-64 md:w-80">
         <h2 className="text-xl text-[#080E51] font-bold">Offices Location</h2>
         <p className="text-gray-600 mt-2">
-          123 Main Street, <br />
-          Melbourne, VIC 3000 <br />
-          Australia
+          {contact?.fullAddress}
         </p>
         <h2 className="text-xl text-[#080E51] mt-6 font-bold">Visit at our office</h2>
         <p className="text-gray-600 mt-2">
-          2005 Stokes Isle Apt. 896, Venaville, New York
+        {contact?.fullAddress}
         </p>
       </div>
     </div>

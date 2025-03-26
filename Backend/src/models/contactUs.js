@@ -17,7 +17,10 @@ const contactUsSchema = new mongoose.Schema({
     contactNumber: [{ type: String, required: true }],
     openingHours: { type: String, required: true },
     email: { type: String, required: true },
-    whatsAppNumber: { type: String, required: true }
+    whatsAppNumber: { type: String, required: true },
+    officeNumber:{ type: String, required: true },
+    openingTIme:{ type: String, required: true },
+    closingTime:{ type: String, required: true }
 }, { timestamps: true });
 
 export default mongoose.model("ContactUs", contactUsSchema);

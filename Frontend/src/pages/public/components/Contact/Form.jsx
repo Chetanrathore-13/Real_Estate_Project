@@ -1,6 +1,6 @@
 import React from "react";
 
-const Form = () => {
+const Form = ({contact}) => {
   return (
     <div className="w-full mx-auto p-4 sm:p-6 rounded-2xl flex flex-col md:flex-row mt-5 items-start gap-6 md:gap-8">
       {/* Left Side - Text Section */}
@@ -20,10 +20,10 @@ const Form = () => {
               <img src="/ContactUs/call.png" alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12" />
               <div>
                 <h2 className="text-lg sm:text-xl font-bold">Contact</h2>
-                <p className="mt-2 text-sm sm:text-base">Office: 1-323 900 6800</p>
-                <p className="text-sm sm:text-base">Mobile: 123 900 68668</p>
+                <p className="mt-2 text-sm sm:text-base">Office: {contact?.officeNumber}</p>
+                <p className="text-sm sm:text-base">Mobile: {contact?.whatsAppNumber}</p>
                 <p className="text-sm sm:text-base">Fax: 123 900 68098</p>
-                <p className="text-sm sm:text-base">Email: hello@homeid.com</p>
+                <p className="text-sm sm:text-base">Email:  {contact?.email}</p>
               </div>
             </div>
 
@@ -32,10 +32,7 @@ const Form = () => {
               <img src="/ContactUs/hour.png" alt="Logo" className="w-10 h-10 sm:w-12 sm:h-12" />
               <div>
                 <h2 className="text-lg sm:text-xl font-bold">Hours of Operation</h2>
-                <p className="mt-2 text-sm sm:text-base">Monday – Friday:</p>
-                <p className="text-sm sm:text-base">09:00 – 20:00</p>
-                <p className="mt-2 text-sm sm:text-base">Sunday & Saturday:</p>
-                <p className="text-sm sm:text-base">10:30 – 22:00</p>
+                <p className="text-sm sm:text-base">{contact?.openingHours} </p>
               </div>
             </div>
           </div>

@@ -9,9 +9,9 @@ import {
 
 const router = express.Router();
 
-router.get("/contacts", authMiddleware, getFandQ);
-router.post("/add_contact", authMiddleware, createFandQ);
-router.delete("/delete_contact/:id", authMiddleware, deleteFandQ);
-router.patch("/update_contact/:id", authMiddleware, updateFandQ);
+router.get("/get_faqs", getFandQ);
+router.post("/faqs", authMiddleware, createFandQ);
+router.delete("/delete_faqs/:id", authMiddleware, deleteFandQ);
+router.patch("/update_faqs/:id", authMiddleware, updateFandQ);
 
 export default router;

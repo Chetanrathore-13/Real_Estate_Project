@@ -19,7 +19,9 @@ import {
   AlertDialogTitle,
 } from "../components/ui/alert-dialog";
 
-function BlogList() {
+function BlogList({ role }) {
+  console.log(role); // ✅ Debugging role
+
   const [blogs, setBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -30,24 +32,18 @@ function BlogList() {
   const [blogToDelete, setBlogToDelete] = useState(null);
   const token = useSelector((state) => state.auth.token);
 
-
-
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/v1/blog/get_blogs", {
-          params: { search, page, limit: 10 },
-          headers: {
-            Authorization:token, // ✅ Fixed Authorization Header
-          },
+          params: { search, page, limit: 9 },
+          headers: role === "admin" ? { Authorization: token } : {}, // ✅ Only send token for admin
         });
 
         console.log("API Response:", response.data); // ✅ Debugging
-        // ✅ Ensure response is an array
         setBlogs(response.data.blogwithicon);
         setHasMore(response.data.hasMore || false);
-        
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
         setBlogs([]); // Prevent errors
@@ -56,9 +52,8 @@ function BlogList() {
       }
     };
 
-
-    if (token) fetchBlogs();
-  }, [token,page,search]);
+    fetchBlogs();
+  }, [role, token, page, search]);
 
   const handleDeleteClick = (id) => {
     setBlogToDelete(id);
@@ -69,9 +64,7 @@ function BlogList() {
     if (blogToDelete) {
       try {
         await axios.delete(`http://localhost:8000/api/v1/blog/delete_blog/${blogToDelete}`, {
-          headers: {
-            Authorization: token, // ✅ Fixed Authorization Header
-          },
+          headers: { Authorization: token },
         });
 
         setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== blogToDelete));
@@ -89,7 +82,7 @@ function BlogList() {
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.tags?.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())) || // ✅ Optional chaining to prevent errors
+      blog.tags?.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
       blog.author.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -102,14 +95,19 @@ function BlogList() {
   }
 
   return (
-    <div className="container mx-auto py-10 space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Blog Management</h1>
-        <Link to="new">
-          <Button>
-            <PlusCircle className="mr-2 h-4 w-4" /> Add New Blog
-          </Button>
-        </Link>
+    <div className="container mx-auto py-10 space-y-8 mt-10">
+      <div className="flex items-center justify-center mt-4">
+        {role ==="admin" && <h1 className="text-4xl font-bold tracking-tight ">Blog Management</h1>}
+        {role ==="public" && <h1 className="text-4xl font-semibold text-center "> Our Blog </h1>}
+        
+        {/* Show Add New Blog button only for admin */}
+        {role === "admin" && (
+          <Link to="new">
+            <Button>
+              <PlusCircle className="mr-2 h-4 w-4" /> Add New Blog
+            </Button>
+          </Link>
+        )}
       </div>
 
       <div className="flex justify-end">
@@ -147,17 +145,7 @@ function BlogList() {
                     <DropdownMenuTrigger asChild>
                       <Button variant="secondary" size="icon">
                         <span className="sr-only">Open menu</span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <circle cx="12" cy="12" r="1" />
                           <circle cx="12" cy="5" r="1" />
                           <circle cx="12" cy="19" r="1" />
@@ -168,66 +156,34 @@ function BlogList() {
                       <DropdownMenuItem asChild>
                         <Link to={`${blog.slug}`}>View</Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link to={`edit/${blog.slug}`}>Edit</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDeleteClick(blog._id)} className="text-red-600">
-                        Delete
-                      </DropdownMenuItem>
+
+                      {/* Hide Edit/Delete for public users */}
+                      {role === "admin" && (
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link to={`edit/${blog.slug}`}>Edit</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleDeleteClick(blog._id)} className="text-red-600">
+                            Delete
+                          </DropdownMenuItem>
+                        </>
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
                 <div className="mt-4">
-                  <Badge variant="outline" className="mb-2">
-                    {blog.categoryName}
-                  </Badge>
+                  <Badge variant="outline" className="mb-2">{blog.categoryName}</Badge>
                   <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
-                  <CardDescription className="flex items-center text-xs mt-1">By {blog.authorName}</CardDescription>
+                  <CardDescription className="text-xs mt-1">By {blog.authorName}</CardDescription>
                 </div>
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-sm text-muted-foreground line-clamp-3">{blog.description}</p>
               </CardContent>
-              <CardFooter>
-                <div className="flex flex-wrap gap-1">
-                  {blog.tagNames?.map((tag, index) => ( // ✅ Added optional chaining
-                    <Badge key={index} variant="secondary" className="text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardFooter>
             </Card>
           ))}
         </div>
       )}
-
-      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the blog post.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-       {/* Pagination Buttons */}
-       <div className="mt-4 flex justify-between">
-        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Previous
-        </Button>
-        <Button disabled={!hasMore} onClick={() => setPage(page + 1)}>
-          Next
-        </Button>
-      </div>
     </div>
   );
 }

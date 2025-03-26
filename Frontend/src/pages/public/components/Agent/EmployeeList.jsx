@@ -1,75 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
-
-const employees = [
-  {
-    id: 1,
-    name: "John Doe",
-    role: "Software Engineer",
-    contact: "123-456-7890",
-    email: "john@example.com",
-    image: "/Agent/emp3.avif",
-    social: { facebook: "#", linkedin: "#", twitter: "#" },
-    date: new Date("2022-01-01"),
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    role: "Product Manager",
-    contact: "987-654-3210",
-    email: "jane@example.com",
-    image: "/Agent/emp2.avif",
-    social: { facebook: "#", linkedin: "#", twitter: "#" },
-    date: new Date("2023-06-15"),
-  },
-  {
-    id: 3,
-    name: "Jane Smith",
-    role: "Product Manager",
-    contact: "987-654-3210",
-    email: "jane@example.com",
-    image: "/Agent/emp4.avif",
-    social: { facebook: "#", linkedin: "#", twitter: "#" },
-    date: new Date("2023-06-15"),
-  },
-  {
-    id: 4,
-    name: "Jane Smith",
-    role: "Product Manager",
-    contact: "987-654-3210",
-    email: "jane@example.com",
-    image: "/Agent/emp3.avif",
-    social: { facebook: "#", linkedin: "#", twitter: "#" },
-    date: new Date("2023-06-15"),
-  },
-  {
-    id: 5,
-    name: "Jane Smith",
-    role: "Product Manager",
-    contact: "987-654-3210",
-    email: "jane@example.com",
-    image: "/Agent/emp3.avif",
-    social: { facebook: "#", linkedin: "#", twitter: "#" },
-    date: new Date("2023-06-15"),
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    role: "Product Manager",
-    contact: "987-654-3210",
-    email: "jane@example.com",
-    image: "/Agent/emp2.avif",
-    social: { facebook: "#", linkedin: "#", twitter: "#" },
-    date: new Date("2023-06-15"),
-  }
-  // Add more employee data here
-];
+import axios from "axios";
 
 const EmployeeList = () => {
   const [sortType, setSortType] = useState("default");
-  const [sortedEmployees, setSortedEmployees] = useState([...employees]);
+  const [employees, setEmployees] = useState([]);
+  const [sortedEmployees, setSortedEmployees] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const employeesPerPage = 2;
+
+  useEffect(() => {
+    const fetchingAgents = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/v1/agent/get_agents");
+        setEmployees(response.data);
+        setSortedEmployees(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchingAgents();
+  }, []);
+
+  useEffect(() => {
+    sortEmployees(sortType);
+  }, [employees, sortType]);
 
   const sortEmployees = (type) => {
     let sorted = [...employees];
@@ -81,10 +36,10 @@ const EmployeeList = () => {
         sorted.sort((a, b) => b.name.localeCompare(a.name));
         break;
       case "oldest":
-        sorted.sort((a, b) => a.date - b.date);
+        sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
         break;
       case "newest":
-        sorted.sort((a, b) => b.date - a.date);
+        sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
         break;
       case "random":
         sorted.sort(() => Math.random() - 0.5);
@@ -109,10 +64,7 @@ const EmployeeList = () => {
             Showing {currentEmployees.length} of {sortedEmployees.length} results
           </p>
           <select
-            onChange={(e) => {
-              setSortType(e.target.value);
-              sortEmployees(e.target.value);
-            }}
+            onChange={(e) => setSortType(e.target.value)}
             value={sortType}
             className="border p-2 rounded-md text-lg"
           >
@@ -126,23 +78,23 @@ const EmployeeList = () => {
         </div>
 
         {currentEmployees.map((employee) => (
-          <div key={employee.id} className="flex w-full bg-white  overflow-hidden mb-6 hover:bg-gray-100">
+          <div key={employee._id} className="flex w-full bg-white overflow-hidden mb-6 hover:bg-gray-100">
             <div className="w-1/3 relative">
               <img src={employee.image} alt={employee.name} className="w-full h-full object-cover rounded-md hover:opacity-80" />
             </div>
             <div className="w-2/3 ml-10 p-6">
               <h2 className="text-3xl font-bold text-gray-800">{employee.name}</h2>
               <p className="text-lg mt-3 text-gray-600">{employee.role}</p>
-              <p className="text-md mt-3 text-gray-600">📞 {employee.contact}</p>
-              <p className="text-md mt-2 text-gray-600 ">✉️ {employee.email}</p>
+              <p className="text-md mt-3 text-gray-600">📞 {employee.contactNumber}</p>
+              <p className="text-md mt-2 text-gray-600">✉️ {employee.email}</p>
               <div className="flex space-x-6 mt-4 text-2xl">
-                <a href={employee.social.facebook} className="text-black hover:text-orange-500 hover:scale-110">
+                <a href={employee.social?.facebook || "#"} className="text-black hover:text-orange-500 hover:scale-110">
                   <FaFacebook />
                 </a>
-                <a href={employee.social.linkedin} className="text-black hover:text-orange-500 hover:scale-110">
+                <a href={employee.social?.linkedin || "#"} className="text-black hover:text-orange-500 hover:scale-110">
                   <FaLinkedin />
                 </a>
-                <a href={employee.social.twitter} className="text-black hover:text-orange-500 hover:scale-110">
+                <a href={employee.social?.twitter || "#"} className="text-black hover:text-orange-500 hover:scale-110">
                   <FaTwitter />
                 </a>
               </div>

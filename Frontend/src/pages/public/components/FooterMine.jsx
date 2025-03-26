@@ -37,8 +37,6 @@ export default function FooterMine() {
                             <li><Link to="/agency" className="hover:text-orange-500">Agency</Link></li>
                             <li><Link to="/agent" className="hover:text-orange-500">Agents</Link></li>
                             <li><Link to="/" className="hover:text-orange-500">Service</Link></li>
-                            <li><Link to="/e-commerce" className="hover:text-orange-500">E-commerce</Link></li>
-                            <li><Link to="/branding" className="hover:text-orange-500">Branding</Link></li>
                         </ul>
                     </div>
 

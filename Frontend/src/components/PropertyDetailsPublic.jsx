@@ -52,8 +52,8 @@ const PropertyDetailsPublic = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center ">
-        <div className="flex flex-col container m-8 p-8 gap-4 w-[80vw]">
+      <div className="flex flex-col justify-center items-center  ">
+        <div className="flex flex-col container m-8 p-8 gap-4 w-[80vw] mt-20">
           <div className="flex justify-between">
             <div className="flex gap-2">
               {property?.featureName?.map((feature) => (

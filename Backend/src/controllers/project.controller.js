@@ -117,4 +117,38 @@ const deleteproject = async (req, res) => {
     }
 };
 
-export { getprojects, addproject, updateproject, deleteproject };
+const getproject = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        console.log(slug)
+        const project = await Project.findOne({ slug }).lean();
+        // find property and add in the project properties is the array of objectids of properties
+        const properties = await Property.find({ _id: { $in: project.properties } }).lean();
+        project.properties = properties
+        // we have to convert image to base64
+        const convertToBase64 = (filePath) => {
+            try {
+                if (fs.existsSync(filePath)) {
+                    const imageBuffer = fs.readFileSync(filePath);
+                    return `data:image/jpeg;base64,${imageBuffer.toString("base64")}`;
+                }
+                return null;
+            } catch (error) {
+                console.error("Error converting image:", error);
+                return null;
+            }
+        };
+        project.featureImage = project.featureImage ? convertToBase64(project.featureImage) : null;
+        project.imageGallery = project.imageGallery ? project.imageGallery.map((img) => convertToBase64(img)) : [];
+        // now in the properties we have featureImage and imageGallery also
+        properties.forEach((property) => {
+            property.featureImage = property.featureImage ? convertToBase64(property.featureImage) : null;
+            property.imageGallery = property.imageGallery ? property.imageGallery.map((img) => convertToBase64(img)) : [];
+        })
+        res.json(project);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export { getprojects, addproject, updateproject, deleteproject , getproject};

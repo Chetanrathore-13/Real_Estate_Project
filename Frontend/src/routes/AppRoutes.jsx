@@ -51,6 +51,8 @@ import Services from "../pages/public/Services";
 import Agent from "../pages/public/Agent";
 import PropertyListings2 from "../components/Propety-listings2";
 import PropertyPublic from "../pages/public/PropertyPublic";
+import ProjectsPage from "../pages/public/ProjectsPage";
+import ProjectDetailsPage from "../pages/public/ProjectDetailsPage";
 
 
 const getDashboardRoute = (role) => {
@@ -84,11 +86,15 @@ const router = createBrowserRouter([
         // { path: "signup", element: <SignupForm /> },
         {
           path: "/projects",
-          element: <ProjectList />,
+          element: <ProjectsPage />,
         },
       {
         path: "/properties",
         element: <PropertyPublic/>,
+      },
+      {
+        path: "/projects/:slug",
+        element: <ProjectDetailsPage/>,
       },
     ],
   },
