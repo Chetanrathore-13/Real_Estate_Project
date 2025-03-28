@@ -21,7 +21,6 @@ const PropertyForm = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -48,12 +47,6 @@ const PropertyForm = () => {
   const[imageGallery, setImageGallery]= useState([])
   const navigate = useNavigate()
 
-
-  const isEditMode = !!slug
-
-   // Watch file inputs
-   const featureImage = watch("featureImage");
-   const galleryImages = watch("imageGallery");
 
   useEffect(() => {
     const fetchAgent = async () => {

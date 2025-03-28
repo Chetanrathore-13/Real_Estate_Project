@@ -38,7 +38,6 @@ import ProjectTypes from "../components/ProjectType";
 import ProjectFeatures from "../components/ProjectFeature";
 import {ProjectDetail} from"../components/ProjectDetail"
 import HomePage from "../pages/public/HomePage"
-import {SignupForm} from "../components/signup-form";
 import PropertyDetailsPublic from "../components/PropertyDetailsPublic";
 
 import Aboutus from "../pages/public/Aboutus";
@@ -49,10 +48,10 @@ import Blog from "../pages/public/Blog";
 import Agency from "../pages/public/Agency";
 import Services from "../pages/public/Services";
 import Agent from "../pages/public/Agent";
-import PropertyListings2 from "../components/Propety-listings2";
 import PropertyPublic from "../pages/public/PropertyPublic";
 import ProjectsPage from "../pages/public/ProjectsPage";
 import ProjectDetailsPage from "../pages/public/ProjectDetailsPage";
+import BlogDetailPublic from "../pages/public/components/BlogDetailPublic";
 
 
 const getDashboardRoute = (role) => {
@@ -66,12 +65,6 @@ const getDashboardRoute = (role) => {
     default:
       return "/";
   }
-};
-
-const ProtectedRedirect = () => {
-  const token = localStorage.getItem("token");
-  const role = useSelector((state) => state.auth.role);
-  return token && role ? <Navigate to={getDashboardRoute(role)} replace /> : <Navigate to="/" replace />;
 };
 
 const router = createBrowserRouter([
@@ -95,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "/projects/:slug",
         element: <ProjectDetailsPage/>,
+      },
+      {
+        path: "/Blog/:slug",
+        element: <BlogDetailPublic/>,
       },
     ],
   },

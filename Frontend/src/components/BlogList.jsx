@@ -5,9 +5,21 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,13 +45,24 @@ function BlogList({ role }) {
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setSearch(searchTerm);
+      setPage(1); // Reset to first page when search changes
+    }, 500);
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm]);
+
+  useEffect(() => {
     setIsLoading(true);
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/blog/get_blogs", {
-          params: { search, page, limit: 9 },
-          headers: role === "admin" ? { Authorization: token } : {}, // ✅ Only send token for admin
-        });
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/blog/get_blogs",
+          {
+            params: { search, page, limit: 9 },
+            headers: role === "admin" ? { Authorization: token } : {}, // ✅ Only send token for admin
+          }
+        );
 
         console.log("API Response:", response.data); // ✅ Debugging
         setBlogs(response.data.blogwithicon);
@@ -60,14 +83,23 @@ function BlogList({ role }) {
     setDialogOpen(true);
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(Math.max(1, newPage));
+  };
+
   const confirmDelete = async () => {
     if (blogToDelete) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/blog/delete_blog/${blogToDelete}`, {
-          headers: { Authorization: token },
-        });
+        await axios.delete(
+          `http://localhost:8000/api/v1/blog/delete_blog/${blogToDelete}`,
+          {
+            headers: { Authorization: token },
+          }
+        );
 
-        setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== blogToDelete));
+        setBlogs((prevBlogs) =>
+          prevBlogs.filter((blog) => blog._id !== blogToDelete)
+        );
       } catch (error) {
         console.error("Failed to delete blog:", error);
       } finally {
@@ -82,7 +114,9 @@ function BlogList({ role }) {
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.categoryName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.tagNames?.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      blog.tagNames?.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase())
+      ) ||
       blog.authorName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -97,9 +131,15 @@ function BlogList({ role }) {
   return (
     <div className="container mx-auto py-10 space-y-8 mt-10">
       <div className="flex items-center justify-center mt-4">
-        {role ==="admin" && <h1 className="text-4xl font-bold tracking-tight ">Blog Management</h1>}
-        {role ==="public" && <h1 className="text-4xl font-semibold text-center "> Our Blog </h1>}
-        
+        {role === "admin" && (
+          <h1 className="text-4xl font-bold tracking-tight ">
+            Blog Management
+          </h1>
+        )}
+        {role === "public" && (
+          <h1 className="text-4xl font-semibold text-center "> Our Blog </h1>
+        )}
+
         {/* Show Add New Blog button only for admin */}
         {role === "admin" && (
           <Link to="new">
@@ -127,7 +167,9 @@ function BlogList({ role }) {
         <div className="text-center py-10">
           <h3 className="text-lg font-medium">No blogs found</h3>
           <p className="text-muted-foreground mt-2">
-            {blogs.length === 0 ? "Get started by creating your first blog post" : "Try adjusting your search term"}
+            {blogs.length === 0
+              ? "Get started by creating your first blog post"
+              : "Try adjusting your search term"}
           </p>
         </div>
       ) : (
@@ -145,7 +187,17 @@ function BlogList({ role }) {
                     <DropdownMenuTrigger asChild>
                       <Button variant="secondary" size="icon">
                         <span className="sr-only">Open menu</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <circle cx="12" cy="12" r="1" />
                           <circle cx="12" cy="5" r="1" />
                           <circle cx="12" cy="19" r="1" />
@@ -163,7 +215,10 @@ function BlogList({ role }) {
                           <DropdownMenuItem asChild>
                             <Link to={`edit/${blog.slug}`}>Edit</Link>
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDeleteClick(blog._id)} className="text-red-600">
+                          <DropdownMenuItem
+                            onClick={() => handleDeleteClick(blog._id)}
+                            className="text-red-600"
+                          >
                             Delete
                           </DropdownMenuItem>
                         </>
@@ -172,18 +227,44 @@ function BlogList({ role }) {
                   </DropdownMenu>
                 </div>
                 <div className="mt-4">
-                  <Badge variant="outline" className="mb-2">{blog.categoryName}</Badge>
+                  <Badge variant="outline" className="mb-2">
+                    {blog.categoryName}
+                  </Badge>
                   <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
-                  <CardDescription className="text-xs mt-1">By {blog.authorName}</CardDescription>
+                  <CardDescription className="text-xs mt-1">
+                    By {blog.authorName}
+                  </CardDescription>
                 </div>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-sm text-muted-foreground line-clamp-3">{blog.description}</p>
+                <p className="text-sm text-muted-foreground line-clamp-3">
+                  {blog.description}
+                </p>
               </CardContent>
             </Card>
           ))}
+          {/* Pagination Controls */}
         </div>
       )}
+        <div className="flex justify-center  gap-4 mt-8">
+            <Button
+              variant="outline"
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}
+            >
+              Previous
+            </Button>
+            <span className="flex items-center px-4 font-medium">
+              Page {page}
+            </span>
+            <Button
+              variant="outline"
+              onClick={() => handlePageChange(page + 1)}
+              disabled={!hasMore}
+            >
+              Next
+            </Button>
+          </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Check, ChevronDown } from "lucide-react";
 import { getProjectTypes } from "../api/projectsApi";
 
 function FilterSection({ selectedType, onFilterChange }) {
+  console.log(selectedType);
   const [open, setOpen] = useState(false);
   const [projectTypes, setProjectTypes] = useState([]);
   const [loading, setLoading] = useState(true);

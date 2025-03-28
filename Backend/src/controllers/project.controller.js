@@ -6,7 +6,6 @@ import Property from "../models/property.js";
 
 // Use all the CRUD operations
 const getprojects = async (req, res) => {
-    console.log("Hello paji");
     try {
         let { projectType = ""  ,search = "", page = 1, limit = 10 } = req.query;
         console.log(req.query)

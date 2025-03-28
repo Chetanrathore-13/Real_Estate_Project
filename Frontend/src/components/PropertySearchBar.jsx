@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Search, Plus, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useEffect } from "react"
 
 export default function PropertySearch() {
   const [searchType, setSearchType] = useState("rent")
@@ -18,6 +19,18 @@ export default function PropertySearch() {
     })
     // Implement your search logic here
   }
+  useEffect(() => {
+    const fetchPropertyTypes = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/property/property_types",);
+        setPropertyType(response.data);
+      } catch (error) {
+        console.error("Failed to fetch tags ", error);
+      }
+    };
+    fetchPropertyTypes();
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row w-full overflow-hidden bg-blue-950 p-2 mt-20 ">
