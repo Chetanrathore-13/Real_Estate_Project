@@ -1,46 +1,53 @@
-import { Bed, Bath, SquareIcon as SquareFoot } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { useSelector } from "react-redux"
-import { useEffect } from "react"
-import axios from "axios"
-import { useState } from "react"
-import { Link } from "react-router-dom"
-export default function PropertyListings2() {
-    const token = useSelector((state)=> state.auth.token)
-    const [page, setPage] = useState(1);
-    const [search, setSearch] = useState("");
-    const [properties, setProperties] = useState([]);
-    const [hasMore, setHasMore] = useState(false);
-    const fetchProperties = async () => {
-        
-        try {
-          const { data } = await axios.get("http://localhost:8000/api/v1/property/properties", {
-            params: { search, page, limit: 6 },
-            headers: { Authorization: token }
-          });
-          if (data && Array.isArray(data.formattedProperties)) {
-            setProperties(data.formattedProperties);
-            console.log(data.formattedProperties)
-          } else {
-            setProperties([]); // Fallback to empty array
-          }
-      
-          setHasMore(data.hasMore || false);
-        } catch (error) {
-          console.error("Error fetching properties:", error);
-          setProperties([]); // Prevent undefined
-        }
-      };
-       useEffect(() => {
-          fetchProperties();
-        }, [page, search]);
+import { useState, useEffect } from "react";
+import { Bed, Bath, SquareIcon as SquareFoot } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { Link } from "react-router-dom";
+
+export default function PropertyListings2({ filters, setFilters }) {
+  const token = useSelector((state) => state.auth.token);
+  const [properties, setProperties] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  
+  const fetchProperties = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get("http://localhost:8000/api/v1/property/properties", {
+        params: { 
+          search: filters.keyword,
+          projectType: filters.propertyType === 'All Types' ? '' : filters.propertyType,
+          type: filters.searchType,
+          page: filters.page,
+          limit: 6 
+        },
+        headers: { Authorization: token }
+      });
+      setProperties(filters.page === 1 ? data.formattedProperties : [...properties, ...data.formattedProperties]);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      console.error("Error fetching properties:", error);
+      setProperties([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchProperties();
+  }, [filters.page, filters.keyword, filters.propertyType, filters.searchType]);
 
   return (
     <main className="container mx-auto px-4 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-navy-900 mb-4">Properties for Rent</h1>
-        <p className="text-xl text-gray-500">Listings we think you&apos;ll love.</p>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-navy-900 mb-4">
+          Properties for {filters.searchType === 'rent' ? 'Rent' : 'Sale'}
+        </h1>
+        <p className="text-xl text-gray-500">Listings we think you'll love.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -48,8 +55,19 @@ export default function PropertyListings2() {
           <PropertyCard key={property._id} property={property} />
         ))}
       </div>
+      {hasMore && (
+        <div className="mt-8 text-center">
+          <button 
+            onClick={() => setFilters(prev => ({ ...prev, page: prev.page + 1 }))}
+            disabled={isLoading}
+            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+          >
+            {isLoading ? 'Loading...' : 'Load More'}
+          </button>
+        </div>
+      )}
     </main>
-  )
+  );
 }
 
 function PropertyCard({ property }) {

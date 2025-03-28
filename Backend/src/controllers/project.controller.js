@@ -87,9 +87,6 @@ const getprojects = async (req, res) => {
     }
 };
 
-
-
-
 const addproject = async (req, res) => {
     try {
         const { name, description, projectFeatures, projectType, videoLinks, agent, properties  } = req.body;
