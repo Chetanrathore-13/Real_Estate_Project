@@ -22,8 +22,9 @@ export default function PropertySearch() {
   return (
     <div className="flex flex-col md:flex-row w-full overflow-hidden bg-blue-950 p-2 mt-20 ">
 
-        {/* Search Type Tabs */}
-      <div className="flex bg-[#0a0a4a] text-white">
+     <div className="flex w-full justify-around items-center ml-20 mr-16">
+         {/* Search Type Tabs */}
+         <div className="flex bg-[#0a0a4a] text-white ">
         <button
           className={cn("px-6 py-3 text-white font-medium rounded-md", searchType === "rent" ? "bg-[#6b5de3]" : "bg-transparent")}
           onClick={() => setSearchType("rent")}
@@ -89,6 +90,7 @@ export default function PropertySearch() {
           Advanced
         </button>
       </div>
+     </div>
       
    
     </div>

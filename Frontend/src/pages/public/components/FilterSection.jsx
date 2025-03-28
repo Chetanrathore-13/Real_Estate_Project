@@ -1,41 +1,42 @@
-import { useState, useEffect, useRef } from "react"
-import { Check, ChevronDown } from "lucide-react"
-import { getProjectTypes } from "../api/projectsApi"
+import { useState, useEffect, useRef } from "react";
+import { Check, ChevronDown } from "lucide-react";
+import { getProjectTypes } from "../api/projectsApi";
 
 function FilterSection({ selectedType, onFilterChange }) {
-  const [open, setOpen] = useState(false)
-  const [projectTypes, setProjectTypes] = useState([])
-  const [loading, setLoading] = useState(true)
-  const dropdownRef = useRef(null)
+  const [open, setOpen] = useState(false);
+  const [projectTypes, setProjectTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const fetchProjectTypes = async () => {
       try {
-        const types = await getProjectTypes()
-        setProjectTypes(types)
+        const types = await getProjectTypes();
+        setProjectTypes(types);
       } catch (error) {
-        console.error("Failed to fetch project types:", error)
+        console.error("Failed to fetch project types:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProjectTypes()
+    fetchProjectTypes();
 
     // Close dropdown when clicking outside
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false)
+        setOpen(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-  const selectedTypeName = projectTypes.find((type) => type._id === selectedType)?.name || "All Project Types"
+  const selectedTypeName =
+    projectTypes.find((type) => type._id === selectedType)?.title || "All Project Types";
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between bg-gray-100 p-4 rounded-lg">
@@ -65,8 +66,8 @@ function FilterSection({ selectedType, onFilterChange }) {
                   <div
                     className="flex items-center px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
-                      onFilterChange("projectType", "")
-                      setOpen(false)
+                      onFilterChange("projectType", "");
+                      setOpen(false);
                     }}
                   >
                     <div className="w-4 mr-2">{!selectedType && <Check className="h-4 w-4" />}</div>
@@ -78,12 +79,12 @@ function FilterSection({ selectedType, onFilterChange }) {
                       key={type._id}
                       className="flex items-center px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                       onClick={() => {
-                        onFilterChange("projectType", type._id === selectedType ? "" : type._id)
-                        setOpen(false)
+                        onFilterChange("projectType", type._id === selectedType ? "" : type._id);
+                        setOpen(false);
                       }}
                     >
                       <div className="w-4 mr-2">{type._id === selectedType && <Check className="h-4 w-4" />}</div>
-                      {type.name}
+                      {type.title}
                     </div>
                   ))}
                 </div>
@@ -93,8 +94,7 @@ function FilterSection({ selectedType, onFilterChange }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default FilterSection
-
+export default FilterSection;

@@ -8,27 +8,33 @@ import Property from "../models/property.js";
 const getprojects = async (req, res) => {
     console.log("Hello paji");
     try {
-        let { search = "", page = 1, limit = 10 } = req.query;
+        let { projectType = ""  ,search = "", page = 1, limit = 10 } = req.query;
+        console.log(req.query)
 
         page = Math.max(1, parseInt(page) || 1);
         limit = Math.max(1, parseInt(limit) || 10);
 
-        const filter = search.trim()
-            ? {
-                  $or: [
-                      { name: { $regex: search, $options: "i" } },
-                      { slug: { $regex: search, $options: "i" } },
-                  ],
-              }
-            : {};
+        const filter = {};
 
-        const total = await Project.countDocuments(filter); // Corrected countDocuments usage
+        if (search.trim()) {
+            filter.$or = [
+                { name: { $regex: search, $options: "i" } },
+                { slug: { $regex: search, $options: "i" } },
+            ];
+        }
+
+        if (projectType) {
+            filter.projectType = projectType; // Assuming projectType is an ObjectId (string)
+        }
+
+        const total = await Project.countDocuments(filter);
+        const totalPages = Math.ceil(total / limit); // Calculate total pages
 
         const projects = await Project.find(filter)
             .limit(limit)
             .skip((page - 1) * limit)
             .sort({ createdAt: -1 })
-            .lean(); // Convert Mongoose docs to plain objects
+            .lean();
 
         // Convert image file to Base64
         const convertToBase64 = (filePath) => {
@@ -75,12 +81,14 @@ const getprojects = async (req, res) => {
             project.typeName = typeNames[index];
         });
 
-        res.status(200).json({ formattedProjects, total, page, limit });
+        res.status(200).json({ formattedProjects, total, totalPages, page, limit });
     } catch (error) {
         console.error("Error fetching projects:", error);
         res.status(500).json({ error: "Internal Server Error", details: error.message });
     }
-};  
+};
+
+
 
 
 const addproject = async (req, res) => {

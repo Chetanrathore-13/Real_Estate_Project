@@ -46,7 +46,7 @@ const ProjectForm = () => {
     const fetchAgent = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/agent/agents",
+          "http://localhost:8000/api/v1/agent/get_agents",
           {
             headers: { Authorization: token },
           }

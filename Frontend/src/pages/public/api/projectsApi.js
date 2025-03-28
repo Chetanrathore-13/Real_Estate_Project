@@ -8,8 +8,8 @@ export async function getProjects({ search = "", page = 1, limit = 9 }) {
     const response = await axios.get(API_BASE_URL, {
       params: { search, page, limit },
     })
-    console.log(response.data.formattedProjects)
-    return response.data.formattedProjects // Expecting { formattedProjects, total, page, limit }
+    console.log(response.data)
+    return response.data // Expecting { formattedProjects, total, page, limit }
   } catch (error) {
     console.error("Error fetching projects:", error)
     throw error
@@ -31,7 +31,8 @@ export async function getProjectBySlug(slug) {
 // ✅ Get project types
 export async function getProjectTypes() {
   try {
-    const response = await axios.get(`${API_BASE_URL}/types`)
+    const response = await axios.get("http://localhost:8000/api/v1/projectType/get_projectTypes")
+
     return response.data // Expecting an array of project types
   } catch (error) {
     console.error("Error fetching project types:", error)

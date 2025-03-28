@@ -125,67 +125,6 @@ const PropertyDetailsPublic = () => {
                 </p>
               </div>
 
-              {/* <div className="flex ">
-                <h4>Overview</h4>
-                <div className="gird grid-rows-2 grid-cols-4">
-                  <div>
-                    <span><HousePlus /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                  <div>
-                    <span><FileType /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                  <div>
-                    <span><BedDouble /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                  <div>
-                    <span><Bath /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                  <div>
-                    <span><Car /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                  <div>
-                    <span><Grid2x2Plus /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                  <div>
-                    <span><Proportions /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                  <div>
-                    <span><Building2 /></span>{" "}
-                    <div>
-                      <p>id</p>
-                      <p>detail</p>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
 
               <div className="max-w-4xl mx-3 p-6 bg-white">
                 <h1 className="text-3xl font-bold text-[#0a1158] mb-8">
@@ -418,7 +357,7 @@ const PropertyDetailsPublic = () => {
               </div>
             </div>
           </div>
-          <div className=" w-[30%] bg-white">
+          <div className=" w-[30%] bg-white mt-[14px] pb-2">
             <div className="flex flex-col gap-4 justify-center items-center mt-16">
               <img
                 src="https://images.pexels.com/photos/7821936/pexels-photo-7821936.jpeg"

@@ -81,9 +81,9 @@ function BlogList({ role }) {
     (blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.tags?.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      blog.author.toLowerCase().includes(searchTerm.toLowerCase())
+      blog.categoryName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.tagNames?.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      blog.authorName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (isLoading) {

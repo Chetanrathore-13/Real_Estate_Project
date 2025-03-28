@@ -138,14 +138,14 @@ const HomePage = () => {
 
           {/* Right Section (Heading & Avatars) */}
           <div className="right w-full lg:w-1/2 flex flex-col items-center text-center lg:text-left px-5">
-            <h3 className="font-semibold text-3xl sm:text-4xl lg:text-7xl text-blue-950 ">
+            <h3 className="font-semibold text-3xl sm:text-4xl lg:text-6xl  text-blue-950 ">
               We Understand <br />
               The Real Value <br /> of Home
             </h3>
-            <p className="text-base sm:text-lg mt-4">
-              We’ll make sure your property gets in front of the right people.
+            <h4 className=" text-sm sm:text-md lg:text-xl text-gray-600 mt-5">
+              We’ll make sure your property gets  in front  <br /> of the right people.
               Lorem ipsum dolor sit amet.
-            </p>
+            </h4>
 
             <div className="flex flex-col sm:flex-row gap-5 mt-5 items-center">
               {/* Avatar Section */}

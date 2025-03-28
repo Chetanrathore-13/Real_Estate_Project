@@ -87,7 +87,7 @@ const EmployeeList = () => {
               <p className="text-lg mt-3 text-gray-600">{employee.role}</p>
               <p className="text-md mt-3 text-gray-600">📞 {employee.contactNumber}</p>
               <p className="text-md mt-2 text-gray-600">✉️ {employee.email}</p>
-              <div className="flex space-x-6 mt-4 text-2xl">
+              <div className="flex space-x-6 mt-4 text-2xl">`
                 <a href={employee.social?.facebook || "#"} className="text-black hover:text-orange-500 hover:scale-110">
                   <FaFacebook />
                 </a>

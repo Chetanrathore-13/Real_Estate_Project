@@ -10,7 +10,7 @@ export default function FooterMine() {
                     {/* Logo Section */}
                     <div className="mb-6 md:mb-0 flex items-center">
                         <Link to="/" className="flex items-center">
-                            <img src={logo} className="mr-3 w-12 h-12" alt="Real Estate Logo" />
+                            <img src={logo} className="mr-3 w-24 h-24" alt="Real Estate Logo" />
                             <span className="self-center text-2xl font-semibold whitespace-nowrap">
                                 Real Estate
                             </span>

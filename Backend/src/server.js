@@ -14,6 +14,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // app.use("/public/images", express.static("/public/images"));
 // Serve uploaded images statically
@@ -83,6 +84,9 @@ app.use("/api/v1/projectType", ProjectTypeRoutes)
 
 import ProjectFeatureRoutes from "./routes/projectFeatureRoutes.js"
 app.use("/api/v1/projectFeature", ProjectFeatureRoutes)
+
+import serviceRoutes from "./routes/serviceRoutes.js"
+app.use("/api/v1/service", serviceRoutes)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
