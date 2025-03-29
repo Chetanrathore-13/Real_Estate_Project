@@ -4,20 +4,21 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 
-dotenv.config({
-    path: "./.env",
-});
+dotenv.config();
 
 // Fix __dirname for ES Modules
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-// app.use("/public/images", express.static("/public/images"));
-// Serve uploaded images statically
+app.use(cors( {
+    origin: process.env.CORS_ORIGIN,
+}));
+
+
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 

@@ -49,7 +49,7 @@ export default function NewsArticlesSection() {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/blog/get_blogs",
+          `${import.meta.env.VITE_API_URL}/blog/get_blogs`,
           {
             params: { search, page, limit: 6 },
             headers: {
