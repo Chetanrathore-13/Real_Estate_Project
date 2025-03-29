@@ -9,7 +9,6 @@ const PropertyPublic = () => {
     keyword: '',
     page: 1,
   });
- console.log(filters)
   return (
     <div>
       <PropertySearchBar

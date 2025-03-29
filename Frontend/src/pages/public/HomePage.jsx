@@ -7,82 +7,30 @@ import PropertyListings2 from "../../components/Propety-listings2";
 import balcony from "../../../public/images/balcony.jpg";
 import discussion from "../../../public/images/discussion.jpg";
 import office from "../../../public/images/office.jpg";
-import Footer from "../../components/Footer";
-import ContactUs from "../../components/ContactUs";
 import ContactForm from "../../components/ContactUs2";
 import NewsArticlesSection from "../../components/NewsArticleSection";
-import Navbar from "../../components/Navbar";
 import Badge1 from "../../../public/images/Badge1.jpg";
 import Badge2 from "../../../public/images/Badge2.jpg";
 import Badge3 from "../../../public/images/Badge3.jpg";
-import FooterMine from "./components/FooterMine";
-import NavbarMine from "./components/NavbarMine";
 const HomePage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Function to close the menu after clicking a link
-  const closeMenu = () => setIsOpen(false);
-
+ 
+ const [filters, setFilters] = useState({
+    searchType: 'rent',
+    propertyType: 'All Types',
+    keyword: '',
+    page: 1,
+  });
   return (
     <>
-      {/* Header */}
-      {/* <div className="header-container py-10 bg-white z-40">
-        <header className="header container mx-auto flex justify-between items-center lg:px-5 ">
-          <div className="logo-container">
-            <h3 className="business-name font-bold uppercase tracking-wide text-white text-xl">
-              Roots & Roofs
-            </h3>
-          </div>
-          <div className="navigation-container">
-            <nav className="navigation">
-              <ul className="nav-link flex justify-center items-center gap-8 uppercase text-sm  text-white tracking-wider font-normal ">
-                <li>
-                  <a href="#">Home</a>
-                </li>
-                <li>
-                  <a href="#">Projects</a>
-                </li>
-                <li>
-                  <a href="#">Properties</a>
-                </li>
-                <li>
-                  <a href="#">About Us</a>
-                </li>
-                <li>
-                  <a href="#">Contact Us</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div className="call-to-action-container">
-            <div className="call-to-action-btn space-x-4">
-              <a
-                href="/login"
-                className="  pt-2 pb-3 px-6 hover:bg-[#e86822] bg-white hover:text-white text-black transition-all rounded-sm"
-              >
-                Login
-              </a>
-              <a
-                href="/signup"
-                className="bg-[#e86822] text-white pt-2 pb-3 px-6 hover:bg-white hover:text-black transition-all rounded-sm"
-              >
-                Sign Up
-              </a>
-            </div>
-          </div>
-        </header>
-      </div> */}
-
-
-
       {/* Hero Section */}
-      <div
-        className="herosection min-h-screen  bg-center bg-no-repeat bg-cover flex items-center justify-center px-5  sm:px-10 "
+    <div className="relative" >
+    <div
+        className="herosection min-h-screen -mt-4  bg-center bg-no-repeat bg-cover flex items-center justify-center px-5  sm:px-10 "
         style={{
           backgroundImage: ` url('https://homeid-elementor-demo9.g5plus.net/wp-content/uploads/2022/12/bg-homepage.jpg')`,
         }}
       >
-        <div className="container mx-auto">
+        <div className="container mx-auto ">
           <div className="content w-full md:w-[60%] lg:w-[50%] space-y-12 text-center md:text-left">
             <h1 className="text-blue-950 text-4xl sm:text-5xl md:text-8xl font-semibold leading-tight">
               Find a Home You'll Love
@@ -100,7 +48,8 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>  
+    </div>
 
         {/* Property Listing */}
         <PropertyListings />
@@ -182,7 +131,8 @@ const HomePage = () => {
     
 
       {/* Property Listing Part 2 */}
-      <PropertyListings2 />
+      <PropertyListings2 filters={filters}
+        setFilters={setFilters} />
 
       {/* why choose us */}
       <section className="bg-[#0a0f47] text-white py-16 px-4 md:px-8 lg:px-16">

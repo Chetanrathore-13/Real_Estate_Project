@@ -58,10 +58,8 @@ export default function NewsArticlesSection() {
           }
         );
 
-        console.log("API Response:", response.data); // ✅ Debugging
         // ✅ Ensure response is an array
         setBlogs(response.data.blogwithicon);
-        console.log(response.data.blogwithicon)
         setHasMore(response.data.hasMore || false);
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
