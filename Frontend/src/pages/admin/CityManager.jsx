@@ -19,7 +19,7 @@ export default function StateManager() {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/location/countries", {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/location/countries`, {
           headers: { Authorization: token },
         });
         setCountries(response.data);
@@ -35,7 +35,7 @@ export default function StateManager() {
       const fetchStates = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/api/v1/location/states/${countryId}`,
+            `${import.meta.env.VITE_BASE_URL}/location/states/${countryId}`,
             { headers: { Authorization: token } }
           );
           setStates(response.data);
@@ -52,7 +52,7 @@ export default function StateManager() {
       const fetchCities = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/api/v1/location/cities/${stateId}`,
+            `${import.meta.env.VITE_BASE_URL}/location/cities/${stateId}`,
             { headers: { Authorization: token } }
           );
           setCities(response.data);
@@ -76,7 +76,7 @@ export default function StateManager() {
       formData.append("stateId", stateId);
       
       const response = await axios.post(
-        "http://localhost:8000/api/v1/location/add_city",
+        `${import.meta.env.VITE_BASE_URL}/location/add_city`,
         formData,
         {
           headers: {
@@ -99,7 +99,7 @@ export default function StateManager() {
     console.log(id)
     console.log(cities)
     try {
-      await axios.delete(`http://localhost:8000/api/v1/location/delete_city/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/location/delete_city/${id}`, {
         headers: { Authorization: token },
       });
       setCities(cities.filter((city) => city._id !== id));
@@ -113,7 +113,7 @@ export default function StateManager() {
   const updateCity = async (id, name, code) => {
     // i have to send id in params and data in body
     try {
-      const respone = await axios.patch(`http://localhost:8000/api/v1/location/patch_city/${id}`, {
+      const respone = await axios.patch(`${import.meta.env.VITE_BASE_URL}/location/patch_city/${id}`, {
         name,
         code
       }, {

@@ -18,7 +18,7 @@ export default function PropertyFeatureCRUD() {
 
   const fetchPropertyFeatures = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/property/property_features", {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/property/property_features`, {
         headers: { Authorization: token }
       });
       console.log("API Response:", response.data);
@@ -48,9 +48,9 @@ export default function PropertyFeatureCRUD() {
       };
 
       if (editId) {
-        await axios.patch(`http://localhost:8000/api/v1/property/update_property_features/${editId}`, formDataToSend, { headers });
+        await axios.patch(`${import.meta.env.VITE_BASE_URL}/property/update_property_features/${editId}`, formDataToSend, { headers });
       } else {
-        await axios.post("http://localhost:8000/api/v1/property/add_property_features", formDataToSend, { headers });
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/property/add_property_features`, formDataToSend, { headers });
       }
 
       fetchPropertyFeatures();
@@ -68,7 +68,7 @@ export default function PropertyFeatureCRUD() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this feature?")) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/property/delete_property_features/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_BASE_URL}/property/delete_property_features/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         fetchPropertyFeatures();

@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSelector } from 'react-redux';
 
-const API_URL = 'http://localhost:8000/api/v1/blogtag';
+const API_URL = `${import.meta.env.VITE_BASE_URL}/blogtag`;
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),

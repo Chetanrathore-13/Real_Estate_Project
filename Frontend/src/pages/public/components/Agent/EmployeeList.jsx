@@ -12,7 +12,7 @@ const EmployeeList = () => {
   useEffect(() => {
     const fetchingAgents = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/agent/get_agents");
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/agent/get_agents`);
         setEmployees(response.data);
         setSortedEmployees(response.data);
       } catch (error) {

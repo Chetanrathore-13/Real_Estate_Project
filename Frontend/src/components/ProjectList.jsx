@@ -16,7 +16,7 @@ export const ProjectList = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/project/projects', {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/project/projects`, {
           headers: { Authorization: token },
         });
         console.log(response.data.formattedProjects)

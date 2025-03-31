@@ -4,7 +4,7 @@ import axios from "axios";
 // Signup user
 export const signupUser = createAsyncThunk("auth/signupUser", async (userData, { rejectWithValue }) => {
     try {
-        const response = await axios.post("http://localhost:8000/api/v1/auth/register", userData);
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, userData);
         console.log(response);
         return response.data;
     } catch (error) {
@@ -15,7 +15,7 @@ export const signupUser = createAsyncThunk("auth/signupUser", async (userData, {
 // Login user
 export const loginUser = createAsyncThunk("auth/loginUser", async (userData, { rejectWithValue }) => {
     try {
-        const response = await axios.post("http://localhost:8000/api/v1/auth/login", userData);
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, userData);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
         return response.data;

@@ -13,7 +13,7 @@ const Contact = () => {
   useEffect(() => {
      const fetchContactDetails = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/contactus/get_contacts")
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/contactus/get_contacts`)
         console.log(response.data[0])
         setContact(response.data[0])
       } catch (error) {

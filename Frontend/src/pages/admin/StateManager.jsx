@@ -16,7 +16,7 @@ export default function StateManager() {
     const fetchCountries = async () => {
       if (!token) return;
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/location/countries", {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/location/countries`, {
           headers: {
             Authorization: token,
           },
@@ -35,7 +35,7 @@ export default function StateManager() {
     const fetchStates = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/v1/location/states/${countryId}`,
+          `${import.meta.env.VITE_BASE_URL}/location/states/${countryId}`,
           {
             headers: {
               Authorization: token,
@@ -60,7 +60,7 @@ export default function StateManager() {
       formData.append("countryId", countryId);
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/location/add_states",
+        `${import.meta.env.VITE_BASE_URL}/location/add_states`,
         formData,
         {
           headers: {
@@ -81,7 +81,7 @@ export default function StateManager() {
   const updateState = async (id, name, code) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/api/v1/location/patch_states/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/location/patch_states/${id}`,
         { name, code },
         {
           headers: {
@@ -105,7 +105,7 @@ export default function StateManager() {
 
   const deleteState = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/location/delete_states/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/location/delete_states/${id}`, {
         headers: {
           Authorization: token,
         },

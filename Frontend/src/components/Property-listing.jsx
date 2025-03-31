@@ -20,7 +20,7 @@ export default function PropertyListings() {
   const fetchProperties = async () => {
     
     try {
-      const { data } = await axios.get("http://localhost:8000/api/v1/property/properties", {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/property/properties`, {
         params: { search, page, limit: 10 },
         headers: { Authorization: token }
       });

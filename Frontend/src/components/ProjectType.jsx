@@ -24,7 +24,7 @@ export default function ProjectTypes() {
   const fetchTypes = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/projectType/get_projectTypes",
+        `${import.meta.env.VITE_BASE_URL}/projectType/get_projectTypes`,
         { headers: { Authorization: token } }
       );
       console.log(response.data)
@@ -50,7 +50,7 @@ export default function ProjectTypes() {
     if (editingSlug) {
       console.log("editing function is running");
       await axios.patch(
-        `http://localhost:8000/api/v1/projectType/update_projectType/${editingSlug}`,
+        `${import.meta.env.VITE_BASE_URL}/projectType/update_projectType/${editingSlug}`,
         formDataToSend,
         {
           headers: {
@@ -61,7 +61,7 @@ export default function ProjectTypes() {
       );
     } else {
       await axios.post(
-        "http://localhost:8000/api/v1/projectType/add_projectType",
+        `${import.meta.env.VITE_BASE_URL}/projectType/add_projectType`,
         formDataToSend,
         {
           headers: {
@@ -79,7 +79,7 @@ export default function ProjectTypes() {
   const handleDelete = async (slug) => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/v1/projectType/delete_projectType/${slug}`,
+        `${import.meta.env.VITE_BASE_URL}/projectType/delete_projectType/${slug}`,
         { headers: { Authorization: token } }
       );
       fetchTypes();

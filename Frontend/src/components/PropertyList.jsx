@@ -23,7 +23,7 @@ const PropertyList = () => {
   const fetchProperties = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:8000/api/v1/property/properties", {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/property/properties`, {
         params: { search, page, limit: 9 },
         headers: { Authorization: token }
       });
@@ -46,7 +46,7 @@ const PropertyList = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this property?")) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/property/delete_property/${id}`,{headers:{Authorization:token}});
+        await axios.delete(`${import.meta.env.VITE_BASE_URL}/property/delete_property/${id}`,{headers:{Authorization:token}});
         setProperties(properties.filter((property) => property._id !== id));
       } catch (error) {
         console.error("Error deleting property:", error);

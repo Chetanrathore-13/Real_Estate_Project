@@ -10,7 +10,7 @@ export default function QueSec() {
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/fandq/get_faqs");
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/fandq/get_faqs`);
 
         if (Array.isArray(response.data)) {
           // Group FAQs by type

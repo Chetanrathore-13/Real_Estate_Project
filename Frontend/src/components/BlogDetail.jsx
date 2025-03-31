@@ -17,7 +17,7 @@ function BlogDetail() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const data = await axios.get(`http://localhost:8000/api/v1/blog/get_blog/${slug}`, {
+        const data = await axios.get(`${import.meta.env.VITE_BASE_URL}/blog/get_blog/${slug}`, {
           headers: {
             Authorization:token,
           },

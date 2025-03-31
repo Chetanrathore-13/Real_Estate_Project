@@ -10,7 +10,7 @@ export default function PropertySearchBar({ filters, setFilters }) {
   useEffect(() => {
     const fetchPropertyTypes = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/property/property_types");
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/property/property_types`);
         
         if (Array.isArray(response.data)) {
           const propertyTypeTitles = response.data.map((type) => type.title);

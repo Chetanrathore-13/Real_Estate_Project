@@ -52,7 +52,7 @@ const PropertyForm = () => {
     const fetchAgent = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/agent/agents",
+          `${import.meta.env.VITE_BASE_URL}/agent/agents`,
           {
             headers: { Authorization: token },
           }
@@ -69,7 +69,7 @@ const PropertyForm = () => {
     const fetchPropertyTypes = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/property_types",
+          `${import.meta.env.VITE_BASE_URL}/property/property_types`,
           {
             headers: { Authorization: token },
           }
@@ -86,7 +86,7 @@ const PropertyForm = () => {
     const fetchPropertyStatus = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/property_status",
+          `${import.meta.env.VITE_BASE_URL}/property/property_status`,
           {
             headers: { Authorization: token },
           }
@@ -103,7 +103,7 @@ const PropertyForm = () => {
     const fetchPropertyLabels = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/property_labels",
+          `${import.meta.env.VITE_BASE_URL}/property/property_labels`,
           {
             headers: { Authorization: token },
           }
@@ -120,7 +120,7 @@ const PropertyForm = () => {
     const fetchFeature = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/property_features",
+          `${import.meta.env.VITE_BASE_URL}/property/property_features`,
           {
             headers: { Authorization: token },
           }
@@ -137,7 +137,7 @@ const PropertyForm = () => {
     const fetchCountries = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/location/countries",
+          `${import.meta.env.VITE_BASE_URL}/location/countries`,
           { headers: { Authorization: token } }
         );
         setCountries(response.data);
@@ -153,7 +153,7 @@ const PropertyForm = () => {
       const fetchStates = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/api/v1/location/states/${countryId}`,
+            `${import.meta.env.VITE_BASE_URL}/location/states/${countryId}`,
             { headers: { Authorization: token } }
           );
           setStates(response.data);
@@ -171,7 +171,7 @@ const PropertyForm = () => {
       const fetchCities = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:8000/api/v1/location/cities/${stateId}`,
+            `${import.meta.env.VITE_BASE_URL}/location/cities/${stateId}`,
             { headers: { Authorization: token } }
           );
           setCities(response.data);
@@ -301,7 +301,7 @@ const onSubmit = async (data) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/v1/property/add_property",
+      `${import.meta.env.VITE_BASE_URL}/property/add_property`,
       formData,
       {
         headers: {

@@ -57,7 +57,7 @@ function BlogForm() {
     const fetchBlog = async () => {
       if (isEditMode) {
         try {
-          const blog = await axios.get(`http://localhost:8000/api/v1/blog/get_blog/${slug}`, {
+          const blog = await axios.get(`${import.meta.env.VITE_BASE_URL}/blog/get_blog/${slug}`, {
             headers: { Authorization: token },
           });
 
@@ -95,7 +95,7 @@ function BlogForm() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/blogcategory/blog_categories",
+          `${import.meta.env.VITE_BASE_URL}/blogcategory/blog_categories`,
           {
             headers: { Authorization: token },
           }
@@ -132,7 +132,7 @@ function BlogForm() {
     const fetchTags = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/blogtag/blog_tags",
+          `${import.meta.env.VITE_BASE_URL}/blogtag/blog_tags`,
           {
             headers: { Authorization: token },
           }
@@ -198,7 +198,7 @@ function BlogForm() {
 
       if (isEditMode) {
         const response = await axios.patch(
-          `http://localhost:8000/api/v1/blog/update_blog/${slug}`,
+          `${import.meta.env.VITE_BASE_URL}/blog/update_blog/${slug}`,
           blogData,
           {
             headers: {
@@ -214,7 +214,7 @@ function BlogForm() {
         // print the form data
         console.log("Form Data:", blogData);
         const response = await axios.post(
-          "http://localhost:8000/api/v1/blog/add_blog",
+          `${import.meta.env.VITE_BASE_URL}/blog/add_blog`,
           blogData,
           {
             headers: {

@@ -21,7 +21,7 @@ export default function PropertyLabelCRUD() {
 
   const fetchProperties = async () => {
     try {
-      const { data } = await axios.get('http://localhost:8000/api/v1/property/property_labels', {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/property/property_labels`, {
         headers: { Authorization: token }
       });
       setProperties(Array.isArray(data) ? data : []);
@@ -45,11 +45,11 @@ export default function PropertyLabelCRUD() {
 
     try {
       if (editId) {
-        await axios.patch(`http://localhost:8000/api/v1/property/update_property_labels/${editId}`, formPayload, {
+        await axios.patch(`${import.meta.env.VITE_BASE_URL}/property/update_property_labels/${editId}`, formPayload, {
           headers: { 'Content-Type': 'multipart/form-data' , Authorization: token}
         });
       } else {
-        await axios.post('http://localhost:8000/api/v1/property/add_property_labels', formPayload, {
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/property/add_property_labels`, formPayload, {
           headers: { 'Content-Type': 'multipart/form-data', Authorization: token }
         });
       }
@@ -68,7 +68,7 @@ export default function PropertyLabelCRUD() {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/v1/property/delete_property_labels/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_BASE_URL}/property/delete_property_labels/${id}`, {
           headers: { Authorization: token }
         });
         fetchProperties();

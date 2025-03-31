@@ -14,7 +14,7 @@ export default function CountryManager() {
     const fetchCountries = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/location/countries",
+          `${import.meta.env.VITE_BASE_URL}/location/countries`,
           {
             headers: {
               Authorization: token,
@@ -41,7 +41,7 @@ export default function CountryManager() {
       formData.append("description", description);
       
       const response = await axios.post(
-        "http://localhost:8000/api/v1/location/add_country",
+        `${import.meta.env.VITE_BASE_URL}/location/add_country`,
         formData,
         {
           headers: {
@@ -64,7 +64,7 @@ export default function CountryManager() {
     // i have to send id in params and data in body
     try {
       const respone = await axios.patch(
-        `http://localhost:8000/api/v1/location/patch_country/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/location/patch_country/${id}`,
         {
           name,
           code,
@@ -91,7 +91,7 @@ export default function CountryManager() {
   const deleteCountry = (id) => {
     try {
       axios.delete(
-        `http://localhost:8000/api/v1/location/delete_country/${id}`,
+        `${import.meta.env.VITE_BASE_URL}/location/delete_country/${id}`,
         {
           headers: {
             Authorization: token,

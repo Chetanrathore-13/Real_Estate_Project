@@ -46,7 +46,7 @@ const ProjectForm = () => {
     const fetchAgent = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/agent/get_agents",
+          `${import.meta.env.VITE_BASE_URL}/agent/get_agents`,
           {
             headers: { Authorization: token },
           }
@@ -63,7 +63,7 @@ const ProjectForm = () => {
     const fetchAgent = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/projectFeature/get_projectFeature",
+          `${import.meta.env.VITE_BASE_URL}/projectFeature/get_projectFeature`,
           {
             headers: { Authorization: token },
           }
@@ -80,7 +80,7 @@ const ProjectForm = () => {
     const fetchAgent = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/projectType/get_projectTypes",
+          `${import.meta.env.VITE_BASE_URL}/projectType/get_projectTypes`,
           {
             headers: { Authorization: token },
           }
@@ -97,7 +97,7 @@ const ProjectForm = () => {
     const fetchAgent = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/property/properties",
+          `${import.meta.env.VITE_BASE_URL}/property/properties`,
           {
             headers: { Authorization: token },
           }
@@ -229,7 +229,7 @@ const ProjectForm = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/project/add_project",
+        `${import.meta.env.VITE_BASE_URL}/project/add_project`,
         formData,
         {
           headers: {

@@ -15,7 +15,7 @@ export default function PropertyListings2({ filters = {}, setFilters }) {
   const fetchProperties = async () => {
     setIsLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:8000/api/v1/property/properties", {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/property/properties`, {
         params: {
           search: filters.keyword,
           projectType: filters.propertyType === 'All Types' ? '' : filters.propertyType,

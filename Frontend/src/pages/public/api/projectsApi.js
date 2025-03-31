@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_BASE_URL = "http://localhost:8000/api/v1/project/projects" // Change this to your actual API base URL
+const API_BASE_URL = `${import.meta.env.VITE_BASE_URL}/project/projects` // Change this to your actual API base URL
 
 // ✅ Get projects with pagination, search, and filtering
 export async function getProjects({ search = "", page = 1, limit = 9, projectType }) {
@@ -19,7 +19,7 @@ export async function getProjects({ search = "", page = 1, limit = 9, projectTyp
 // ✅ Get a project by ID (including properties)
 export async function getProjectBySlug(slug) {
   try {
-    const response = await axios.get(`http://localhost:8000/api/v1/project/get_project/${slug}`)
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/project/get_project/${slug}`)
     console.log(response.data)
     return response.data // Expecting project with properties
   } catch (error) {
@@ -31,7 +31,7 @@ export async function getProjectBySlug(slug) {
 // ✅ Get project types
 export async function getProjectTypes() {
   try {
-    const response = await axios.get("http://localhost:8000/api/v1/projectType/get_projectTypes",)
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/projectType/get_projectTypes`,)
 
     return response.data // Expecting an array of project types
   } catch (error) {

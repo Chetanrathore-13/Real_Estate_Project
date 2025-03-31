@@ -20,7 +20,7 @@ const PropertyDetails = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:8000/api/v1/property/properties/${slug}`,
+        `${import.meta.env.VITE_BASE_URL}/property/properties/${slug}`,
         { headers: { Authorization: token } }
       );
       setProperty(data.property);

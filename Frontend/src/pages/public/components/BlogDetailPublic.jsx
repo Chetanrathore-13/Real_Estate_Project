@@ -15,7 +15,7 @@ const BlogDetailPublic = () => {
     const fetchBlog = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/v1/blog/get_blog/${slug}`
+          `${import.meta.env.VITE_BASE_URL}/blog/get_blog/${slug}`
         );
         console.log(response.data);
         setBlog(response.data);

@@ -19,7 +19,7 @@ export default function ProjectFeatures() {
 
   const fetchFeatures = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/v1/projectFeature/get_projectFeature",{headers:{Authorization:token}});
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/projectFeature/get_projectFeature`,{headers:{Authorization:token}});
       if (Array.isArray(response.data)) {
         console.log(response.data)
         setFeatures(response.data);
@@ -41,11 +41,11 @@ export default function ProjectFeatures() {
     if (formData.icon) formDataToSend.append("icon", formData.icon);
     
     if (editingSlug) {
-      await axios.patch(`http://localhost:8000/api/v1/projectFeature/update_projectFeature/${editingSlug}`, formDataToSend, {
+      await axios.patch(`${import.meta.env.VITE_BASE_URL}/projectFeature/update_projectFeature/${editingSlug}`, formDataToSend, {
         headers: { "Content-Type": "multipart/form-data",Authorization:token }
       });
     } else {
-      await axios.post("http://localhost:8000/api/v1/projectFeature/add_projectFeature", formDataToSend, {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/projectFeature/add_projectFeature`, formDataToSend, {
         headers: { "Content-Type": "multipart/form-data",Authorization:token }
       });
     }
@@ -55,7 +55,7 @@ export default function ProjectFeatures() {
   };
 
   const handleDelete = async (slug) => {
-    await axios.delete(`http://localhost:8000/api/v1/projectFeature/delete_projectFeature/${slug}`,{headers:{Authorization:token}});
+    await axios.delete(`${import.meta.env.VITE_BASE_URL}/projectFeature/delete_projectFeature/${slug}`,{headers:{Authorization:token}});
     fetchFeatures();
   };
 

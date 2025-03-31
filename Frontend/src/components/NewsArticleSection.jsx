@@ -1,65 +1,24 @@
 import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 export default function NewsArticlesSection() {
-  const token = useSelector((state) => state.auth.token);
   const [blogs, setBlogs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
-  // Sample articles data
-  // const articles = [
-  //   {
-  //     id: 1,
-  //     category: "MY HOME",
-  //     date: "July 24, 2020",
-  //     title: "Modern apartment adjacent",
-  //     excerpt:
-  //       "Massa tempor nec feugiat nisl pretium. Egestas fringilla phasellus faucibus scelerisque eleifend donec. Porta nibh",
-  //     image: "/placeholder.svg?height=300&width=500",
-  //     titleColor: "#0a0a5e",
-  //   },
-  //   {
-  //     id: 2,
-  //     category: "MY HOME",
-  //     date: "July 2, 2020",
-  //     title: "We are Offering the Best RED",
-  //     excerpt:
-  //       "Massa tempor nec feugiat nisl pretium. Egestas fringilla phasellus faucibus scelerisque eleifend donec. Porta nibh",
-  //     image: "/placeholder.svg?height=300&width=500",
-  //     titleColor: "#0a0a5e",
-  //   },
-  //   {
-  //     id: 3,
-  //     category: "REAL HOMES",
-  //     date: "June 9, 2020",
-  //     title: "Architects design a Resort",
-  //     excerpt:
-  //       "Massa tempor nec feugiat nisl pretium. Egestas fringilla phasellus faucibus scelerisque eleifend donec. Porta nibh",
-  //     image: "/placeholder.svg?height=300&width=500",
-  //     titleColor: "#f26522",
-  //   },
-  // ];
-  
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/blog/get_blogs",
-          {
-            params: { search, page, limit: 6 },
-            headers: {
-              Authorization: token, // ✅ Fixed Authorization Header
-            },
-          }
-        );
+        console.log("Fetching blogs...");
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/blog/get_blogs`, {
+          params: { search, page, limit: 6 },
+        });
 
-        // ✅ Ensure response is an array
-        setBlogs(response.data.blogwithicon);
+        setBlogs(response.data.blogwithicon || []);
         setHasMore(response.data.hasMore || false);
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
@@ -67,8 +26,8 @@ export default function NewsArticlesSection() {
       }
     };
 
-    if (token) fetchBlogs();
-  }, [token, page, search]);
+    fetchBlogs();
+  }, [page, search]); // Removed `token` from dependencies
 
   return (
     <section className="py-12 md:py-16 lg:py-24">
@@ -88,8 +47,8 @@ export default function NewsArticlesSection() {
             >
               <div className="relative">
                 <img
-                  src={`data:image/jpeg;base64,${article.imageBase64}` || "/placeholder.svg"}
-                  alt={article.title}
+                  src={article.imageBase64 ? `data:image/jpeg;base64,${article.imageBase64}` : "/placeholder.svg"}
+                  alt={article.title || "Article Image"}
                   width={500}
                   height={300}
                   className="w-full h-[220px] object-cover"
@@ -109,11 +68,10 @@ export default function NewsArticlesSection() {
                 >
                   {article.title}
                 </h3>
-               
               </CardContent>
               <CardFooter>
                 <Link
-                  href="#"
+                  to={`/blog/${article._id}`}
                   className="text-[#0a0a5e] font-semibold hover:underline"
                 >
                   Read More

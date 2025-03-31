@@ -57,7 +57,7 @@ function BlogList({ role }) {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/blog/get_blogs",
+          `${import.meta.env.VITE_BASE_URL}/blog/get_blogs`,
           {
             params: { search, page, limit: 9 },
             headers: role === "admin" ? { Authorization: token } : {}, // ✅ Only send token for admin
@@ -91,7 +91,7 @@ function BlogList({ role }) {
     if (blogToDelete) {
       try {
         await axios.delete(
-          `http://localhost:8000/api/v1/blog/delete_blog/${blogToDelete}`,
+          `${import.meta.env.VITE_BASE_URL}/blog/delete_blog/${blogToDelete}`,
           {
             headers: { Authorization: token },
           }

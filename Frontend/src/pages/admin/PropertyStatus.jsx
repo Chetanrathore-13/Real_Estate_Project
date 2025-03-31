@@ -19,7 +19,7 @@ const PropertyStatusManager = () => {
 
   const fetchStatuses = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8000/api/v1/property/property_status", {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/property/property_status`, {
         headers: { Authorization: token },
       });
       console.log("API Response:", data);
@@ -57,12 +57,12 @@ const PropertyStatusManager = () => {
         for (let pair of formData.entries()) {
           console.log(pair[0] + ": " + pair[1]);
         }
-        await axios.patch(`http://localhost:8000/api/v1/property/update_property_status/${editingId}`, formData, {
+        await axios.patch(`${import.meta.env.VITE_BASE_URL}/property/update_property_status/${editingId}`, formData, {
           headers
           }
         );
       } else {
-        await axios.post("http://localhost:8000/api/v1/property/add_property_status", formData, {
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/property/add_property_status`, formData, {
           headers
          });
       }
@@ -81,7 +81,7 @@ const PropertyStatusManager = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/property/delete_property_status${id}`, {
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/property/delete_property_status${id}`, {
         headers: { Authorization: token },
       });
       fetchStatuses();
