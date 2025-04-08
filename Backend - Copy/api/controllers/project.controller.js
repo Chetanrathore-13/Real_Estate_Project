@@ -87,39 +87,6 @@ const getprojects = async (req, res) => {
     }
 };
 
-const addproject = async (req, res) => {
-    try {
-        const { name, description, projectFeatures, projectType, videoLinks, agent, properties  } = req.body;
-        const featureImage = req.files.featureImage[0].path
-        const imageGallery = req.files.imageGallery.map((file) => file.path)
-        const project = new Project({ name, description, projectFeatures, projectType, featureImage, imageGallery, videoLinks, agent, properties  });
-        await project.save();
-        res.status(201).json(project);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-const updateproject = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const updatedData = req.body;
-        const updatedproject = await Project.findByIdAndUpdate(id, updatedData, { new: true });
-        res.json(updatedproject);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-
-const deleteproject = async (req, res) => {
-    try {
-        const { id } = req.params;
-        await Project.findByIdAndDelete(id);
-        res.json({ message: "project deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
 
 const getproject = async (req, res) => {
     try {
@@ -155,4 +122,4 @@ const getproject = async (req, res) => {
     }
 };
 
-export { getprojects, addproject, updateproject, deleteproject , getproject};
+export { getprojects , getproject};
