@@ -31,26 +31,18 @@ const connectDb = async () => {
 };
 connectDb();
 
-import locationRoutes from './routes/locationRoutes.js';
-app.use("/api/v1/location",locationRoutes)
 
-import propertyFeature from "./routes/propertyFeatureRoutes.js"
-app.use("/api/v1/property",propertyFeature)
 
-import properyTypeRoutes from "./routes/propertyTypeRoutes.js"
-app.use("/api/v1/property",properyTypeRoutes)
+
+
 
 import authRoutes from "./routes/auth.js";
 app.use("/api/v1/auth", authRoutes);
 
-import propertyStatusRoutes from "./routes/propertyStatusRoutes.js";
-app.use("/api/v1/property", propertyStatusRoutes);
 
-import propertyLabelRoutes from "./routes/propertyLabelRoutes.js";
-app.use("/api/v1/property", propertyLabelRoutes);
 
-import agentRoutes from "./routes/agentRoutes.js";
-app.use("/api/v1/agent", agentRoutes);
+
+
 
 import propertyRoutes from "./routes/propertyRoutes.js";
 app.use("/api/v1/property", propertyRoutes);
@@ -58,32 +50,24 @@ app.use("/api/v1/property", propertyRoutes);
 import projectRoutes from "./routes/projectRoutes.js";
 app.use("/api/v1/project", projectRoutes);
 
-import contactRoutes from "./routes/contactRoutes.js";
-app.use("/api/v1/contact", contactRoutes);
 
-import propertyEnquiryRoutes from "./routes/propertyEnquiryRoutes.js";
-app.use("/api/v1/enquiry", propertyEnquiryRoutes);
+
+
 
 import fandqRoutes from "./routes/fandqRoutes.js";
 app.use("/api/v1/fandq", fandqRoutes);
 
-import contactUsRoutes from "./routes/contactUsRoutes.js";
-app.use("/api/v1/contactus", contactUsRoutes); 
 
-import blogCategoryRoutes from "./routes/blog-cateogryRoutes.js";
-app.use("/api/v1/blogcategory", blogCategoryRoutes);
 
-import blogtagRoutes from "./routes/blog-tagRoutes.js";
-app.use("/api/v1/blogtag",blogtagRoutes)
+
+
 
 import blogRoutes from "./routes/blogRoutes.js";
 app.use("/api/v1/blog",blogRoutes)
 
-import ProjectTypeRoutes from "./routes/projectTypeRoutes.js"
-app.use("/api/v1/projectType", ProjectTypeRoutes)
 
-import ProjectFeatureRoutes from "./routes/projectFeatureRoutes.js"
-app.use("/api/v1/projectFeature", ProjectFeatureRoutes)
+
+
 
 import serviceRoutes from "./routes/serviceRoutes.js"
 app.use("/api/v1/service", serviceRoutes)
